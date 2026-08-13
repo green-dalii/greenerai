@@ -1,0 +1,71 @@
+---
+import Brand from './Brand.astro';
+import LanguageSwitch from './LanguageSwitch.astro';
+import { getDict } from '../i18n';
+const dict = getDict(Astro.currentLocale);
+---
+
+<footer>
+  <div class="gradient-signature h-2 w-full" aria-hidden="true"></div>
+
+  <div class="bg-surface-mint-soft">
+    <div class="container-site py-16">
+      <div class="flex flex-col justify-between gap-10 md:flex-row md:items-start">
+        <div class="max-w-xs" data-reveal>
+          <Brand />
+          <p class="mt-4 text-sm leading-relaxed text-steel">
+            {dict.footer.tagline}
+          </p>
+        </div>
+
+        <div class="flex flex-col gap-8 sm:flex-row sm:gap-16">
+          <div class="flex flex-col gap-3" data-reveal data-reveal-delay="80">
+            <span
+              class="font-mono text-[10.5px] uppercase tracking-wider text-muted"
+            >
+              {dict.footer.connectLabel}
+            </span>
+            <a
+              class="link-underline text-sm text-slate transition-colors duration-200 hover:text-primary"
+              href="https://github.com/green-dalii"
+              target="_blank"
+              rel="noreferrer"
+            >
+              {dict.footer.github}
+            </a>
+            <a
+              class="link-underline text-sm text-slate transition-colors duration-200 hover:text-primary"
+              href="https://greenerdalii.top"
+              target="_blank"
+              rel="noreferrer"
+            >
+              {dict.footer.studio}
+            </a>
+          </div>
+
+          <div class="flex flex-col gap-3" data-reveal data-reveal-delay="160">
+            <span
+              class="font-mono text-[10.5px] uppercase tracking-wider text-muted"
+            >
+              {dict.footer.langsLabel}
+            </span>
+            <LanguageSwitch />
+          </div>
+        </div>
+      </div>
+
+      <div
+        class="mt-14 flex flex-col gap-2 border-t border-hairline pt-6 text-[13px] text-muted sm:flex-row sm:items-center sm:justify-between"
+        data-reveal
+        data-reveal-delay="240"
+      >
+        <p>{dict.footer.rights}</p>
+        <p
+          class="font-mono text-[10.5px] uppercase tracking-wider"
+        >
+          {dict.footer.builtOpen}
+        </p>
+      </div>
+    </div>
+  </div>
+</footer>

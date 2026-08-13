@@ -1,0 +1,132 @@
+---
+import Brand from './Brand.astro';
+import LanguageSwitch from './LanguageSwitch.astro';
+import { getDict } from '../i18n';
+const dict = getDict(Astro.currentLocale);
+
+const links = [
+  { href: '#thesis', label: dict.nav.thesis },
+  { href: '#proof', label: dict.nav.proof },
+  { href: '#organism', label: dict.nav.organism },
+  { href: '#road', label: dict.nav.road },
+];
+---
+
+<header
+  data-header
+  class="sticky top-0 z-50 border-b border-hairline-soft bg-canvas/85 backdrop-blur-xl transition-colors duration-200"
+>
+  <div class="container-site flex h-16 items-center justify-between">
+    <Brand />
+
+    <nav
+      class="hidden items-center gap-8 md:flex"
+      aria-label="Primary"
+    >
+      {
+        links.map((l) => (
+          <a
+            href={l.href}
+            class="link-underline text-sm text-slate transition-colors duration-200 hover:text-ink"
+          >
+            {l.label}
+          </a>
+        ))
+      }
+    </nav>
+
+    <div class="flex items-center gap-3">
+      <a
+        href={dict.nav.githubHref}
+        target="_blank"
+        rel="noreferrer"
+        class="hidden text-sm font-medium text-primary transition-colors duration-200 hover:text-primary-deep md:block"
+      >
+        {dict.nav.github}
+      </a>
+      <LanguageSwitch />
+      <button
+        type="button"
+        class="grid h-9 w-9 place-items-center rounded-md border border-hairline text-slate transition-colors duration-200 hover:bg-surface md:hidden"
+        aria-label={dict.nav.menuLabel}
+        aria-expanded="false"
+        aria-controls="mobile-menu"
+        data-menu-toggle
+      >
+        <svg
+          width="16"
+          height="16"
+          viewBox="0 0 16 16"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="1.5"
+          stroke-linecap="round"
+        >
+          <line x1="2" y1="4" x2="14" y2="4"></line>
+          <line x1="2" y1="8" x2="14" y2="8"></line>
+          <line x1="2" y1="12" x2="14" y2="12"></line>
+        </svg>
+      </button>
+    </div>
+  </div>
+
+  <div
+    id="mobile-menu"
+    class="hidden border-t border-hairline-soft bg-canvas md:hidden"
+    data-menu
+  >
+    <nav
+      class="container-site flex flex-col py-4"
+      aria-label="Primary mobile"
+    >
+      {
+        links.map((l) => (
+          <a
+            href={l.href}
+            class="border-b border-hairline-soft py-3 text-sm text-slate last:border-b-0 hover:text-ink"
+          >
+            {l.label}
+          </a>
+        ))
+      }
+      <a
+        href={dict.nav.githubHref}
+        target="_blank"
+        rel="noreferrer"
+        class="py-3 text-sm font-medium text-primary"
+      >
+        {dict.nav.github}
+      </a>
+    </nav>
+  </div>
+</header>
+
+<script>
+  const toggle = document.querySelector<HTMLButtonElement>('[data-menu-toggle]');
+  const menu = document.querySelector<HTMLElement>('[data-menu]');
+  if (toggle && menu) {
+    toggle.addEventListener('click', () => {
+      const open = menu.classList.toggle('hidden') === false;
+      toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+    });
+  }
+
+  // Scrolled state — background solidifies + subtle shadow when scrolled past 8px.
+  const header = document.querySelector<HTMLElement>('[data-header]');
+  if (header) {
+    const update = () => {
+      header.classList.toggle('is-scrolled', window.scrollY > 8);
+    };
+    update();
+    window.addEventListener('scroll', update, { passive: true });
+  }
+</script>
+
+<style>
+  [data-header].is-scrolled {
+    background-color: rgb(255 255 255 / 0.95);
+    box-shadow:
+      0 1px 0 rgba(0, 0, 0, 0.04),
+      0 4px 16px rgba(0, 0, 0, 0.04);
+  }
+</style>

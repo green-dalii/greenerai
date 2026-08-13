@@ -1,0 +1,27 @@
+---
+import { getDict } from '../i18n';
+import ProofCard from './ProofCard.astro';
+const p = getDict(Astro.currentLocale).proof;
+const delays = [0, 120, 60, 180];
+---
+
+<section id="proof" class="border-t border-hairline-soft bg-surface-mint-soft py-20 md:py-28">
+  <div class="container-site">
+    <div class="mb-14 max-w-2xl">
+      <span class="eyebrow" data-reveal>{p.eyebrow}</span>
+      <h2 class="display-lg mt-4" data-reveal data-reveal-delay="80">{p.heading}</h2>
+      <p class="mt-4 text-base leading-relaxed text-slate" data-reveal data-reveal-delay="160">
+        {p.sub}
+      </p>
+    </div>
+
+    <div class="grid grid-cols-1 gap-6 lg:grid-cols-2">
+      <ProofCard card={p.cards[0]} featured revealDelay={delays[0]} />
+      <ProofCard card={p.cards[1]} revealDelay={delays[1]} />
+    </div>
+    <div class="mt-6 grid grid-cols-1 gap-6 md:grid-cols-2">
+      <ProofCard card={p.cards[2]} revealDelay={delays[2]} />
+      <ProofCard card={p.cards[3]} revealDelay={delays[3]} />
+    </div>
+  </div>
+</section>

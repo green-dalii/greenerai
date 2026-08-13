@@ -1,0 +1,22 @@
+# deps
+node_modules/
+.pnpm-store/
+
+# build output
+dist/
+.astro/
+
+# env
+.env
+.env.*
+
+# os / editor
+.DS_Store
+*.log
+.idea/
+.vscode/*
+!.vscode/extensions.json
+
+# misc
+*.tsbuildinfo
+.pi/

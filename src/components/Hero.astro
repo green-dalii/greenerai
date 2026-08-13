@@ -1,0 +1,63 @@
+---
+import { getDict } from '../i18n';
+import HeroGraph from './HeroGraph.astro';
+
+const d = getDict(Astro.currentLocale).hero;
+---
+
+<section class="mesh-hero relative overflow-hidden">
+  <div
+    class="container-site grid grid-cols-1 items-center gap-14 py-20 md:grid-cols-12 md:gap-10 md:py-28 lg:py-32"
+  >
+    <!-- Left: editorial manifesto -->
+    <div class="md:col-span-7">
+      <span
+        class="eyebrow inline-flex items-center rounded-full border border-mint-soft bg-canvas px-4 py-1.5 shadow-sm"
+        data-reveal
+      >
+        {d.eyebrow}
+      </span>
+
+      <h1 class="display-hero mt-8">
+        <span data-reveal class="block">{d.h1a}</span>
+        <span data-reveal data-reveal-delay="120" class="block">
+          <em class="italic text-primary">{d.h1b}</em>
+        </span>
+      </h1>
+
+      <p
+        class="mt-8 max-w-xl text-lg leading-relaxed text-slate"
+        data-reveal
+        data-reveal-delay="240"
+      >
+        {d.sub}
+      </p>
+
+      <div
+        class="mt-10 flex flex-col gap-3 sm:flex-row"
+        data-reveal
+        data-reveal-delay="320"
+      >
+        <a class="btn-primary" href={d.ctaPrimaryHref}>{d.ctaPrimary}</a>
+        <a
+          class="btn-secondary"
+          href={d.ctaSecondaryHref}
+          target="_blank"
+          rel="noreferrer">{d.ctaSecondary}</a
+        >
+      </div>
+    </div>
+
+    <!-- Right: knowledge-graph motif (decorative) -->
+    <div class="hidden lg:col-span-5 lg:block">
+      <HeroGraph />
+      <p
+        class="mt-4 text-center font-mono text-[11px] uppercase tracking-wider text-steel"
+        data-reveal
+        data-reveal-delay="300"
+      >
+        {d.graphCaption}
+      </p>
+    </div>
+  </div>
+</section>

@@ -1,0 +1,51 @@
+---
+import { getDict } from '../i18n';
+const r = getDict(Astro.currentLocale).road;
+---
+
+<section id="road" class="border-t border-hairline-soft bg-canvas py-20 md:py-28">
+  <div class="container-site">
+    <div class="mb-14 max-w-2xl">
+      <span class="eyebrow" data-reveal>{r.eyebrow}</span>
+      <h2 class="display-lg mt-4" data-reveal data-reveal-delay="80">{r.heading}</h2>
+      <p class="mt-4 text-base text-slate" data-reveal data-reveal-delay="160">{r.sub}</p>
+    </div>
+
+    <div class="grid grid-cols-1 gap-6 md:grid-cols-3">
+      {r.layers.map((layer, i) => (
+        <article
+          class={`flex flex-col rounded-card border p-8 ${
+            layer.statusType === 'shipped'
+              ? 'border-hairline-soft bg-canvas'
+              : 'border-mint-soft bg-surface-mint'
+          }`}
+          data-reveal
+          data-reveal-delay={i * 100}
+        >
+          <div class="flex items-center justify-between">
+            <span class="eyebrow">{layer.key}</span>
+            <span
+              class={`rounded-full px-2.5 py-1 font-mono text-[10px] font-semibold uppercase tracking-wider ${
+                layer.statusType === 'shipped'
+                  ? 'bg-primary text-white'
+                  : 'bg-mint-soft text-primary-deep'
+              }`}
+            >
+              {layer.status}
+            </span>
+          </div>
+          <h3 class="mt-6 font-display text-2xl text-ink">{layer.title}</h3>
+          <p class="mt-3 flex-grow text-[15px] leading-relaxed text-slate">{layer.body}</p>
+        </article>
+      ))}
+    </div>
+
+    <p
+      class="mt-14 text-center font-display text-2xl italic leading-snug text-primary md:text-3xl"
+      data-reveal
+      data-reveal-delay="200"
+    >
+      {r.coda}
+    </p>
+  </div>
+</section>

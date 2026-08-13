@@ -1,0 +1,28 @@
+---
+import { getDict } from '../i18n';
+const t = getDict(Astro.currentLocale).thesis;
+---
+
+<section id="thesis" class="border-t border-hairline-soft bg-canvas py-20 md:py-28">
+  <div class="container-site">
+    <div class="mb-14 max-w-2xl">
+      <span class="eyebrow" data-reveal>{t.eyebrow}</span>
+      <h2 class="display-lg mt-4" data-reveal data-reveal-delay="80">{t.heading}</h2>
+    </div>
+    <div>
+      {t.items.map((item, i) => (
+        <article
+          class="grid grid-cols-1 gap-3 border-t border-hairline py-10 md:grid-cols-12 md:gap-8"
+          data-reveal
+          data-reveal-delay={i * 90}
+        >
+          <div class="md:col-span-2">
+            <span class="font-mono text-sm text-muted">{item.index}</span>
+          </div>
+          <h3 class="font-display text-3xl text-ink md:col-span-5 md:text-4xl">{item.title}</h3>
+          <p class="max-w-md text-base leading-relaxed text-slate md:col-span-5">{item.body}</p>
+        </article>
+      ))}
+    </div>
+  </div>
+</section>

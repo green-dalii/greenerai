@@ -1,0 +1,33 @@
+---
+import { getDict } from '../i18n';
+const o = getDict(Astro.currentLocale).organism;
+---
+
+<section id="organism" class="border-t border-hairline-soft bg-surface-mint py-20 md:py-28">
+  <div class="container-site">
+    <div class="mx-auto max-w-3xl text-center">
+      <span class="eyebrow" data-reveal>{o.eyebrow}</span>
+      <h2
+        class="mt-6 font-display text-4xl leading-[1.15] tracking-tight text-ink md:text-5xl"
+        data-reveal
+        data-reveal-delay="80"
+      >
+        {o.heading}
+      </h2>
+      <div class="mx-auto mt-8 max-w-2xl space-y-5 text-lg leading-relaxed text-slate">
+        {o.body.map((b, i) => (
+          <p data-reveal data-reveal-delay={160 + i * 80}>{b}</p>
+        ))}
+      </div>
+      <div
+        class="mx-auto mt-10 max-w-md rounded-card border border-mint-soft bg-canvas p-5 text-left shadow-sm"
+        data-reveal
+        data-reveal-delay={160 + o.body.length * 80 + 80}
+      >
+        {o.code.map((line) => (
+          <p class="font-mono text-[12.5px] leading-7 text-ink">{line}</p>
+        ))}
+      </div>
+    </div>
+  </div>
+</section>

@@ -1,0 +1,25 @@
+---
+import { getDict } from '../i18n';
+const dict = getDict(Astro.currentLocale);
+---
+
+<!-- 沿用 Greener-Dalii Studio 官方品牌资产：logomark（黑色）+ wordmark.svg -->
+<a
+  href={dict.brand.homeHref}
+  class="flex items-center gap-2.5"
+  aria-label="Greener-Dalii — home"
+>
+  <svg viewBox="-40 -20 820 820" fill="none" class="h-7 w-7 text-ink" aria-hidden="true">
+    <polygon
+      points="325.5,129.7 325.5,303.2 424.7,322 424.7,129.7 643.8,129.7 643.8,340.9 743,359.8 743,30.4 7.2,30.4 7.2,340.9
+		106.4,359.8 106.4,129.7"
+      fill="currentColor"
+    />
+    <polygon
+      points="424.7,621.2 424.7,447.5 325.5,428.6 325.5,621.2 106.4,621.2 106.4,409.7 7.2,390.9 7.2,720.4 743,720.4
+		743,409.7 643.8,390.9 643.8,621.2"
+      fill="currentColor"
+    />
+  </svg>
+  <img src="/wordmark.svg" alt="" class="h-6 w-auto" />
+</a>

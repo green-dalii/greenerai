@@ -1,0 +1,42 @@
+---
+import { getDict } from '../i18n';
+const o = getDict(Astro.currentLocale).open;
+---
+
+<section id="open" class="border-t border-hairline-soft bg-canvas py-20 md:py-28">
+  <div class="container-site">
+    <div class="rounded-xl border border-mint-soft bg-surface-mint px-6 py-16 text-center md:px-16 md:py-24">
+      <span class="eyebrow" data-reveal>{o.eyebrow}</span>
+      <h2
+        class="mx-auto mt-6 max-w-2xl font-display text-5xl leading-[1.05] tracking-tight text-ink md:text-6xl"
+        data-reveal
+        data-reveal-delay="80"
+      >
+        {o.heading}
+      </h2>
+      <p
+        class="mx-auto mt-6 max-w-xl text-lg leading-relaxed text-slate"
+        data-reveal
+        data-reveal-delay="160"
+      >
+        {o.body}
+      </p>
+      <div
+        class="mt-10 flex flex-col items-center justify-center gap-3 sm:flex-row"
+        data-reveal
+        data-reveal-delay="240"
+      >
+        <a class="btn-primary" href={o.cta1Href} target="_blank" rel="noreferrer">{o.cta1}</a>
+        <a class="btn-dark" href={o.cta2Href} target="_blank" rel="noreferrer">{o.cta2}</a>
+        <a class="btn-secondary" href={o.cta3Href} target="_blank" rel="noreferrer">{o.cta3}</a>
+      </div>
+      <p
+        class="mt-8 font-mono text-[11px] uppercase tracking-wider text-steel"
+        data-reveal
+        data-reveal-delay="320"
+      >
+        {o.note}
+      </p>
+    </div>
+  </div>
+</section>
