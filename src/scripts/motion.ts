@@ -70,6 +70,78 @@ if (reduce) {
       delay,
     });
   });
+
+  // Hero 大标题：遮罩内上滑入场（data-hero-line / data-hero-line-delay）
+  gsap.utils.toArray<HTMLElement>('[data-hero-line]').forEach((el) => {
+    gsap.fromTo(
+      el,
+      { yPercent: 110 },
+      {
+        yPercent: 0,
+        duration: 1.05,
+        ease: 'power4.out',
+        delay: (Number(el.dataset.heroLineDelay ?? 0) / 1000) + 0.1,
+        scrollTrigger: { trigger: el.closest('section'), start: 'top 80%', once: true },
+      },
+    );
+  });
+
+  // Hero 技术栈面板（data-hero-stack）：行交错入场 + 胶囊弹出 + 杠杆线绘制/脉冲
+  const stack = document.querySelector<HTMLElement>('[data-hero-stack]');
+  if (stack) {
+    const rows = stack.querySelectorAll<HTMLElement>('[data-hs-row]');
+    const pills = stack.querySelectorAll<HTMLElement>('[data-hs-pill]');
+    const line = stack.querySelector<HTMLElement>('[data-hs-line]');
+    const pulse = stack.querySelector<HTMLElement>('[data-hs-pulse]');
+
+    const tls = gsap.timeline({
+      defaults: { ease: 'power3.out' },
+      scrollTrigger: { trigger: stack, start: 'top 90%', once: true },
+    });
+    tls.fromTo(
+      rows,
+      { autoAlpha: 0, y: 18 },
+      { autoAlpha: 1, y: 0, duration: 0.6, stagger: 0.09 },
+      0.15,
+    )
+      .fromTo(
+        pills,
+        { autoAlpha: 0, scale: 0.7 },
+        { autoAlpha: 1, scale: 1, duration: 0.4, stagger: 0.09, transformOrigin: 'center center' },
+        '-=0.35',
+      )
+      .fromTo(
+        line,
+        { scaleX: 0 },
+        { scaleX: 1, duration: 0.8, ease: 'power2.inOut', transformOrigin: 'left center' },
+        '-=0.2',
+      );
+
+    // 杠杆脉冲：持续从左扫过（一个人 → 公司级产出）
+    gsap.to(pulse, {
+      scaleX: 1,
+      duration: 1.9,
+      ease: 'sine.in',
+      repeat: -1,
+      repeatDelay: 1.2,
+      transformOrigin: 'left center',
+      delay: 1.7,
+    });
+
+    // 指针视差（桌面）
+    const hero = stack.closest('section') ?? stack;
+    const qx = gsap.quickTo(stack, 'x', { duration: 0.7, ease: 'power3.out' });
+    const qy = gsap.quickTo(stack, 'y', { duration: 0.7, ease: 'power3.out' });
+    hero.addEventListener('pointermove', (e) => {
+      const r = hero.getBoundingClientRect();
+      qx(((e.clientX - r.left) / r.width - 0.5) * 10);
+      qy(((e.clientY - r.top) / r.height - 0.5) * 7);
+    });
+    hero.addEventListener('pointerleave', () => {
+      qx(0);
+      qy(0);
+    });
+  }
 }
 
 export {};

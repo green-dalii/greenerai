@@ -16,7 +16,7 @@
 
 - pnpm + Astro（static output）+ TailwindCSS v4（`@tailwindcss/vite`，CSS-first tokens）
 - 字体：Instrument Serif（display）/ Inter（UI）/ JetBrains Mono（code），Google Fonts
-- 动效：GSAP + ScrollTrigger，契约在 `src/scripts/motion.ts`（data-reveal / data-reveal-delay / data-count / data-count-to / data-count-suffix / data-float；尊重 prefers-reduced-motion）
+- 动效：GSAP + ScrollTrigger，契约在 `src/scripts/motion.ts`（data-reveal / data-reveal-delay / data-count / data-count-to / data-count-suffix / data-hero-line / data-hero-stack；尊重 prefers-reduced-motion）
 - i18n：Astro 内置 i18n，`defaultLocale: 'en'`（无前缀 `/`）+ `zh`（`/zh/`）；字典在 `src/i18n/locales/{en,zh}.ts`
 - 命令：`pnpm dev` / `pnpm build` / `pnpm preview` / `pnpm astro`
 
@@ -24,7 +24,8 @@
 
 - **LOGO**：必须沿用 greenerdalii.studio 官方 `logomark.svg`（本仓库 `public/logomark.svg` 同源；Brand.astro 内联渲染）。禁止自行生成品牌标。
 - **zh.ts 文案**：必须是母语级中文，禁止翻译腔（词序生硬、'的'堆叠、英式绕弯）。写完后逐句朗读自查。
-- Hero 右侧视觉为知识图谱装饰（HeroGraph.astro），不得替换为单个产品的终端/截图。
+- **导航词**：用自然人话（Why/Shipped/About/Next · 信念/已交付/我们/下一步），禁止生僻名词堆叠。
+- Hero 右侧视觉为轻量技术栈状态面板（HeroStack.astro），不得替换为单个产品的终端/截图，也不得用重色/密集图形。
 
 ## 设计系统（详见 SPEC.md）
 

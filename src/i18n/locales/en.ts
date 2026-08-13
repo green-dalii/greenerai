@@ -4,10 +4,10 @@ export const en: Dict = {
   meta: {
     title: 'Greener-Dalii — AI-Native Infrastructure',
     description:
-      'Open-source, local-first AI infrastructure for the AI-native era — knowledge and execution, the layers that let one person operate at company scale.',
+      'Open-source, local-first infrastructure for organizations of one: knowledge that answers, agents that never stall. We build it — and we run on it ourselves.',
     ogTitle: 'Greener-Dalii — Intelligence is a commodity. Leverage is the new company.',
     ogDescription:
-      'The stack for organizations of one: Context (obsidian-llm-wiki), Execution (pi-shift-router), Trust (researching).',
+      'The stack for organizations of one: Context (obsidian-llm-wiki), Execution (pi-shift-router), Trust (researching). Open source, in the open.',
   },
 
   brand: {
@@ -19,63 +19,64 @@ export const en: Dict = {
   },
 
   nav: {
-    thesis: 'Thesis',
-    proof: 'Proof',
-    organism: 'Organism',
-    road: 'Road',
+    thesis: 'Why',
+    proof: 'Shipped',
+    organism: 'About',
+    road: 'Next',
     github: 'GitHub',
     githubHref: 'https://github.com/green-dalii',
     menuLabel: 'Menu',
   },
 
   hero: {
-    eyebrow: 'An AI-native company',
+    eyebrow: 'AI-native infrastructure',
     h1a: 'Intelligence is a commodity.',
     h1b: 'Leverage is the new company.',
-    sub: 'Greener-Dalii builds the infrastructure of the AI-native era — knowledge and execution, the layers that let one person operate at company scale. Everything we ship is open source, and we run on it ourselves.',
+    sub: 'Every week, models get cheaper and smarter. What stays scarce is what you know — and what you do with it. We build the infrastructure of the AI-native era: knowledge that answers, agents that never stall — open source, and we run on it ourselves.',
     ctaPrimary: 'Explore the stack',
     ctaPrimaryHref: '#proof',
     ctaSecondary: 'Star on GitHub',
     ctaSecondaryHref: 'https://github.com/green-dalii',
-    graphCaption: 'Your knowledge, made queryable.',
+    stackCaption: 'One person. The right stack. Company-scale output.',
+    footnote: 'Apache-2.0 · MIT · everything in the open',
   },
 
   thesis: {
-    eyebrow: 'The thesis',
+    eyebrow: 'The belief',
     heading: 'Why we build.',
     items: [
       {
         index: '01',
         title: 'Intelligence is a commodity.',
-        body: 'Model capability is deflating in price and multiplying in access. It is no longer a moat.',
+        body: 'Every month models get smarter and cheaper. The bottleneck of a business is no longer capability — it is what you do with it.',
       },
       {
         index: '02',
         title: 'Context is the moat.',
-        body: 'What you know that no model does — your notes, your decisions, your history — is the only asset that cannot be copied. So we build local-first, private by default.',
+        body: 'Notes, decisions, history — the things only you have. They cannot be bought or copied, so we keep them on your machine, private by default.',
       },
       {
         index: '03',
-        title: 'Execution is a multiplier, not a headcount.',
-        body: 'When one person ships what a team used to, the unit of scale is leverage. We build so your agents never stall.',
+        title: 'Execution is leverage.',
+        body: 'One person with the right tools does what a team did a few years ago. The unit of scale is not headcount — it is whether your work keeps moving while you rest.',
       },
       {
         index: '04',
-        title: 'Open source is the default.',
-        body: 'When anyone can generate anything, transparency is the strongest signal. Apache and MIT — nothing behind a curtain.',
+        title: 'Openness is the default.',
+        body: 'When anyone can generate anything, the only signal that means trust is transparency. So the code is open, the licenses permissive, the numbers public.',
       },
     ],
   },
 
   proof: {
-    eyebrow: 'The proof',
+    eyebrow: 'Shipped',
     heading: 'Shipped, in the open.',
-    sub: 'The first two layers of the stack are live: numbers public, source public, licenses permissive.',
+    sub: 'We did not wait for permission. Two layers of the stack are live, and every number below is public.',
     cards: [
       {
         tag: 'Context · Knowledge',
         title: 'obsidian-llm-wiki',
-        body: "The production-grade implementation of Karpathy's LLM Wiki for Obsidian. Notes and PDFs become a knowledge base that answers — every answer cites its source.",
+        body: "Karpathy's LLM Wiki, as an Obsidian plugin. Notes and PDFs become a knowledge base that answers — and every answer cites its source.",
         stats: [
           { value: '34,055', label: 'downloads', countTo: 34055 },
           { value: '451', label: 'stars', countTo: 451 },
@@ -99,7 +100,7 @@ export const en: Dict = {
       {
         tag: 'Ecosystem · Workflows',
         title: 'diflowy',
-        body: 'Explore, share, and host Dify workflows — a public commons for automation recipes.',
+        body: 'A public commons for Dify workflows — explore, share, and host the recipes that run your automation.',
         stats: [
           { value: '32', label: 'stars', countTo: 32 },
           { value: 'MIT', label: 'license' },
@@ -110,7 +111,7 @@ export const en: Dict = {
       {
         tag: 'Scholarship · Learning',
         title: 'd2l-note',
-        body: "Study notes on Li Mu's Dive into Deep Learning — learning in public.",
+        body: "Study notes on Li Mu's Dive into Deep Learning — learning in public, one lecture at a time.",
         stats: [
           { value: '33', label: 'stars', countTo: 33 },
           { value: 'MIT', label: 'license' },
@@ -122,7 +123,7 @@ export const en: Dict = {
   },
 
   organism: {
-    eyebrow: 'The organism',
+    eyebrow: 'The living proof',
     heading: 'The smallest viable organization is a seed, not a ceiling.',
     body: [
       'Greener-Dalii began as a design studio — that discipline still shows in everything we ship — and rebuilt itself as an AI-native organization: a small team, a global open-source reach, four product lines, users across eleven languages.',
@@ -132,28 +133,28 @@ export const en: Dict = {
   },
 
   road: {
-    eyebrow: 'The road',
-    heading: 'The stack, layer by layer.',
-    sub: 'Two layers are live. The third is where we are heading — no promises, just a line of sight.',
+    eyebrow: "What's next",
+    heading: 'The next layer is trust.',
+    sub: 'When anyone can generate anything, provenance becomes the scarce good: who made this, what is it grounded in, can it be verified. We are building the layer that answers those questions — no promises yet, just a line of sight.',
     layers: [
       {
         key: '01 · Context',
-        title: 'Knowledge is the moat.',
-        body: 'obsidian-llm-wiki makes your context queryable — local-first, source-cited, yours.',
+        title: 'Knowledge, queryable.',
+        body: 'obsidian-llm-wiki — local-first, source-cited, yours.',
         status: 'Shipped',
         statusType: 'shipped',
       },
       {
         key: '02 · Execution',
-        title: 'Execution is the multiplier.',
-        body: 'pi-shift-router keeps your agents running — the right model, every task, automatic failover.',
+        title: 'Agents that keep working.',
+        body: 'pi-shift-router — the right model for every task, automatic failover.',
         status: 'Shipped',
         statusType: 'shipped',
       },
       {
         key: '03 · Trust',
-        title: 'Trust is the new currency.',
-        body: 'When anyone can generate anything, provenance, verification, and accountability become the scarce goods. That is where we are heading.',
+        title: 'Provenance, verifiable.',
+        body: 'Who made this, and can we check it — the layer we are researching.',
         status: 'Researching',
         statusType: 'researching',
       },

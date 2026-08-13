@@ -53,8 +53,10 @@ export interface Dict {
     ctaPrimaryHref: string;
     ctaSecondary: string;
     ctaSecondaryHref: string;
-    /** 知识图谱视觉的装饰标注（替代原终端 mockup） */
-    graphCaption: string;
+    /** Hero 右侧技术栈面板的图注 */
+    stackCaption: string;
+    /** Hero 底部 mono 脚注（许可/开源声明） */
+    footnote: string;
   };
   thesis: {
     eyebrow: string;

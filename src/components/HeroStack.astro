@@ -1,0 +1,175 @@
+---
+/**
+ * 轻量「技术栈」状态面板 —— 一眼可读，无需解释：
+ * 三层栈（Context / Execution / Trust），每层一行：编号 + 层名 + 产品 + 状态。
+ * 底部一条杠杆线：you ──► company-scale（一个人 + 对的技术栈 = 公司级产出）。
+ *
+ * 全浅色：白卡 + mint 细线，无深色块。装饰性，aria-hidden。
+ * 动效由 motion.ts 的 heroStack() 编排：行交错入场、状态胶囊弹出、
+ * 杠杆线绘制 + mint 脉冲持续扫过、指针视差。
+ */
+const layers = [
+  { key: '01', name: 'Context', product: 'obsidian-llm-wiki', shipped: true },
+  { key: '02', name: 'Execution', product: 'pi-shift-router', shipped: true },
+  { key: '03', name: 'Trust', product: 'provenance · verification', shipped: false },
+];
+---
+
+<div class="stack" data-hero-stack aria-hidden="true">
+  <div class="stack-head">
+    <span class="stack-head-label">the stack</span>
+    <span class="stack-head-legend">
+      <i class="dot is-on"></i>shipped
+      <i class="dot is-off"></i>researching
+    </span>
+  </div>
+
+  {layers.map((l) => (
+    <div class="stack-row" data-hs-row>
+      <span class="stack-idx">{l.key}</span>
+      <span class="stack-name">{l.name}</span>
+      <span class="stack-product">{l.product}</span>
+      <span class={`stack-pill ${l.shipped ? 'is-on' : 'is-off'}`} data-hs-pill>
+        {l.shipped ? 'shipped' : 'researching'}
+      </span>
+    </div>
+  ))}
+
+  <div class="stack-lever">
+    <span class="lever-label">you</span>
+    <span class="lever-line" data-hs-line>
+      <span class="lever-pulse" data-hs-pulse></span>
+    </span>
+    <span class="lever-label is-accent">company-scale</span>
+  </div>
+</div>
+
+<style>
+  .stack {
+    border: 1px solid #d1fae5;
+    border-radius: 12px;
+    background: rgba(255, 255, 255, 0.85);
+    box-shadow: 0 1px 0 rgba(10, 108, 75, 0.04), 0 12px 32px -18px rgba(10, 108, 75, 0.14);
+  }
+
+  .stack-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 13px 18px;
+    border-bottom: 1px solid #f4f6f5;
+  }
+  .stack-head-label {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: #71717a;
+  }
+  .stack-head-legend {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-family: var(--font-mono);
+    font-size: 9.5px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: #a1a1aa;
+  }
+  .dot {
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    display: inline-block;
+  }
+  .dot.is-on {
+    background: #34d399;
+  }
+  .dot.is-off {
+    background: #c7c9cc;
+  }
+
+  .stack-row {
+    display: grid;
+    grid-template-columns: 26px 1fr auto auto;
+    align-items: center;
+    gap: 10px;
+    padding: 13px 18px;
+  }
+  .stack-row + .stack-row {
+    border-top: 1px solid #f4f6f5;
+  }
+  .stack-idx {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    color: #a1a1aa;
+  }
+  .stack-name {
+    font-family: var(--font-display);
+    font-size: 20px;
+    line-height: 1.2;
+    color: #18181b;
+  }
+  .stack-product {
+    font-family: var(--font-mono);
+    font-size: 10.5px;
+    color: #71717a;
+    padding-right: 4px;
+  }
+  .stack-pill {
+    font-family: var(--font-mono);
+    font-size: 9.5px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 3px 9px;
+    border-radius: 999px;
+    white-space: nowrap;
+  }
+  .stack-pill.is-on {
+    background: #d1fae5;
+    color: #065f40;
+  }
+  .stack-pill.is-off {
+    border: 1px solid #e5e7eb;
+    color: #a1a1aa;
+  }
+
+  /* 底部杠杆线 */
+  .stack-lever {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 14px 18px 16px;
+    border-top: 1px dashed #d1fae5;
+  }
+  .lever-label {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: #0a6c4b;
+  }
+  .lever-label.is-accent {
+    color: #065f40;
+    font-weight: 600;
+  }
+  .lever-line {
+    flex: 1;
+    height: 1.5px;
+    border-radius: 1px;
+    background: #eef1ef;
+    position: relative;
+    overflow: hidden;
+    transform-origin: left center;
+  }
+  .lever-pulse {
+    position: absolute;
+    left: 0;
+    top: 0;
+    height: 100%;
+    width: 42%;
+    border-radius: 1px;
+    background: linear-gradient(90deg, #34d399, #0a6c4b);
+    transform-origin: left center;
+  }
+</style>

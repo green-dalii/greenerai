@@ -129,6 +129,22 @@
   }
 }
 
+/* Hero 眉题：mono 小字 + mint 圆点（不用胶囊） */
+.hero-eyebrow {
+  @apply inline-flex items-center gap-2.5 font-mono text-[11px] font-semibold uppercase tracking-[0.16em] text-primary;
+}
+.hero-eyebrow-dot {
+  @apply h-1.5 w-1.5 rounded-full bg-mint;
+}
+
+/* Hero 大标题：遮罩内上滑（mask = 行盒，clips descender 以下区域） */
+.hero-line-mask {
+  overflow: hidden;
+}
+.hero-line-inner {
+  will-change: transform;
+}
+
 /* 锚点滚动留白 */
 section[id] {
   scroll-margin-top: 5rem;

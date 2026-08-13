@@ -19,23 +19,27 @@
 | Execution | 执行杠杆：Agent 永不掉线 | pi-shift-router | ✅ 已交付 |
 | Trust | 信任通货：AI 产物的溯源/验证/问责 | （研究中的方向） | 🔬 研究中 |
 
-## 2. 信息架构（单页，六屏 + 页脚）
+## 2. 信息架构（单页，六幕叙事 + 页脚）
 
-1. **Hero** — 命题（前两句）+ 副句 + 双 CTA
-2. **Thesis** — 四条命题，证明"我们为什么这么想"
-3. **Proof** — 已交付的四个项目（数字为证）
-4. **Organism** — 我们自己是活例（始于设计工作室一句带过）
-5. **Road** — Context / Execution / Trust 三列（只写方向不写承诺）
-6. **Open** — CTA 收尾（安装 / Star / 联系）
+叙事主线：世界变了（智力成为商品）→ 我们相信什么（信念）→ 我们交付了什么（实证）→ 我们自己就是例证（我们）→ 下一步去哪（信任层）→ 邀请（开放）。
+
+1. **Hero** — 命题（前两句）+ 副句 + 双 CTA + 右侧**轻量技术栈面板**（Context/Execution/Trust 三层状态 + 底部 you→company-scale 杠杆线）
+2. **信念（Thesis）** — 四条信念，叙事化展开（不是产品预告，是世界观）
+3. **已交付（Proof）** — 已交付的四项目，数字为证
+4. **我们（Organism）** — 自己是活例（始于设计工作室一句带过）
+5. **下一步（Road）** — 只讲第三层信任（不做已交付层复述；紧凑状态卡收拢三层）
+6. **开放（Open）** — CTA 收尾（安装 / Star / 联系）
 + **Footer** — 品牌 + 链接 + 语言切换 + 版权
+
+导航词（人话，非名词堆叠）：**Why / Shipped / About / Next** · **信念 / 已交付 / 我们 / 下一步**
 
 ## 3. 文案定稿
 
 ### Hero
 - **EN H1**：Intelligence is a commodity. Leverage is the new company.
-- **EN sub**：Greener-Dalii builds the infrastructure for the AI-native era — knowledge and execution, the layers that let one person operate at company scale. Everything we ship is open source. We run on it ourselves.
+- **EN sub**：Every week, models get cheaper and smarter. What stays scarce is what you know — and what you do with it. We build the infrastructure of the AI-native era: knowledge that answers, agents that never stall — open source, and we run on it ourselves.
 - **ZH H1**：智力正在成为商品。杠杆才是新的公司。
-- **ZH sub**：格润达理为 AI 原生时代构建基础设施——知识与执行两层，让一个人也能以公司的规模运作。我们所做的一切都开源，我们自己就运行在它之上。
+- **ZH sub**：模型越来越便宜，也越来越聪明。真正稀缺的，是你知道什么、又拿它做了什么。格润达理为 AI 原生时代搭建基础设施——知识有问必答，Agent 永不停摆；全部开源，我们自己就运行其上。
 - CTA1（EN/ZH）：Explore the stack / 探索技术栈 → #proof；CTA2：GitHub / 在 GitHub 上点亮 → https://github.com/green-dalii
 
 ### Thesis（四条命题，编号 + 一句展开）
@@ -139,11 +143,12 @@
 ## 5. 技术架构
 
 - Astro static + Tailwind v4（@tailwindcss/vite）+ sitemap（i18n）
-- 动效：**GSAP + ScrollTrigger**（`src/scripts/motion.ts`，已入依赖）：`data-reveal` 滚动入场（stagger 用 `data-reveal-delay`）、`data-count` 数字计数、`data-float` 漂浮；全部尊重 prefers-reduced-motion。Hero 右侧为**知识图谱装饰视觉**（HeroGraph.astro，取意 obsidian-llm-wiki 的 wiki-link 图 + PPR 检索），非产品截图
+- 动效：**GSAP + ScrollTrigger**（`src/scripts/motion.ts`，已入依赖）：`data-reveal` 滚动入场、`data-count` 数字计数、`data-hero-line` 大标题遮罩上滑入场、`data-hero-stack` 技术栈面板时间线（行交错/胶囊弹出/杠杆线绘制+脉冲/指针视差）；全部尊重 prefers-reduced-motion
+- Hero 右侧：**轻量技术栈状态面板**（HeroStack.astro）：三层栈（Context/Execution/Trust）行式呈现，底部 you→company-scale 杠杆线。全浅色（白卡 + mint 细线），一眼可读，非产品终端/截图
 - i18n：`defaultLocale:'en'` 无前缀；`zh` → `/zh/`；字典 `src/i18n/locales/{en,zh}.ts`（typed）
 - 路由：`/`（EN）、`/zh/`（ZH）
 - 组件：Nav（吸顶 + 语言切换 + 滚动态）、Hero、HeroGraph、Thesis、Proof、ProofCard、Organism、Road、Open、Footer
-- LOGO：**沿用 Greener-Dalii Studio 官方 logomark**（`public/logomark.svg` = studio 同源文件；Brand.astro 内联渲染，favicon 同几何图形）——禁止自行生成品牌标
+- LOGO：**沿用 Greener-Dalii Studio 官方 logomark + wordmark**（`public/logomark.svg` / `public/wordmark.svg` = studio 同源文件；Brand.astro 内联 logomark + wordmark 图，Header/Footer 黑色）——禁止自行生成品牌标
 
 ## 6. 数据来源（构建时常量）
 
