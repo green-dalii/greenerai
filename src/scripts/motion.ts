@@ -128,19 +128,85 @@ if (reduce) {
       delay: 1.7,
     });
 
-    // 指针视差（桌面）
-    const hero = stack.closest('section') ?? stack;
-    const qx = gsap.quickTo(stack, 'x', { duration: 0.7, ease: 'power3.out' });
-    const qy = gsap.quickTo(stack, 'y', { duration: 0.7, ease: 'power3.out' });
-    hero.addEventListener('pointermove', (e) => {
-      const r = hero.getBoundingClientRect();
-      qx(((e.clientX - r.left) / r.width - 0.5) * 10);
-      qy(((e.clientY - r.top) / r.height - 0.5) * 7);
-    });
-    hero.addEventListener('pointerleave', () => {
-      qx(0);
-      qy(0);
-    });
+    // 3D 物理按压（仅 hover 细指针设备）——克制的悬浮手感，无畸变、无抖动：
+    // · 单一 rAF 循环 + 阻尼插值（lerp）：每帧只写一次 transform，单一数据源，
+    //   避免多个 quickTo 补间争抢同一元素的 transform 造成的逐帧抖动
+    // · transformPerspective 1800（拉远 → 近大远小极轻）
+    // · 轻微向观者抬升（translateZ）+ 阴影抬升（--card-lift）→ 悬浮感
+    // · 移开时阻尼回正。不改光标。
+    const tiltCard = stack.querySelector<HTMLElement>('[data-hs-tilt]');
+    const tiltable = tiltCard && window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+    if (tiltable) {
+      const card = tiltCard!;
+      const MAX_Y = 9;
+      const MAX_X = 7;
+      const PERSPECTIVE = 1100;
+      const DAMP = 0.14; // 每帧跟随比例（越小越粘、越顺滑）
+      let tx = 0;
+      let ty = 0; // 目标（指针位置）
+      let cx = 0;
+      let cy = 0; // 当前（阻尼插值）
+      let lz = 0; // 抬升当前值
+      let lsc = 1; // 缩放当前值
+      let lsh = 12; // 阴影抬升当前值（px）
+      let active = false;
+      let ticking = false;
+
+      const startTick = () => {
+        if (ticking) return;
+        ticking = true;
+        gsap.ticker.add(tick);
+      };
+
+      const tick = () => {
+        // 移开后目标归零：旋转/抬升/缩放/阴影全部统一缓动，无瞬跳
+        cx += ((active ? tx : 0) - cx) * DAMP;
+        cy += ((active ? ty : 0) - cy) * DAMP;
+        lz += ((active ? 8 : 0) - lz) * DAMP;
+        lsc += ((active ? 1.02 : 1) - lsc) * DAMP;
+        lsh += ((active ? 22 : 12) - lsh) * DAMP;
+        const done =
+          !active &&
+          Math.abs(cx) < 0.001 &&
+          Math.abs(cy) < 0.001 &&
+          Math.abs(lz) < 0.001 &&
+          Math.abs(lsc - 1) < 0.001 &&
+          Math.abs(lsh - 12) < 0.001;
+        if (done) {
+          gsap.set(card, {
+            rotationX: 0,
+            rotationY: 0,
+            z: 0,
+            scale: 1,
+            transformPerspective: PERSPECTIVE,
+            '--card-lift': '12px',
+          });
+          gsap.ticker.remove(tick);
+          ticking = false;
+          return;
+        }
+        gsap.set(card, {
+          rotationY: cx * 2 * MAX_Y,
+          rotationX: -cy * 2 * MAX_X,
+          z: lz,
+          scale: lsc,
+          transformPerspective: PERSPECTIVE,
+          '--card-lift': `${lsh}px`,
+        });
+      };
+
+      stack.addEventListener('pointermove', (e) => {
+        const r = stack.getBoundingClientRect();
+        tx = (e.clientX - r.left) / r.width - 0.5;
+        ty = (e.clientY - r.top) / r.height - 0.5;
+        active = true;
+        startTick();
+      });
+      stack.addEventListener('pointerleave', () => {
+        active = false;
+        startTick();
+      });
+    }
   }
 }
 

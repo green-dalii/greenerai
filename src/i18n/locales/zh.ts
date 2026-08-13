@@ -5,7 +5,7 @@ export const zh: Dict = {
     title: '格润达理 — AI 原生基础设施',
     description:
       '格润达理为 AI 原生时代构建开源、本地优先的 AI 基础设施——知识有问必答，Agent 永不停摆，让一个人也有公司的体量。我们自己就运行在这套栈上。',
-    ogTitle: '格润达理——智力正在成为商品，杠杆才是新的公司。',
+    ogTitle: '格润达理——智力不再稀缺，杠杆才是新的公司。',
     ogDescription:
       '为一人公司打造的 AI 原生基础设施：上下文（obsidian-llm-wiki）、执行（pi-shift-router）、信任（研究中的方向）。全部开源，一切公开。',
   },
@@ -30,7 +30,7 @@ export const zh: Dict = {
 
   hero: {
     eyebrow: 'AI 原生基础设施',
-    h1a: '智力正在成为商品。',
+    h1a: '智力不再稀缺。',
     h1b: '杠杆才是新的公司。',
     sub: '模型越来越便宜，也越来越聪明。真正稀缺的，是你知道什么、又拿它做了什么。格润达理为 AI 原生时代搭建基础设施——知识有问必答，Agent 永不停摆；全部开源，我们自己就运行其上。',
     ctaPrimary: '探索技术栈',
@@ -47,7 +47,7 @@ export const zh: Dict = {
     items: [
       {
         index: '01',
-        title: '智力正在成为商品。',
+        title: '智力不再稀缺。',
         body: '模型每个月都更聪明、更便宜。生意的瓶颈不再是能力，而是你拿它做了什么。',
       },
       {
@@ -159,7 +159,7 @@ export const zh: Dict = {
         statusType: 'researching',
       },
     ],
-    coda: '智力正在成为商品。杠杆才是新的公司。信任是新的通货。',
+    coda: '智力不再稀缺。杠杆才是新的公司。信任是新的通货。',
   },
 
   open: {

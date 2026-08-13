@@ -5,7 +5,7 @@ export const en: Dict = {
     title: 'Greener-Dalii — AI-Native Infrastructure',
     description:
       'Open-source, local-first infrastructure for organizations of one: knowledge that answers, agents that never stall. We build it — and we run on it ourselves.',
-    ogTitle: 'Greener-Dalii — Intelligence is a commodity. Leverage is the new company.',
+    ogTitle: 'Greener-Dalii — Intelligence is no longer scarce. Leverage is the new company.',
     ogDescription:
       'The stack for organizations of one: Context (obsidian-llm-wiki), Execution (pi-shift-router), Trust (researching). Open source, in the open.',
   },
@@ -30,7 +30,7 @@ export const en: Dict = {
 
   hero: {
     eyebrow: 'AI-native infrastructure',
-    h1a: 'Intelligence is a commodity.',
+    h1a: 'Intelligence is no longer scarce.',
     h1b: 'Leverage is the new company.',
     sub: 'Every week, models get cheaper and smarter. What stays scarce is what you know — and what you do with it. We build the infrastructure of the AI-native era: knowledge that answers, agents that never stall — open source, and we run on it ourselves.',
     ctaPrimary: 'Explore the stack',
@@ -47,7 +47,7 @@ export const en: Dict = {
     items: [
       {
         index: '01',
-        title: 'Intelligence is a commodity.',
+        title: 'Intelligence is no longer scarce.',
         body: 'Every month models get smarter and cheaper. The bottleneck of a business is no longer capability — it is what you do with it.',
       },
       {
@@ -159,7 +159,7 @@ export const en: Dict = {
         statusType: 'researching',
       },
     ],
-    coda: 'Intelligence is a commodity. Leverage is the new company. Trust is the new currency.',
+    coda: 'Intelligence is no longer scarce. Leverage is the new company. Trust is the new currency.',
   },
 
   open: {

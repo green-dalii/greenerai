@@ -10,7 +10,7 @@
 **一句话**：为 AI 原生时代的新组织形态（从一个人开始）构建基础设施的公司；自身即运行在该基础设施上的证明。
 
 **命题（全站之魂）**：
-> Intelligence is a commodity. Leverage is the new company. Trust is the new currency.
+> Intelligence is no longer scarce. Leverage is the new company. Trust is the new currency.
 
 **技术栈分层**：
 | 层 | 含义 | 产品 | 状态 |
@@ -21,7 +21,7 @@
 
 ## 2. 信息架构（单页，六幕叙事 + 页脚）
 
-叙事主线：世界变了（智力成为商品）→ 我们相信什么（信念）→ 我们交付了什么（实证）→ 我们自己就是例证（我们）→ 下一步去哪（信任层）→ 邀请（开放）。
+叙事主线：世界变了（智力不再稀缺）→ 我们相信什么（信念）→ 我们交付了什么（实证）→ 我们自己就是例证（我们）→ 下一步去哪（信任层）→ 邀请（开放）。
 
 1. **Hero** — 命题（前两句）+ 副句 + 双 CTA + 右侧**轻量技术栈面板**（Context/Execution/Trust 三层状态 + 底部 you→company-scale 杠杆线）
 2. **信念（Thesis）** — 四条信念，叙事化展开（不是产品预告，是世界观）
@@ -36,14 +36,14 @@
 ## 3. 文案定稿
 
 ### Hero
-- **EN H1**：Intelligence is a commodity. Leverage is the new company.
+- **EN H1**：Intelligence is no longer scarce. Leverage is the new company.
 - **EN sub**：Every week, models get cheaper and smarter. What stays scarce is what you know — and what you do with it. We build the infrastructure of the AI-native era: knowledge that answers, agents that never stall — open source, and we run on it ourselves.
-- **ZH H1**：智力正在成为商品。杠杆才是新的公司。
+- **ZH H1**：智力不再稀缺。杠杆才是新的公司。
 - **ZH sub**：模型越来越便宜，也越来越聪明。真正稀缺的，是你知道什么、又拿它做了什么。格润达理为 AI 原生时代搭建基础设施——知识有问必答，Agent 永不停摆；全部开源，我们自己就运行其上。
 - CTA1（EN/ZH）：Explore the stack / 探索技术栈 → #proof；CTA2：GitHub / 在 GitHub 上点亮 → https://github.com/green-dalii
 
 ### Thesis（四条命题，编号 + 一句展开）
-1. **Intelligence is a commodity.** 模型能力在降价、在普及，它不再是壁垒。/ Model capability is deflating in price and multiplying in access. It is no longer a moat.
+1. **Intelligence is no longer scarce.** 模型能力在降价、在普及，它不再是壁垒。/ Model capability is deflating in price and multiplying in access. It is no longer a moat.
 2. **Context is the moat.** 你拥有而模型没有的——笔记、决策、历史——是无法复制的资产。所以我们本地优先、隐私默认。/ What you know that no model does is the only asset that can't be copied. So we build local-first, private by default.
 3. **Execution is a multiplier, not a headcount.** 当一个人能交付一个团队的量，规模的单位是杠杆而非人头。所以我们让 Agent 永不掉线。/ When one person ships what a team used to, the unit of scale is leverage — so your agents never stall.
 4. **Open source is the default.** 当任何人都能生成任何东西，透明就是最强信号。Apache、MIT，没有藏在幕后的东西。/ When anyone can generate anything, transparency is the strongest signal. Nothing behind a curtain.

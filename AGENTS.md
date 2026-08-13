@@ -4,7 +4,7 @@
 
 ## 定位与叙事（不可偏离）
 
-- **命题**：`Intelligence is a commodity. Leverage is the new company. Trust is the new currency.`
+- **命题**：`Intelligence is no longer scarce. Leverage is the new company. Trust is the new currency.`
 - **公司是什么**：为 AI 原生时代的新组织形态（OPC = One-Person Company）构建基础设施的公司；自己就是运行在这套基础设施上的证明。
 - **技术栈分层**：
   - Context（知识层）→ obsidian-llm-wiki（已交付）

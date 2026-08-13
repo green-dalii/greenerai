@@ -15,8 +15,9 @@ const layers = [
 ];
 ---
 
-<div class="stack" data-hero-stack aria-hidden="true">
-  <div class="stack-head">
+<div class="stack-stage" data-hero-stack aria-hidden="true">
+  <div class="stack" data-hs-tilt>
+    <div class="stack-head">
     <span class="stack-head-label">the stack</span>
     <span class="stack-head-legend">
       <i class="dot is-on"></i>shipped
@@ -41,15 +42,25 @@ const layers = [
       <span class="lever-pulse" data-hs-pulse></span>
     </span>
     <span class="lever-label is-accent">company-scale</span>
+    </div>
   </div>
 </div>
 
 <style>
+  /* 透视舞台：仅作结构容器。透视由 GSAP transformPerspective 内联提供，
+     避免与父级 perspective 叠加造成双重畸变/抖动 */
+  .stack-stage {
+    /* perspective 刻意不设 */
+  }
   .stack {
+    transform-style: preserve-3d;
+    --card-lift: 12px; /* 阴影抬升量（motion.ts 动态驱动） */
     border: 1px solid #d1fae5;
     border-radius: 12px;
     background: rgba(255, 255, 255, 0.85);
-    box-shadow: 0 1px 0 rgba(10, 108, 75, 0.04), 0 12px 32px -18px rgba(10, 108, 75, 0.14);
+    box-shadow:
+      0 1px 0 rgba(10, 108, 75, 0.04),
+      0 var(--card-lift, 12px) 24px -18px rgba(10, 108, 75, 0.16);
   }
 
   .stack-head {
