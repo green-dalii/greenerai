@@ -4,10 +4,10 @@ export const en: Dict = {
   meta: {
     title: 'Greener-Dalii — AI-Native Infrastructure',
     description:
-      'Open-source, local-first infrastructure for organizations of one: knowledge that answers, agents that never stall. We build it — and we run on it ourselves.',
+      'We build the infrastructure of the AI-native era: where intelligence is cheap, what stays scarce is what you know, how you judge, and whether you can be trusted. Open source, built in the open — we run on it ourselves.',
     ogTitle: 'Greener-Dalii — Intelligence is no longer scarce. Leverage is the new company.',
     ogDescription:
-      'The stack for organizations of one: Context (obsidian-llm-wiki), Execution (pi-shift-router), Trust (researching). Open source, in the open.',
+      'A small team with company-scale reach, running on leverage and trust by construction. Everything open, every number public, nothing behind a curtain.',
   },
 
   brand: {
@@ -20,7 +20,7 @@ export const en: Dict = {
 
   nav: {
     thesis: 'Why',
-    proof: 'Shipped',
+    proof: 'Practice',
     organism: 'About',
     road: 'Next',
     github: 'GitHub',
@@ -32,13 +32,24 @@ export const en: Dict = {
     eyebrow: 'AI-native infrastructure',
     h1a: 'Intelligence is no longer scarce.',
     h1b: 'Leverage is the new company.',
-    sub: 'Every week, models get cheaper and smarter. What stays scarce is what you know — and what you do with it. We build the infrastructure of the AI-native era: knowledge that answers, agents that never stall — open source, and we run on it ourselves.',
+    sub: 'Every week, models get cheaper and smarter. What stays scarce is the human part of the work — what you know, how you judge, whether you can be trusted. We build the infrastructure that turns those human assets into leverage — and we run on it ourselves.',
     ctaPrimary: 'Explore the stack',
     ctaPrimaryHref: '#proof',
     ctaSecondary: 'Star on GitHub',
     ctaSecondaryHref: 'https://github.com/green-dalii',
-    stackCaption: 'One person. The right stack. Company-scale output.',
-    footnote: 'Apache-2.0 · MIT · everything in the open',
+    stackCaption: 'One person, amplified.',
+    footnote: 'Open · sourced · checkable — trust by construction',
+  },
+
+  stack: {
+    headLabel: 'what stays scarce',
+    legend: { shipped: 'shipped', researching: 'researching' },
+    rows: [
+      { idx: '01', name: 'Know', status: 'shipped', shipped: true },
+      { idx: '02', name: 'Do', status: 'shipped', shipped: true },
+      { idx: '03', name: 'Trust', status: 'researching', shipped: false },
+    ],
+    lever: { you: 'you', companyScale: 'company-scale' },
   },
 
   thesis: {
@@ -48,35 +59,40 @@ export const en: Dict = {
       {
         index: '01',
         title: 'Intelligence is no longer scarce.',
-        body: 'Every month models get smarter and cheaper. The bottleneck of a business is no longer capability — it is what you do with it.',
+        body: 'Every month models get smarter and cheaper. Capability is deflating in price and multiplying in access — the moat of a business has moved.',
       },
       {
         index: '02',
-        title: 'Context is the moat.',
-        body: 'Notes, decisions, history — the things only you have. They cannot be bought or copied, so we keep them on your machine, private by default.',
+        title: 'What you know is the moat.',
+        body: 'What you know that no model does — accumulated judgment, decisions, history — cannot be bought, scraped, or copied. It is the only asset that is truly yours, so it should stay on your machine, private by default.',
       },
       {
         index: '03',
-        title: 'Execution is leverage.',
-        body: 'One person with the right tools does what a team did a few years ago. The unit of scale is not headcount — it is whether your work keeps moving while you rest.',
+        title: 'What you do is the leverage.',
+        body: 'A small team with the right tools ships what a large one did five years ago. The unit of scale is no longer headcount — it is whether your work keeps moving while you rest.',
       },
       {
         index: '04',
-        title: 'Openness is the default.',
-        body: 'When anyone can generate anything, the only signal that means trust is transparency. So the code is open, the licenses permissive, the numbers public.',
+        title: 'Taste is the new edge.',
+        body: 'When anyone can generate anything, the difference is in what you choose to make. We run a design studio in parallel — not as our origin, but as daily practice of judgment.',
+      },
+      {
+        index: '05',
+        title: 'Trust is the new currency.',
+        body: 'When anyone can generate anything, promises stop costing anything. Trust can no longer be promised — only produced: claims anyone can check, work that carries its origin, honesty that is cheaper to keep than to break.',
       },
     ],
   },
 
-  proof: {
-    eyebrow: 'Shipped',
-    heading: 'Shipped, in the open.',
-    sub: 'We did not wait for permission. Two layers of the stack are live, and every number below is public.',
+  practice: {
+    eyebrow: 'Practice',
+    heading: 'The beliefs, in practice.',
+    sub: 'These are not the endgame — they are the appetizers, built while living the beliefs above. We are early, and every number below is public.',
     cards: [
       {
-        tag: 'Context · Knowledge',
+        tag: 'Know',
         title: 'obsidian-llm-wiki',
-        body: "Karpathy's LLM Wiki, as an Obsidian plugin. Notes and PDFs become a knowledge base that answers — and every answer cites its source.",
+        body: "Karpathy's LLM Wiki, as a local-first Obsidian plugin: your files become a knowledge base that answers — and every answer cites its source.",
         stats: [
           { value: '34,055', label: 'downloads', countTo: 34055 },
           { value: '451', label: 'stars', countTo: 451 },
@@ -86,9 +102,9 @@ export const en: Dict = {
         href: 'https://github.com/green-dalii/obsidian-llm-wiki',
       },
       {
-        tag: 'Execution · Agents',
+        tag: 'Do',
         title: 'pi-shift-router',
-        body: 'Auto-routing for pi-coding-agent: cheap models for everyday work, frontier models for hard problems, and automatic failover when a provider stumbles. Zero runtime dependencies.',
+        body: 'Auto-routing for coding agents: cheap models for everyday work, frontier models for hard problems, automatic failover when a provider stumbles. Zero runtime dependencies.',
         stats: [
           { value: '1,235', label: 'downloads / mo', countTo: 1235 },
           { value: '0', label: 'runtime deps', countTo: 0 },
@@ -97,28 +113,6 @@ export const en: Dict = {
         cta: 'GitHub',
         href: 'https://github.com/green-dalii/pi-shift-router',
       },
-      {
-        tag: 'Ecosystem · Workflows',
-        title: 'diflowy',
-        body: 'A public commons for Dify workflows — explore, share, and host the recipes that run your automation.',
-        stats: [
-          { value: '32', label: 'stars', countTo: 32 },
-          { value: 'MIT', label: 'license' },
-        ],
-        cta: 'GitHub',
-        href: 'https://github.com/green-dalii/diflowy',
-      },
-      {
-        tag: 'Scholarship · Learning',
-        title: 'd2l-note',
-        body: "Study notes on Li Mu's Dive into Deep Learning — learning in public, one lecture at a time.",
-        stats: [
-          { value: '33', label: 'stars', countTo: 33 },
-          { value: 'MIT', label: 'license' },
-        ],
-        cta: 'GitHub',
-        href: 'https://github.com/green-dalii/d2l-note',
-      },
     ],
   },
 
@@ -126,35 +120,42 @@ export const en: Dict = {
     eyebrow: 'The living proof',
     heading: 'The smallest viable organization is a seed, not a ceiling.',
     body: [
-      'Greener-Dalii began as a design studio — that discipline still shows in everything we ship — and rebuilt itself as an AI-native organization: a small team, a global open-source reach, four product lines, users across eleven languages.',
-      'We are not a prediction about the future of organizations. We are one, running on the stack we build.',
+      'A small team with company-scale reach — users in eleven languages, everything in the open, no curtain.',
+      'Two disciplines run in parallel here: Greener-Dalii builds the infrastructure of the AI-native era, and the studio at greenerdalii.top does design. Not a lineage, not a side project — one conviction with two faces: capability devalues, judgment appreciates.',
+      'We are not a prediction about the future of organizations. We are one — running on the stack we build.',
     ],
-    code: ['$ org --chart', 'nodes: 1', 'reach: 11 languages', 'licenses: all open'],
+    code: [
+      '$ org --chart',
+      'people: a handful',
+      'brands: 2',
+      'reach: 11 languages',
+      'licenses: all open',
+    ],
   },
 
   road: {
     eyebrow: "What's next",
     heading: 'The next layer is trust.',
-    sub: 'When anyone can generate anything, provenance becomes the scarce good: who made this, what is it grounded in, can it be verified. We are building the layer that answers those questions — no promises yet, just a line of sight.',
+    sub: 'Not promised — produced. When anyone can generate anything, how does an organization make its honesty structural? That is our direction: provenance anyone can check, work that points to its origin, numbers that trace to public sources. No promises yet — a line of sight. Until then, we practice it ourselves.',
     layers: [
       {
-        key: '01 · Context',
-        title: 'Knowledge, queryable.',
-        body: 'obsidian-llm-wiki — local-first, source-cited, yours.',
+        key: '01 · Know',
+        title: 'What you know, queryable.',
+        body: 'Your accumulated judgment, made queryable — local-first, every answer sourced.',
         status: 'Shipped',
         statusType: 'shipped',
       },
       {
-        key: '02 · Execution',
-        title: 'Agents that keep working.',
-        body: 'pi-shift-router — the right model for every task, automatic failover.',
+        key: '02 · Do',
+        title: 'What you do, without stalling.',
+        body: 'The right tool for every task — and the work keeps moving while you rest.',
         status: 'Shipped',
         statusType: 'shipped',
       },
       {
         key: '03 · Trust',
-        title: 'Provenance, verifiable.',
-        body: 'Who made this, and can we check it — the layer we are researching.',
+        title: 'What can be trusted, verifiably.',
+        body: 'Honesty by construction: provenance anyone can check. The layer we are researching.',
         status: 'Researching',
         statusType: 'researching',
       },
@@ -165,22 +166,31 @@ export const en: Dict = {
   open: {
     eyebrow: 'Open',
     heading: 'The era is open.',
-    body: 'Install the plugin. Run the router. Read the source. Or write to us — we answer.',
-    cta1: 'Install obsidian-llm-wiki',
+    body: 'Read the source. Check the numbers. Run it yourself — or write to us, we answer.',
+    cta1: 'obsidian-llm-wiki on GitHub',
     cta1Href: 'https://github.com/green-dalii/obsidian-llm-wiki',
     cta2: 'pi-shift-router on npm',
     cta2Href: 'https://www.npmjs.com/package/pi-shift-router',
     cta3: 'Browse the org',
     cta3Href: 'https://github.com/green-dalii',
-    note: 'Everything is open source — Apache-2.0 and MIT. Fork it, run it, improve it.',
+    note: 'Apache-2.0 · MIT · nothing here is hard to check',
   },
 
   footer: {
-    tagline: 'AI-native infrastructure, built in the open.',
+    tagline: 'An AI-native organization, built in the open.',
     connectLabel: 'Connect',
     langsLabel: 'Language',
     github: 'GitHub',
     studio: 'Design Studio',
+    projects: {
+      label: 'Projects',
+      items: [
+        { name: 'obsidian-llm-wiki', href: 'https://github.com/green-dalii/obsidian-llm-wiki' },
+        { name: 'pi-shift-router', href: 'https://github.com/green-dalii/pi-shift-router' },
+        { name: 'diflowy', href: 'https://github.com/green-dalii/diflowy' },
+        { name: 'd2l-note', href: 'https://github.com/green-dalii/d2l-note' },
+      ],
+    },
     rights: '© 2026 Greener-Dalii. All rights reserved.',
     builtOpen: 'Built in the open',
   },

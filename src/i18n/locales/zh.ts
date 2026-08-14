@@ -4,10 +4,9 @@ export const zh: Dict = {
   meta: {
     title: '格润达理 — AI 原生基础设施',
     description:
-      '格润达理为 AI 原生时代构建开源、本地优先的 AI 基础设施——知识有问必答，Agent 永不停摆，让一个人也有公司的体量。我们自己就运行在这套栈上。',
+      '格润达理为 AI 原生时代搭建基础设施：当智力不再稀缺，真正稀缺的是人性的部分——你知道什么、怎么判断、能否被信任。全部开源，公开构建，我们自己就运行其上。',
     ogTitle: '格润达理——智力不再稀缺，杠杆才是新的公司。',
-    ogDescription:
-      '为一人公司打造的 AI 原生基础设施：上下文（obsidian-llm-wiki）、执行（pi-shift-router）、信任（研究中的方向）。全部开源，一切公开。',
+    ogDescription: '一个小团队，公司级的触达——靠杠杆与构造式信任。一切公开，数字件件有源，没有幕布。',
   },
 
   brand: {
@@ -20,7 +19,7 @@ export const zh: Dict = {
 
   nav: {
     thesis: '信念',
-    proof: '已交付',
+    proof: '实践',
     organism: '我们',
     road: '下一步',
     github: 'GitHub',
@@ -32,13 +31,24 @@ export const zh: Dict = {
     eyebrow: 'AI 原生基础设施',
     h1a: '智力不再稀缺。',
     h1b: '杠杆才是新的公司。',
-    sub: '模型越来越便宜，也越来越聪明。真正稀缺的，是你知道什么、又拿它做了什么。格润达理为 AI 原生时代搭建基础设施——知识有问必答，Agent 永不停摆；全部开源，我们自己就运行其上。',
+    sub: '模型越来越便宜，也越来越聪明。真正稀缺的，是工作中人性的部分——你知道什么、怎么判断、能否被信任。我们为这些人性的资产造杠杆——并且自己就运行其上。',
     ctaPrimary: '探索技术栈',
     ctaPrimaryHref: '#proof',
     ctaSecondary: '去 GitHub 点个星',
     ctaSecondaryHref: 'https://github.com/green-dalii',
-    stackCaption: '一个人。一套栈。公司级的产出。',
-    footnote: 'Apache-2.0 · MIT · 一切都在公开处',
+    stackCaption: '一个人，被放大。',
+    footnote: '公开 · 有源 · 可查——信任靠构造',
+  },
+
+  stack: {
+    headLabel: '如今稀缺的',
+    legend: { shipped: '已交付', researching: '研究中' },
+    rows: [
+      { idx: '01', name: '所知', status: '已交付', shipped: true },
+      { idx: '02', name: '所行', status: '已交付', shipped: true },
+      { idx: '03', name: '所信', status: '研究中', shipped: false },
+    ],
+    lever: { you: '你', companyScale: '公司级' },
   },
 
   thesis: {
@@ -48,35 +58,40 @@ export const zh: Dict = {
       {
         index: '01',
         title: '智力不再稀缺。',
-        body: '模型每个月都更聪明、更便宜。生意的瓶颈不再是能力，而是你拿它做了什么。',
+        body: '模型每个月都更聪明、更便宜。能力在降价、在普及——生意的护城河已经换了地方。',
       },
       {
         index: '02',
-        title: '上下文才是护城河。',
-        body: '笔记、判断、积累——只有你有的东西，买不到也抄不走。所以我们让它们留在你的机器上，默认私有。',
+        title: '所知，是护城河。',
+        body: '你懂而模型不懂的——积累的判断、决策、历史——买不到，也抄不走。它是唯一真正属于你的资产，所以它应该留在你的机器上，默认私有。',
       },
       {
         index: '03',
-        title: '执行才是杠杆。',
-        body: '一个人用对工具，能顶过去一个团队。规模的单位不是人头，而是你的活计在你休息时还往前不往前走。',
+        title: '所行，是杠杆。',
+        body: '一个小团队用对工具，能交付过去一个大团队的量。规模的单位不再是人数，而是你的活计在你休息时还往前不往前走。',
       },
       {
         index: '04',
-        title: '开放是默认选项。',
-        body: '当任何人都能生成任何东西，唯一能证明可信的就是透明。所以代码开源、许可宽松、数字公开。',
+        title: '品味，是分野。',
+        body: '当人人都能生成，分野在于你选择做出什么。我们并行经营一家设计工作室——不是来处，是每天练习判断的地方。',
+      },
+      {
+        index: '05',
+        title: '信任，是通货。',
+        body: '当人人都能生成一切，承诺就不再值钱。信任只能被制造，不能被承诺：声称人人可查，作品自带出处，诚实比撒谎更便宜。',
       },
     ],
   },
 
-  proof: {
-    eyebrow: '已交付',
-    heading: '已经交付，全部公开。',
-    sub: '我们没有等谁批准。栈的前两层已经上线，下面的每个数字都公开可查。',
+  practice: {
+    eyebrow: '实践',
+    heading: '信念，落到实践。',
+    sub: '这些不是终局，是开胃菜——是在运行上面那些信念时顺手造出来的。我们还在早期，下面的每个数字都公开。',
     cards: [
       {
-        tag: '上下文 · 知识',
+        tag: '所知',
         title: 'obsidian-llm-wiki',
-        body: 'Karpathy 的 LLM Wiki，做成 Obsidian 插件。笔记与 PDF 变成会回答的知识库——每个答案都标注来源。',
+        body: 'Karpathy 的 LLM Wiki，做成本地优先的 Obsidian 插件：你的文件变成会回答的知识库——每个答案都标注出处。',
         stats: [
           { value: '34,055', label: '下载', countTo: 34055 },
           { value: '451', label: '星标', countTo: 451 },
@@ -86,9 +101,9 @@ export const zh: Dict = {
         href: 'https://github.com/green-dalii/obsidian-llm-wiki',
       },
       {
-        tag: '执行 · Agent',
+        tag: '所行',
         title: 'pi-shift-router',
-        body: 'pi-coding-agent 的自动路由：日常任务交给便宜的快模型，难题交给聪明模型，服务商掉链子就自动切换。零运行时依赖。',
+        body: '给编码 Agent 的自动路由：日常任务用便宜的快模型，难题用聪明模型，服务商掉链子就自动切换。零运行时依赖。',
         stats: [
           { value: '1,235', label: '月下载', countTo: 1235 },
           { value: '0', label: '运行时依赖', countTo: 0 },
@@ -97,28 +112,6 @@ export const zh: Dict = {
         cta: 'GitHub',
         href: 'https://github.com/green-dalii/pi-shift-router',
       },
-      {
-        tag: '生态 · 工作流',
-        title: 'diflowy',
-        body: 'Dify 工作流的公共广场——探索、分享、托管那些替你把活干完的配方。',
-        stats: [
-          { value: '32', label: '星标', countTo: 32 },
-          { value: 'MIT', label: '许可证' },
-        ],
-        cta: 'GitHub',
-        href: 'https://github.com/green-dalii/diflowy',
-      },
-      {
-        tag: '学养 · 学习',
-        title: 'd2l-note',
-        body: '李沐《动手学深度学习》公开课笔记——把学养放在阳光下，从第一讲开始。',
-        stats: [
-          { value: '33', label: '星标', countTo: 33 },
-          { value: 'MIT', label: '许可证' },
-        ],
-        cta: 'GitHub',
-        href: 'https://github.com/green-dalii/d2l-note',
-      },
     ],
   },
 
@@ -126,35 +119,42 @@ export const zh: Dict = {
     eyebrow: '活的例证',
     heading: '最小可行的组织，是种子，不是天花板。',
     body: [
-      '格润达理脱胎于一家设计工作室——那份较真至今还在我们交付的每样东西里——如今是一个 AI 原生组织：小团队、全球触达、四条产品线、用户说着十一种语言。',
-      '我们不是预言。我们就是例证——一个运行在自己构建的栈上的组织。',
+      '一个小团队，公司级的触达——用户说着十一种语言，一切公开，没有幕布。',
+      '我们并行运行两条纪律：格润达理搭建 AI 原生时代的基础设施，greenerdalii.top 的工作室做设计。不是传承，不是副业——是同一信念的两副面孔：能力贬值，判断升值。',
+      '我们不是关于组织未来的预言。我们就是其中之一——运行在自己构建的栈上。',
     ],
-    code: ['$ org --chart', '节点：1', '触达：11 种语言', '许可证：全部开源'],
+    code: [
+      '$ org --chart',
+      '人员：几个',
+      '品牌：2',
+      '触达：11 种语言',
+      '许可：全部开源',
+    ],
   },
 
   road: {
     eyebrow: '下一步',
     heading: '下一层，是信任。',
-    sub: '当人人都能生成一切，"谁做的、依据什么、能不能验证"就成了稀缺品。我们在做回答这些问题的层——还没有承诺，只有一条看得见的路。',
+    sub: '不是承诺的，是制造的。在人人能生成一切的时代，组织如何让诚实成为结构？这是我们的方向：出处人人可查，作品指向源头，数字件件有源。还没有承诺，只有一条看得见的路。在那之前，我们先自己练习。',
     layers: [
       {
-        key: '01 · 上下文',
-        title: '知识，可查询。',
-        body: 'obsidian-llm-wiki——本地优先，来源可溯。',
+        key: '01 · 所知',
+        title: '所知，可查询。',
+        body: '你积累的判断，变得可查询——本地优先，答案件件有出处。',
         status: '已交付',
         statusType: 'shipped',
       },
       {
-        key: '02 · 执行',
-        title: 'Agent，不停摆。',
-        body: 'pi-shift-router——每个任务用对模型，故障自动切换。',
+        key: '02 · 所行',
+        title: '所行，永不停摆。',
+        body: '每个任务用对工具——你休息时，活计还在走。',
         status: '已交付',
         statusType: 'shipped',
       },
       {
-        key: '03 · 信任',
-        title: '出处，可验证。',
-        body: '"谁做的、能不能查"——正在研究的那一层。',
+        key: '03 · 所信',
+        title: '所信，可验证。',
+        body: '诚实靠构造：出处人人可查。正在研究的那一层。',
         status: '研究中',
         statusType: 'researching',
       },
@@ -165,22 +165,31 @@ export const zh: Dict = {
   open: {
     eyebrow: '开放',
     heading: '这个时代是开放的。',
-    body: '安装插件。运行路由。阅读源码。或者写信给我们——必回。',
-    cta1: '安装 obsidian-llm-wiki',
+    body: '读源码。查数字。自己跑起来——或者给我们写信，必回。',
+    cta1: 'obsidian-llm-wiki · GitHub',
     cta1Href: 'https://github.com/green-dalii/obsidian-llm-wiki',
     cta2: 'npm 安装 pi-shift-router',
     cta2Href: 'https://www.npmjs.com/package/pi-shift-router',
     cta3: '浏览 GitHub 组织',
     cta3Href: 'https://github.com/green-dalii',
-    note: '所有项目均开源——Apache-2.0 与 MIT。可以 fork，可以运行，可以改进。',
+    note: 'Apache-2.0 · MIT · 这里的一切都经得起查',
   },
 
   footer: {
-    tagline: 'AI 原生基础设施，公开构建。',
+    tagline: '一个 AI 原生组织，在开放中构建。',
     connectLabel: '连接',
     langsLabel: '语言',
     github: 'GitHub',
     studio: '设计工作室',
+    projects: {
+      label: '项目',
+      items: [
+        { name: 'obsidian-llm-wiki', href: 'https://github.com/green-dalii/obsidian-llm-wiki' },
+        { name: 'pi-shift-router', href: 'https://github.com/green-dalii/pi-shift-router' },
+        { name: 'diflowy', href: 'https://github.com/green-dalii/diflowy' },
+        { name: 'd2l-note', href: 'https://github.com/green-dalii/d2l-note' },
+      ],
+    },
     rights: '© 2026 格润达理。保留所有权利。',
     builtOpen: '在开放中构建',
   },

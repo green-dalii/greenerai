@@ -1,47 +1,45 @@
 ---
+import { getDict } from '../i18n';
+const s = getDict(Astro.currentLocale).stack;
+---
+
 /**
- * 轻量「技术栈」状态面板 —— 一眼可读，无需解释：
- * 三层栈（Context / Execution / Trust），每层一行：编号 + 层名 + 产品 + 状态。
- * 底部一条杠杆线：you ──► company-scale（一个人 + 对的技术栈 = 公司级产出）。
+ * 轻量「人所稀缺的东西」状态面板 —— 一眼可读，无需解释：
+ * 所知 / 所行 / 所信 三行（人话词 + 状态，无产品名）。
+ * 底部一条杠杆线：you ──► company-scale（一个人 + 对的工具 = 公司级产出）。
  *
  * 全浅色：白卡 + mint 细线，无深色块。装饰性，aria-hidden。
  * 动效由 motion.ts 的 heroStack() 编排：行交错入场、状态胶囊弹出、
- * 杠杆线绘制 + mint 脉冲持续扫过、指针视差。
+ * 杠杆线绘制 + mint 脉冲持续扫过、指针物理按压。
  */
-const layers = [
-  { key: '01', name: 'Context', product: 'obsidian-llm-wiki', shipped: true },
-  { key: '02', name: 'Execution', product: 'pi-shift-router', shipped: true },
-  { key: '03', name: 'Trust', product: 'provenance · verification', shipped: false },
-];
 ---
 
 <div class="stack-stage" data-hero-stack aria-hidden="true">
   <div class="stack" data-hs-tilt>
     <div class="stack-head">
-    <span class="stack-head-label">the stack</span>
-    <span class="stack-head-legend">
-      <i class="dot is-on"></i>shipped
-      <i class="dot is-off"></i>researching
-    </span>
-  </div>
-
-  {layers.map((l) => (
-    <div class="stack-row" data-hs-row>
-      <span class="stack-idx">{l.key}</span>
-      <span class="stack-name">{l.name}</span>
-      <span class="stack-product">{l.product}</span>
-      <span class={`stack-pill ${l.shipped ? 'is-on' : 'is-off'}`} data-hs-pill>
-        {l.shipped ? 'shipped' : 'researching'}
+      <span class="stack-head-label">{s.headLabel}</span>
+      <span class="stack-head-legend">
+        <i class="dot is-on"></i>{s.legend.shipped}
+        <i class="dot is-off"></i>{s.legend.researching}
       </span>
     </div>
-  ))}
 
-  <div class="stack-lever">
-    <span class="lever-label">you</span>
-    <span class="lever-line" data-hs-line>
-      <span class="lever-pulse" data-hs-pulse></span>
-    </span>
-    <span class="lever-label is-accent">company-scale</span>
+    {s.rows.map((l) => (
+      <div class="stack-row" data-hs-row>
+        <span class="stack-idx">{l.idx}</span>
+        <span class="stack-name">{l.name}</span>
+        <span class={`stack-pill ${l.shipped ? 'is-on' : 'is-off'}`} data-hs-pill>
+          {l.status}
+        </span>
+      </div>
+    ))}
+
+    <div class="stack-lever">
+      <span class="lever-label">{s.lever.you}</span>
+      <span class="lever-line" data-hs-line>
+        <span class="lever-pulse" data-hs-pulse></span>
+      </span>
+      <span class="lever-label is-accent">{s.lever.companyScale}</span>
     </div>
   </div>
 </div>
@@ -102,7 +100,7 @@ const layers = [
 
   .stack-row {
     display: grid;
-    grid-template-columns: 26px 1fr auto auto;
+    grid-template-columns: 26px 1fr auto;
     align-items: center;
     gap: 10px;
     padding: 13px 18px;
@@ -120,12 +118,6 @@ const layers = [
     font-size: 20px;
     line-height: 1.2;
     color: #18181b;
-  }
-  .stack-product {
-    font-family: var(--font-mono);
-    font-size: 10.5px;
-    color: #71717a;
-    padding-right: 4px;
   }
   .stack-pill {
     font-family: var(--font-mono);

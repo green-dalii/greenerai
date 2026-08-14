@@ -53,17 +53,24 @@ export interface Dict {
     ctaPrimaryHref: string;
     ctaSecondary: string;
     ctaSecondaryHref: string;
-    /** Hero 右侧技术栈面板的图注 */
+    /** Hero 右侧面板的图注 */
     stackCaption: string;
     /** Hero 底部 mono 脚注（许可/开源声明） */
     footnote: string;
+  };
+  /** Hero 右侧状态面板（所知/所行/所信，无产品名） */
+  stack: {
+    headLabel: string;
+    legend: { shipped: string; researching: string };
+    rows: { idx: string; name: string; status: string; shipped: boolean }[];
+    lever: { you: string; companyScale: string };
   };
   thesis: {
     eyebrow: string;
     heading: string;
     items: { index: string; title: string; body: string }[];
   };
-  proof: {
+  practice: {
     eyebrow: string;
     heading: string;
     sub: string;
@@ -100,6 +107,8 @@ export interface Dict {
     langsLabel: string;
     github: string;
     studio: string;
+    /** 项目链接带（diflowy / d2l-note 在此，不占主叙事） */
+    projects: { label: string; items: { name: string; href: string }[] };
     rights: string;
     builtOpen: string;
   };
