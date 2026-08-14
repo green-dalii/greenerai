@@ -41,7 +41,11 @@ const r = getDict(Astro.currentLocale).road;
     </div>
 
     <p
-      class="mt-14 text-center font-display text-2xl italic leading-snug text-primary md:text-3xl"
+      class:list={[
+        'mt-14 text-center font-display text-2xl leading-snug text-primary md:text-3xl',
+        // 中文斜体为合成伪斜，去斜保留颜色强调
+        Astro.currentLocale === 'zh' ? 'not-italic' : 'italic',
+      ]}
       data-reveal
       data-reveal-delay="200"
     >

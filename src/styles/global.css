@@ -50,17 +50,12 @@
   .eyebrow {
     @apply font-mono text-[11px] font-semibold uppercase tracking-[1px] text-primary;
   }
-  .display-hero {
-    @apply font-display text-[42px] leading-[1.05] tracking-[-0.02em] text-ink md:text-[64px] lg:text-[80px];
-  }
   .display-lg {
     @apply font-display text-4xl leading-[1.1] tracking-[-0.01em] text-ink md:text-5xl;
+    text-wrap: balance;
   }
   .btn-primary {
     @apply inline-flex items-center justify-center gap-2 rounded-btn bg-primary px-5 py-2.5 text-sm font-medium text-white transition-colors duration-200 hover:bg-primary-deep;
-  }
-  .btn-dark {
-    @apply inline-flex items-center justify-center gap-2 rounded-btn bg-ink px-5 py-2.5 text-sm font-medium text-white transition-colors duration-200 hover:bg-ink-tint;
   }
   .btn-secondary {
     @apply inline-flex items-center justify-center gap-2 rounded-btn border border-hairline-strong bg-transparent px-5 py-2.5 text-sm font-medium text-ink transition-colors duration-200 hover:bg-surface;
@@ -68,6 +63,13 @@
   .card {
     @apply rounded-card border border-hairline-soft bg-canvas;
   }
+}
+
+/* 键盘可达性：统一的 focus-visible 焦点环（mint，不依赖浏览器默认） */
+:where(a, button, [role='button'], [tabindex]):focus-visible {
+  outline: 2px solid var(--color-mint);
+  outline-offset: 2px;
+  border-radius: 4px;
 }
 
 /* Mistral 式签名渐变带 —— 替代 sunset stripe，绿色系 */

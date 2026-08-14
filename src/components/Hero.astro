@@ -20,11 +20,22 @@ const d = getDict(Astro.currentLocale).hero;
         class="mt-7 font-display text-[36px] leading-[1.14] tracking-[-0.02em] text-ink sm:text-[44px] md:text-[52px] lg:text-[58px]"
       >
         <span class="hero-line-mask block">
-          <span class="hero-line-inner block" data-hero-line>{d.h1a}</span>
+          <span class="hero-line-inner block text-balance" data-hero-line>{d.h1a}</span>
         </span>
         <span class="hero-line-mask block">
-          <span class="hero-line-inner block" data-hero-line data-hero-line-delay="140">
-            <em class="italic text-primary">{d.h1b}</em>
+          <span
+            class="hero-line-inner block text-balance"
+            data-hero-line
+            data-hero-line-delay="140"
+          >
+            <!-- 中文斜体是合成伪斜（Instrument Serif 无 CJK 字形），中文只用颜色强调 -->
+            <em
+              class:list={[
+                'text-primary',
+                Astro.currentLocale === 'zh' ? 'not-italic' : 'italic',
+              ]}
+              >{d.h1b}</em
+            >
           </span>
         </span>
       </h1>
@@ -52,7 +63,7 @@ const d = getDict(Astro.currentLocale).hero;
       </div>
 
       <p
-        class="mt-6 font-mono text-[10.5px] uppercase tracking-[0.14em] text-muted"
+        class="mt-6 font-mono text-[10.5px] uppercase tracking-[0.14em] text-steel"
         data-reveal
         data-reveal-delay="380"
       >

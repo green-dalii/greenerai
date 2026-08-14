@@ -27,8 +27,15 @@ const o = getDict(Astro.currentLocale).open;
         data-reveal-delay="240"
       >
         <a class="btn-primary" href={o.cta1Href} target="_blank" rel="noreferrer">{o.cta1}</a>
-        <a class="btn-dark" href={o.cta2Href} target="_blank" rel="noreferrer">{o.cta2}</a>
-        <a class="btn-secondary" href={o.cta3Href} target="_blank" rel="noreferrer">{o.cta3}</a>
+        <a class="btn-secondary" href={o.cta2Href} target="_blank" rel="noreferrer">{o.cta2}</a>
+        <a
+          class="link-underline text-sm font-medium text-primary transition-colors duration-200 hover:text-primary-deep"
+          href={o.cta3Href}
+          target="_blank"
+          rel="noreferrer"
+        >
+          {o.cta3} →
+        </a>
       </div>
       <p
         class="mt-8 font-mono text-[11px] uppercase tracking-wider text-steel"

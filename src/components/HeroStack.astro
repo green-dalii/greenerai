@@ -1,8 +1,4 @@
 ---
-import { getDict } from '../i18n';
-const s = getDict(Astro.currentLocale).stack;
----
-
 /**
  * 轻量「人所稀缺的东西」状态面板 —— 一眼可读，无需解释：
  * 所知 / 所行 / 所信 三行（人话词 + 状态，无产品名）。
@@ -12,6 +8,8 @@ const s = getDict(Astro.currentLocale).stack;
  * 动效由 motion.ts 的 heroStack() 编排：行交错入场、状态胶囊弹出、
  * 杠杆线绘制 + mint 脉冲持续扫过、指针物理按压。
  */
+import { getDict } from '../i18n';
+const s = getDict(Astro.currentLocale).stack;
 ---
 
 <div class="stack-stage" data-hero-stack aria-hidden="true">
@@ -48,12 +46,15 @@ const s = getDict(Astro.currentLocale).stack;
   /* 透视舞台：仅作结构容器。透视由 GSAP transformPerspective 内联提供，
      避免与父级 perspective 叠加造成双重畸变/抖动 */
   .stack-stage {
-    /* perspective 刻意不设 */
+    /* 透视刻意不设：由 GSAP transformPerspective 内联提供，避免双重畸变 */
+    width: 100%;
+    max-width: 440px;
+    margin-inline: auto;
   }
   .stack {
     transform-style: preserve-3d;
     --card-lift: 12px; /* 阴影抬升量（motion.ts 动态驱动） */
-    border: 1px solid #d1fae5;
+    border: 1px solid var(--color-mint-soft);
     border-radius: 12px;
     background: rgba(255, 255, 255, 0.85);
     box-shadow:
@@ -66,14 +67,14 @@ const s = getDict(Astro.currentLocale).stack;
     align-items: center;
     justify-content: space-between;
     padding: 13px 18px;
-    border-bottom: 1px solid #f4f6f5;
+    border-bottom: 1px solid var(--color-hairline-soft);
   }
   .stack-head-label {
     font-family: var(--font-mono);
     font-size: 10px;
     letter-spacing: 0.18em;
     text-transform: uppercase;
-    color: #71717a;
+    color: var(--color-steel);
   }
   .stack-head-legend {
     display: flex;
@@ -83,7 +84,7 @@ const s = getDict(Astro.currentLocale).stack;
     font-size: 9.5px;
     letter-spacing: 0.12em;
     text-transform: uppercase;
-    color: #a1a1aa;
+    color: var(--color-muted);
   }
   .dot {
     width: 5px;
@@ -92,10 +93,10 @@ const s = getDict(Astro.currentLocale).stack;
     display: inline-block;
   }
   .dot.is-on {
-    background: #34d399;
+    background: var(--color-mint);
   }
   .dot.is-off {
-    background: #c7c9cc;
+    background: var(--color-hairline-strong);
   }
 
   .stack-row {
@@ -106,18 +107,18 @@ const s = getDict(Astro.currentLocale).stack;
     padding: 13px 18px;
   }
   .stack-row + .stack-row {
-    border-top: 1px solid #f4f6f5;
+    border-top: 1px solid var(--color-hairline-soft);
   }
   .stack-idx {
     font-family: var(--font-mono);
     font-size: 10px;
-    color: #a1a1aa;
+    color: var(--color-muted);
   }
   .stack-name {
     font-family: var(--font-display);
     font-size: 20px;
     line-height: 1.2;
-    color: #18181b;
+    color: var(--color-ink);
   }
   .stack-pill {
     font-family: var(--font-mono);
@@ -129,12 +130,12 @@ const s = getDict(Astro.currentLocale).stack;
     white-space: nowrap;
   }
   .stack-pill.is-on {
-    background: #d1fae5;
-    color: #065f40;
+    background: var(--color-mint-soft);
+    color: var(--color-primary-deep);
   }
   .stack-pill.is-off {
-    border: 1px solid #e5e7eb;
-    color: #a1a1aa;
+    border: 1px solid var(--color-hairline);
+    color: var(--color-muted);
   }
 
   /* 底部杠杆线 */
@@ -143,24 +144,24 @@ const s = getDict(Astro.currentLocale).stack;
     align-items: center;
     gap: 12px;
     padding: 14px 18px 16px;
-    border-top: 1px dashed #d1fae5;
+    border-top: 1px dashed var(--color-mint-soft);
   }
   .lever-label {
     font-family: var(--font-mono);
     font-size: 10px;
     letter-spacing: 0.14em;
     text-transform: uppercase;
-    color: #0a6c4b;
+    color: var(--color-primary);
   }
   .lever-label.is-accent {
-    color: #065f40;
+    color: var(--color-primary-deep);
     font-weight: 600;
   }
   .lever-line {
     flex: 1;
     height: 1.5px;
     border-radius: 1px;
-    background: #eef1ef;
+    background: var(--color-hairline-soft);
     position: relative;
     overflow: hidden;
     transform-origin: left center;
@@ -172,7 +173,7 @@ const s = getDict(Astro.currentLocale).stack;
     height: 100%;
     width: 42%;
     border-radius: 1px;
-    background: linear-gradient(90deg, #34d399, #0a6c4b);
+    background: linear-gradient(90deg, var(--color-mint), var(--color-primary));
     transform-origin: left center;
   }
 </style>

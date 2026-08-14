@@ -20,12 +20,19 @@ const o = getDict(Astro.currentLocale).organism;
         ))}
       </div>
       <div
-        class="mx-auto mt-10 max-w-md rounded-card border border-mint-soft bg-canvas p-5 text-left shadow-sm"
+        class="mx-auto mt-10 max-w-md rounded-card border border-white/10 bg-code-bg p-5 text-left shadow-sm"
         data-reveal
         data-reveal-delay={160 + o.body.length * 80 + 80}
       >
-        {o.code.map((line) => (
-          <p class="font-mono text-[12.5px] leading-7 text-ink">{line}</p>
+        {o.code.map((line, i) => (
+          <p
+            class:list={[
+              'font-mono text-[12.5px] leading-7',
+              i === 0 ? 'text-mint-bright' : 'text-muted',
+            ]}
+          >
+            {line}
+          </p>
         ))}
       </div>
     </div>

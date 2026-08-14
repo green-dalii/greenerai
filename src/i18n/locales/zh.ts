@@ -32,7 +32,7 @@ export const zh: Dict = {
     h1a: '智力不再稀缺。',
     h1b: '杠杆才是新的公司。',
     sub: '模型越来越便宜，也越来越聪明。真正稀缺的，是工作中人性的部分——你知道什么、怎么判断、能否被信任。我们为这些人性的资产造杠杆——并且自己就运行其上。',
-    ctaPrimary: '探索技术栈',
+    ctaPrimary: '看看实践',
     ctaPrimaryHref: '#proof',
     ctaSecondary: '去 GitHub 点个星',
     ctaSecondaryHref: 'https://github.com/green-dalii',

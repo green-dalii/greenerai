@@ -33,7 +33,7 @@ export const en: Dict = {
     h1a: 'Intelligence is no longer scarce.',
     h1b: 'Leverage is the new company.',
     sub: 'Every week, models get cheaper and smarter. What stays scarce is the human part of the work — what you know, how you judge, whether you can be trusted. We build the infrastructure that turns those human assets into leverage — and we run on it ourselves.',
-    ctaPrimary: 'Explore the stack',
+    ctaPrimary: 'See the practice',
     ctaPrimaryHref: '#proof',
     ctaSecondary: 'Star on GitHub',
     ctaSecondaryHref: 'https://github.com/green-dalii',
