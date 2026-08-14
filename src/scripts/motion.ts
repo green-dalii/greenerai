@@ -208,6 +208,114 @@ if (reduce) {
       });
     }
   }
+
+  // Hero ASCII 像素点背景：canvas 密集点阵，深绿圆点 × JetBrains Mono 节奏的呼吸。
+// 基础透明度 + 随机相位的正弦呼吸；指针热区内半径提亮 + 圆点放大。rAF 单层重绘。
+  const canvas = document.querySelector<HTMLCanvasElement>('#hero-ascii');
+  if (canvas) {
+    const ctx = canvas.getContext('2d');
+    if (ctx) {
+      const dpr = window.devicePixelRatio || 1;
+      const STEP = 9;
+      const RADIUS = 200;
+      const DAMP = 0.1;
+      let cw = 0;
+      let ch = 0;
+      // 点仅保留坐标 —— 亮度与尺寸完全由全局连续 flow field 驱动（第一性原理）
+      let dots: { x: number; y: number }[] = [];
+      let pX = -9999;
+      let pY = -9999;
+      let lX = -9999;
+      let lY = -9999;
+      let active = false;
+
+      const build = () => {
+        const r = canvas.getBoundingClientRect();
+        cw = r.width;
+        ch = r.height;
+        canvas.width = Math.floor(cw * dpr);
+        canvas.height = Math.floor(ch * dpr);
+        ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+        dots = [];
+        for (let y = STEP / 2; y < ch; y += STEP) {
+          for (let x = STEP / 2; x < cw; x += STEP) {
+            dots.push({ x, y });
+          }
+        }
+      };
+
+      // 连续 flow field f(x, y, t)：多个低频 sin/cos 叠加，构成空间连续的强度场
+      // 邻居点采样到相邻点 → 一样值 → 空间连续；场随时间缓慢漂移 → 光晕流动
+      const flowField = (x: number, y: number, t: number): number => {
+        const u = x * 0.0055;
+        const v = y * 0.0055;
+        // 时间系数提至 ~1.7x —— 流动更明显，但仍是慢节奏
+        return (
+          Math.sin(u + t * 0.00016) * Math.cos(v + t * 0.00022) * 0.6 +
+          Math.sin(u * 1.7 - t * 0.00030) * 0.4 +
+          Math.sin((u + v) * 1.3 + t * 0.00038) * 0.3
+        );
+      };
+
+      const draw = (t: number) => {
+        ctx.clearRect(0, 0, cw, ch);
+        // 指针拖尾
+        lX += (pX - lX) * DAMP;
+        lY += (pY - lY) * DAMP;
+        for (const d of dots) {
+          // 采样全局场 —— 邻居点相关性产生“流动的光晕”
+          const n = flowField(d.x, d.y, t);
+          // 偏正向：峰值约 1.3，谷值约 -1.3；亮度仅在峰区
+          const flow = Math.max(0, n + 0.45);
+          // 默认点阵更克制：环境 0.06、峰值 ~0.30；半径环境 0.7、峰值 ~1.35
+          let alpha = 0.06 + flow * 0.22;
+          let rad = 0.7 + flow * 0.5;
+
+          // 指针 hover 增强（范围 RADIUS=200，柔和点亮）
+          if (active) {
+            const dx = d.x - lX;
+            const dy = d.y - lY;
+            const dist = Math.hypot(dx, dy);
+            if (dist < RADIUS) {
+              const k = 1 - dist / RADIUS;
+              alpha = Math.min(1, alpha + k * k * 0.24);
+              rad += k * 1.4;
+            }
+          }
+          ctx.fillStyle = `rgba(10, 108, 75, ${alpha.toFixed(3)})`;
+          ctx.beginPath();
+          ctx.arc(d.x, d.y, rad, 0, Math.PI * 2);
+          ctx.fill();
+        }
+        requestAnimationFrame(draw);
+      };
+
+      build();
+      requestAnimationFrame(draw);
+
+      const heroEl = canvas.closest('.mesh-hero');
+      if (heroEl) {
+        heroEl.addEventListener('pointermove', (e: Event) => {
+          const r = (heroEl as HTMLElement).getBoundingClientRect();
+          const pe = e as PointerEvent;
+          pX = pe.clientX - r.left;
+          pY = pe.clientY - r.top;
+          active = true;
+        });
+        heroEl.addEventListener('pointerleave', () => {
+          active = false;
+        });
+      }
+
+      window.addEventListener(
+        'resize',
+        () => {
+          build();
+        },
+        { passive: true },
+      );
+    }
+  }
 }
 
 export {};

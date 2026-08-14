@@ -6,8 +6,11 @@ const d = getDict(Astro.currentLocale).hero;
 ---
 
 <section class="mesh-hero relative overflow-hidden">
+  <!-- ASCII 像素点背景：canvas 点阵 (`·`/JetBrains Mono)，指针热区变亮+变字符 -->
+  <canvas id="hero-ascii" class="hero-ascii" aria-hidden="true"></canvas>
+
   <div
-    class="container-site grid grid-cols-1 items-center gap-12 pt-24 pb-16 md:grid-cols-12 md:gap-10 md:pt-28 md:pb-24 lg:pt-32 lg:pb-28"
+    class="container-site relative z-10 grid grid-cols-1 items-center gap-12 pt-24 pb-16 md:grid-cols-12 md:gap-10 md:pt-28 md:pb-24 lg:pt-32 lg:pb-28"
   >
     <!-- Left: editorial manifesto -->
     <div class="md:col-span-7">

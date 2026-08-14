@@ -113,13 +113,18 @@ const links = [
     });
   }
 
-  // 滚动状态：顶部透明全宽 → 下滑收缩为半透明胶囊
+  // 滚动状态：顶部透明全宽 → 下滑收缩为半透明胶囊。
+  // 阈值加高（>80 进入，<40 离开，中间 40px 滞回带）—— 不再一滑就缩
   const header = document.querySelector<HTMLElement>('[data-header]');
   if (header) {
+    let scrolled = window.scrollY > 80;
+    header.classList.toggle('is-scrolled', scrolled);
     const update = () => {
-      header.classList.toggle('is-scrolled', window.scrollY > 16);
+      const sy = window.scrollY;
+      if (!scrolled && sy > 80) scrolled = true;
+      else if (scrolled && sy < 40) scrolled = false;
+      header.classList.toggle('is-scrolled', scrolled);
     };
-    update();
     window.addEventListener('scroll', update, { passive: true });
   }
 </script>
@@ -128,23 +133,41 @@ const links = [
   /* 顶部态：透明、全宽（1280 容器） */
   [data-header] {
     padding-top: 0;
-    transition: padding 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+    transition: padding 0.6s cubic-bezier(0.4, 0, 0.2, 1);
   }
 
   .nav-shell {
     margin-inline: auto;
+    margin-top: 0;
     max-width: 1280px;
-    padding: 12px 24px;
+    padding: 9px 24px; /* 垂直 padding 固定 —— 不上下漂；仅水平 padding 在收缩时变化 */
     border-radius: 0;
     border: 1px solid transparent; /* 始终透明边框：收缩态也保持，避免尺寸跳变 */
     background: transparent;
+    /* blur(0) 而非 none：保证 backdrop-filter 可插值过渡，不瞬跳 */
+    backdrop-filter: blur(0px) saturate(1);
+    -webkit-backdrop-filter: blur(0px) saturate(1);
+    /* 收缩方向（下滑）：宽度、margin-top (8px 露出顶部空隙)、玻璃同时 0.8s 推进。
+       Material standard easing (0.4,0,0.2,1) —— 全程平滑加减速，无初始冲量、无弹 */
     transition:
-      max-width 0.7s cubic-bezier(0.22, 1, 0.36, 1),
-      padding 0.55s cubic-bezier(0.22, 1, 0.36, 1),
-      border-radius 0.6s cubic-bezier(0.22, 1, 0.36, 1) 0.04s,
-      background-color 0.5s ease 0.08s,
-      backdrop-filter 0.5s ease 0.08s,
-      box-shadow 0.5s ease 0.08s;
+      max-width 0.8s cubic-bezier(0.4, 0, 0.2, 1),
+      margin-top 0.7s cubic-bezier(0.4, 0, 0.2, 1),
+      border-radius 0.75s cubic-bezier(0.4, 0, 0.2, 1) 0.02s,
+      background-color 0.8s ease,
+      backdrop-filter 0.8s ease,
+      box-shadow 0.8s ease;
+  }
+
+  /* 扩展方向（回顶部）：玻璃最先消失（0.35s 无延迟），宽度 1.4s 缓伸 ——
+     Material standard 让末段减速可见，体感上“逐渐停止” */
+  [data-header]:not(.is-scrolled) .nav-shell {
+    transition:
+      max-width 1.4s cubic-bezier(0.4, 0, 0.2, 1),
+      margin-top 1.1s cubic-bezier(0.4, 0, 0.2, 1),
+      border-radius 1.25s cubic-bezier(0.4, 0, 0.2, 1) 0.04s,
+      background-color 0.35s ease 0s,
+      backdrop-filter 0.4s ease 0s,
+      box-shadow 0.35s ease 0s;
   }
 
   .nav-inner {
@@ -152,17 +175,17 @@ const links = [
     align-items: center;
     justify-content: space-between;
     height: 52px;
-    transition: height 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    transition: height 0.6s cubic-bezier(0.4, 0, 0.2, 1);
   }
 
-  /* 下滑态：居中半透明胶囊 + 上浮间隙 + 收窄内高。
-     真毛玻璃：低不透明度 + 重 blur + 饱和度提升，无边框（边界由投影给出） */
+  /* 下滑态：居中半透明胶囊，纯横向收缩（Y 轴不动） */
   [data-header].is-scrolled {
-    padding-top: 12px;
+    /* 纯横向形变：padding-top 保持 0，不上下浮 */
   }
   [data-header].is-scrolled .nav-shell {
     max-width: 680px;
-    padding: 7px 14px;
+    padding: 9px 24px; /* 水平 padding 与顶部一致 — 胶囊不太瘪 */
+    margin-top: 8px;
     border-radius: 999px;
     background: rgba(255, 255, 255, 0.55);
     backdrop-filter: blur(20px) saturate(1.6);
@@ -172,7 +195,7 @@ const links = [
       0 2px 8px rgba(0, 0, 0, 0.04);
   }
   [data-header].is-scrolled .nav-inner {
-    height: 40px;
+    height: 52px; /* 内高不变 */
   }
 
   @media (prefers-reduced-motion: reduce) {
