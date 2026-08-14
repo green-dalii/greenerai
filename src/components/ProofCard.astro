@@ -27,7 +27,7 @@ const revealAttrs =
     <span class={`h-1.5 w-1.5 rounded-full ${featured ? 'bg-primary' : 'bg-mint'}`}></span>
     {card.tag}
   </span>
-  <h3 class="mt-5 font-display text-3xl text-ink transition-colors group-hover:text-primary">
+  <h3 class="mt-5 font-display text-2xl text-ink transition-colors group-hover:text-primary">
     {card.title}
   </h3>
   <p class="mt-3 flex-grow text-[15px] leading-relaxed text-slate">{card.body}</p>
@@ -39,12 +39,12 @@ const revealAttrs =
             data-count
             data-count-to={s.countTo}
             data-count-suffix={s.suffix ?? ''}
-            class="font-display text-4xl tracking-tight text-ink"
+            class="font-display text-3xl tracking-tight text-ink"
           >
             {s.value}
           </span>
         ) : (
-          <div class="font-display text-4xl tracking-tight text-ink">{s.value}</div>
+          <div class="font-display text-3xl tracking-tight text-ink">{s.value}</div>
         )}
         <div class="mt-1 font-mono text-[10.5px] uppercase tracking-wider text-steel">{s.label}</div>
       </div>

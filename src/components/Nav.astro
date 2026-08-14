@@ -12,67 +12,69 @@ const links = [
 ];
 ---
 
-<header
-  data-header
-  class="sticky top-0 z-50 border-b border-hairline-soft bg-canvas/85 backdrop-blur-xl transition-colors duration-200"
->
-  <div class="container-site flex h-16 items-center justify-between">
-    <Brand />
+<!--
+  Header UX（参考 deepseek.com/harness）：
+  顶部 = 全宽透明，悬浮在 hero 网格之上；
+  下滑 = 横向收缩为居中半透明胶囊（backdrop-blur + 细边 + 轻投影），内高同步收窄。
+  全部由 .nav-shell 的 max-width/bg/radius 过渡完成，无跳变。
+-->
+<header data-header class="fixed inset-x-0 top-0 z-50">
+  <div class="nav-shell">
+    <div class="nav-inner">
+      <Brand />
 
-    <nav
-      class="hidden items-center gap-8 md:flex"
-      aria-label="Primary"
-    >
-      {
-        links.map((l) => (
-          <a
-            href={l.href}
-            class="link-underline text-sm text-slate transition-colors duration-200 hover:text-ink"
-          >
-            {l.label}
-          </a>
-        ))
-      }
-    </nav>
+      <nav class="hidden items-center gap-6 lg:flex" aria-label="Primary">
+        {
+          links.map((l) => (
+            <a
+              href={l.href}
+              class="link-underline text-sm text-slate transition-colors duration-200 hover:text-ink"
+            >
+              {l.label}
+            </a>
+          ))
+        }
+      </nav>
 
-    <div class="flex items-center gap-3">
-      <a
-        href={dict.nav.githubHref}
-        target="_blank"
-        rel="noreferrer"
-        class="hidden text-sm font-medium text-primary transition-colors duration-200 hover:text-primary-deep md:block"
-      >
-        {dict.nav.github}
-      </a>
-      <LanguageSwitch />
-      <button
-        type="button"
-        class="grid h-9 w-9 place-items-center rounded-md border border-hairline text-slate transition-colors duration-200 hover:bg-surface md:hidden"
-        aria-label={dict.nav.menuLabel}
-        aria-expanded="false"
-        aria-controls="mobile-menu"
-        data-menu-toggle
-      >
-        <svg
-          width="16"
-          height="16"
-          viewBox="0 0 16 16"
-          fill="none"
-          stroke="currentColor"
-          stroke-width="1.5"
-          stroke-linecap="round"
+      <div class="flex items-center gap-3">
+        <a
+          href={dict.nav.githubHref}
+          target="_blank"
+          rel="noreferrer"
+          class="hidden text-sm font-medium text-primary transition-colors duration-200 hover:text-primary-deep lg:block"
         >
-          <line x1="2" y1="4" x2="14" y2="4"></line>
-          <line x1="2" y1="8" x2="14" y2="8"></line>
-          <line x1="2" y1="12" x2="14" y2="12"></line>
-        </svg>
-      </button>
+          {dict.nav.github}
+        </a>
+        <LanguageSwitch />
+        <button
+          type="button"
+          class="grid h-9 w-9 place-items-center rounded-md border border-hairline text-slate transition-colors duration-200 hover:bg-surface lg:hidden"
+          aria-label={dict.nav.menuLabel}
+          aria-expanded="false"
+          aria-controls="mobile-menu"
+          data-menu-toggle
+        >
+          <svg
+            width="16"
+            height="16"
+            viewBox="0 0 16 16"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.5"
+            stroke-linecap="round"
+          >
+            <line x1="2" y1="4" x2="14" y2="4"></line>
+            <line x1="2" y1="8" x2="14" y2="8"></line>
+            <line x1="2" y1="12" x2="14" y2="12"></line>
+          </svg>
+        </button>
+      </div>
     </div>
   </div>
 
   <div
     id="mobile-menu"
-    class="hidden border-t border-hairline-soft bg-canvas md:hidden"
+    class="hidden border-t border-hairline-soft bg-canvas/95 backdrop-blur-xl lg:hidden"
     data-menu
   >
     <nav
@@ -111,11 +113,11 @@ const links = [
     });
   }
 
-  // Scrolled state — background solidifies + subtle shadow when scrolled past 8px.
+  // 滚动状态：顶部透明全宽 → 下滑收缩为半透明胶囊
   const header = document.querySelector<HTMLElement>('[data-header]');
   if (header) {
     const update = () => {
-      header.classList.toggle('is-scrolled', window.scrollY > 8);
+      header.classList.toggle('is-scrolled', window.scrollY > 16);
     };
     update();
     window.addEventListener('scroll', update, { passive: true });
@@ -123,10 +125,61 @@ const links = [
 </script>
 
 <style>
+  /* 顶部态：透明、全宽（1280 容器） */
+  [data-header] {
+    padding-top: 0;
+    transition: padding 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .nav-shell {
+    margin-inline: auto;
+    max-width: 1280px;
+    padding: 12px 24px;
+    border-radius: 0;
+    border: 1px solid transparent; /* 始终透明边框：收缩态也保持，避免尺寸跳变 */
+    background: transparent;
+    transition:
+      max-width 0.7s cubic-bezier(0.22, 1, 0.36, 1),
+      padding 0.55s cubic-bezier(0.22, 1, 0.36, 1),
+      border-radius 0.6s cubic-bezier(0.22, 1, 0.36, 1) 0.04s,
+      background-color 0.5s ease 0.08s,
+      backdrop-filter 0.5s ease 0.08s,
+      box-shadow 0.5s ease 0.08s;
+  }
+
+  .nav-inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 52px;
+    transition: height 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  /* 下滑态：居中半透明胶囊 + 上浮间隙 + 收窄内高。
+     真毛玻璃：低不透明度 + 重 blur + 饱和度提升，无边框（边界由投影给出） */
   [data-header].is-scrolled {
-    background-color: rgb(255 255 255 / 0.95);
+    padding-top: 12px;
+  }
+  [data-header].is-scrolled .nav-shell {
+    max-width: 680px;
+    padding: 7px 14px;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.55);
+    backdrop-filter: blur(20px) saturate(1.6);
+    -webkit-backdrop-filter: blur(20px) saturate(1.6);
     box-shadow:
-      0 1px 0 rgba(0, 0, 0, 0.04),
-      0 4px 16px rgba(0, 0, 0, 0.04);
+      0 12px 40px rgba(10, 108, 75, 0.1),
+      0 2px 8px rgba(0, 0, 0, 0.04);
+  }
+  [data-header].is-scrolled .nav-inner {
+    height: 40px;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    [data-header],
+    .nav-shell,
+    .nav-inner {
+      transition: none;
+    }
   }
 </style>
