@@ -1,0 +1,31 @@
+# Greener-Dalii · 格润达理
+
+> Intelligence is no longer scarce. Leverage is the new company. Trust is the new currency.
+> 智力不再稀缺。杠杆才是新的公司。信任是新的通货。
+
+## About
+
+Greener-Dalii (格润达理) builds the infrastructure of the AI-native era. We are a small team running on leverage and trust by construction — everything open source, every number public, no curtain.
+
+## Products
+
+- obsidian-llm-wiki: A local-first Obsidian plugin that turns your files into a queryable knowledge base where every answer cites its source.
+  - https://github.com/green-dalii/obsidian-llm-wiki
+- pi-shift-router: Auto-routing for coding agents — the right model for every task, with automatic failover and zero runtime dependencies.
+  - https://github.com/green-dalii/pi-shift-router
+  - https://www.npmjs.com/package/pi-shift-router
+
+## Projects
+
+- diflowy: https://github.com/green-dalii/diflowy
+- d2l-note: https://github.com/green-dalii/d2l-note
+
+## Organization
+
+- Website: https://greenerai.top
+- GitHub: https://github.com/green-dalii
+- Design Studio (parallel track): https://greenerdalii.top
+
+## Contact
+
+Write via GitHub issues — we answer.

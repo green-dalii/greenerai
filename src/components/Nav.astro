@@ -76,6 +76,7 @@ const links = [
     id="mobile-menu"
     class="hidden border-t border-hairline-soft bg-canvas/95 backdrop-blur-xl lg:hidden"
     data-menu
+    aria-hidden="true"
   >
     <nav
       class="container-site flex flex-col py-4"
@@ -106,10 +107,33 @@ const links = [
 <script>
   const toggle = document.querySelector<HTMLButtonElement>('[data-menu-toggle]');
   const menu = document.querySelector<HTMLElement>('[data-menu]');
+  const openMenu = () => {
+    menu?.classList.remove('hidden');
+    toggle?.setAttribute('aria-expanded', 'true');
+    menu?.setAttribute('aria-hidden', 'false');
+  };
+  const closeMenu = () => {
+    menu?.classList.add('hidden');
+    toggle?.setAttribute('aria-expanded', 'false');
+    menu?.setAttribute('aria-hidden', 'true');
+  };
   if (toggle && menu) {
     toggle.addEventListener('click', () => {
-      const open = menu.classList.toggle('hidden') === false;
-      toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+      const open = menu.classList.contains('hidden');
+      open ? openMenu() : closeMenu();
+    });
+    // 锚点跳转后收起
+    menu.querySelectorAll('a[href^="#"]').forEach((a) =>
+      a.addEventListener('click', closeMenu),
+    );
+    // 点击菜单外关闭
+    document.addEventListener('click', (e) => {
+      const t = e.target as Node;
+      if (!menu.contains(t) && !toggle.contains(t)) closeMenu();
+    });
+    // Escape 关闭
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') closeMenu();
     });
   }
 
