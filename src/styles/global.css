@@ -22,6 +22,9 @@
 
   /* Fonts: editorial serif display + Inter UI + JetBrains Mono（自托管） */
   --font-display: "Instrument Serif", Georgia, "Songti SC", "Noto Serif SC", "Source Han Serif SC", "Times New Roman", serif;
+  --font-display-weight: 400;
+  /* display 标题：浏览器合成 medium（Instrument Serif 只有 400，无法直接合成真粗）—给 Hero 以外的大标题加视觉重量 */
+  --font-display-bold: 500;
   --font-sans: "Inter", ui-sans-serif, system-ui, -apple-system, sans-serif;
   --font-mono: "JetBrains Mono", ui-monospace, "SF Mono", Menlo, Consolas, monospace;
 
@@ -50,7 +53,7 @@
     @apply font-mono text-[11px] font-semibold uppercase tracking-[1px] text-primary;
   }
   .display-lg {
-    @apply font-display text-3xl leading-[1.15] tracking-[-0.01em] text-ink md:text-4xl;
+    @apply font-display text-3xl font-medium leading-[1.15] tracking-[-0.01em] text-ink md:text-4xl;
     text-wrap: balance;
   }
   .btn-primary {

@@ -2,7 +2,8 @@
 import { getDict } from '../i18n';
 import ProofCard from './ProofCard.astro';
 const p = getDict(Astro.currentLocale).practice;
-const delays = [0, 120];
+const cards = p.cards;
+const featured = true;
 ---
 
 <section id="proof" class="border-t border-hairline-soft bg-surface-mint-soft py-20 md:py-28">
@@ -15,9 +16,10 @@ const delays = [0, 120];
       </p>
     </div>
 
-    <div class="grid grid-cols-1 gap-6 lg:grid-cols-2">
-      <ProofCard card={p.cards[0]} featured revealDelay={delays[0]} />
-      <ProofCard card={p.cards[1]} revealDelay={delays[1]} />
+    <div class={`grid grid-cols-1 gap-6 ${cards.length >= 3 ? 'lg:grid-cols-3' : 'lg:grid-cols-2'}`}>
+      {cards.map((card, i) => (
+        <ProofCard card={card} featured={i === 0} revealDelay={i * 120} />
+      ))}
     </div>
   </div>
 </section>

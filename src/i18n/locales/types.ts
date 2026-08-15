@@ -12,6 +12,8 @@ export interface ProofStat {
 export interface ProofCardData {
   tag: string;
   title: string;
+  /** 副标（产品口径，如 'for Pi · DeepSeek Harness'） */
+  subtag?: string;
   body: string;
   stats: ProofStat[];
   cta: string;
