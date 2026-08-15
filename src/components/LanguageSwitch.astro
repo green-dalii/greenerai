@@ -12,7 +12,7 @@ const current = Astro.currentLocale;
     href="/"
     aria-current={current === 'en' ? 'page' : undefined}
     class:list={[
-      'rounded-full px-2.5 py-1 font-mono text-[11px] font-medium transition-colors duration-200',
+      'rounded-full px-3 py-1.5 font-mono text-[11px] font-medium transition-colors duration-200',
       current === 'en'
         ? 'bg-ink text-white'
         : 'text-steel hover:text-ink',
@@ -24,7 +24,7 @@ const current = Astro.currentLocale;
     href="/zh/"
     aria-current={current === 'zh' ? 'page' : undefined}
     class:list={[
-      'rounded-full px-2.5 py-1 font-mono text-[11px] font-medium transition-colors duration-200',
+      'rounded-full px-3 py-1.5 font-mono text-[11px] font-medium transition-colors duration-200',
       current === 'zh'
         ? 'bg-ink text-white'
         : 'text-steel hover:text-ink',

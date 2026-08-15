@@ -12,7 +12,6 @@
   --color-canvas: #ffffff;
   --color-surface: #fafafa;
   --color-ink: #18181b;
-  --color-ink-tint: #3f3f46;
   --color-slate: #52525b;
   --color-steel: #71717a;
   --color-muted: #a1a1aa;
@@ -21,8 +20,8 @@
   --color-hairline-strong: #c7c9cc;
   --color-code-bg: #1c1c1e;
 
-  /* Fonts: editorial serif display + Inter UI + JetBrains Mono */
-  --font-display: "Instrument Serif", Georgia, "Times New Roman", serif;
+  /* Fonts: editorial serif display + Inter UI + JetBrains Mono（自托管） */
+  --font-display: "Instrument Serif", Georgia, "Songti SC", "Noto Serif SC", "Source Han Serif SC", "Times New Roman", serif;
   --font-sans: "Inter", ui-sans-serif, system-ui, -apple-system, sans-serif;
   --font-mono: "JetBrains Mono", ui-monospace, "SF Mono", Menlo, Consolas, monospace;
 
@@ -59,9 +58,6 @@
   }
   .btn-secondary {
     @apply inline-flex items-center justify-center gap-2 rounded-btn border border-hairline-strong bg-transparent px-5 py-2.5 text-sm font-medium text-ink transition-colors duration-200 hover:bg-surface;
-  }
-  .card {
-    @apply rounded-card border border-hairline-soft bg-canvas;
   }
 }
 
@@ -101,29 +97,12 @@
 /* ---------- Motion system（对应 src/scripts/motion.ts） ---------- */
 
 /* 滚动入场：初始态由 GSAP 接管（motion.ts），此处仅保留无 JS / reduced-motion 回退 */
-[data-reveal] {
+/* 滚动入场：仅 JS 可用时隐藏（无 JS / 脚本失败 → 内容可见） */
+.js [data-reveal] {
   opacity: 0;
 }
 [data-reveal].is-in {
   opacity: 1;
-}
-[data-reveal].gsap-ready {
-  opacity: 1;
-}
-
-/* 轻柔漂浮（Hero 图形节点等） */
-[data-float] {
-  animation: gd-float 6s ease-in-out infinite;
-  animation-delay: var(--float-delay, 0ms);
-}
-@keyframes gd-float {
-  0%,
-  100% {
-    transform: translateY(0);
-  }
-  50% {
-    transform: translateY(-8px);
-  }
 }
 
 /* Hero 眉题：mono 小字 + mint 圆点（不用胶囊） */
@@ -160,11 +139,10 @@ section[id] {
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .mesh-hero,
-  [data-float] {
+  .mesh-hero {
     animation: none !important;
   }
-  [data-reveal] {
+  .js [data-reveal] {
     opacity: 1;
   }
 }

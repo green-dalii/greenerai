@@ -6,7 +6,6 @@
  *  - data-reveal            滚动进入视口时淡入上移（GSAP power3.out）
  *  - data-reveal-delay="120" 单元素延迟（ms），实现 stagger
  *  - data-count             数字计数动画（data-count-to / data-count-suffix）
- *  - data-float             轻柔漂浮（Hero 图形节点等装饰元素）
  */
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
@@ -54,20 +53,6 @@ if (reduce) {
             maximumFractionDigits: decimals,
           }) + suffix;
       },
-    });
-  });
-
-  // 轻柔漂浮（装饰节点）
-  gsap.utils.toArray<HTMLElement>('[data-float]').forEach((el) => {
-    const cssDelay = el.style.getPropertyValue('--float-delay');
-    const delay = Number(cssDelay ? cssDelay.replace('ms', '') : el.dataset.floatDelay ?? 0) / 1000;
-    gsap.to(el, {
-      y: -8,
-      duration: 2.6,
-      ease: 'sine.inOut',
-      yoyo: true,
-      repeat: -1,
-      delay,
     });
   });
 
@@ -209,25 +194,28 @@ if (reduce) {
     }
   }
 
-  // Hero ASCII 像素点背景：canvas 密集点阵，深绿圆点 × JetBrains Mono 节奏的呼吸。
-// 基础透明度 + 随机相位的正弦呼吸；指针热区内半径提亮 + 圆点放大。rAF 单层重绘。
+  // Hero 光晕流场背景：canvas 圆点点阵，亮度由全局连续 flow field 驱动（第一性原理）。
+  // 性能：DPR 封顶 2、小屏降密、预计算 u/v 空间系数、alpha 桶批填充（fill 从 ~万次 → 12 次）、
+  // 离屏/后台暂停（IntersectionObserver + visibilitychange）、resize 防抖。
   const canvas = document.querySelector<HTMLCanvasElement>('#hero-ascii');
   if (canvas) {
     const ctx = canvas.getContext('2d');
     if (ctx) {
-      const dpr = window.devicePixelRatio || 1;
-      const STEP = 9;
-      const RADIUS = 200;
+      const dpr = Math.min(window.devicePixelRatio || 1, 2);
       const DAMP = 0.1;
+      const RADIUS = 200;
+      const BUCKETS = 12;
+      let STEP = 9;
       let cw = 0;
       let ch = 0;
-      // 点仅保留坐标 —— 亮度与尺寸完全由全局连续 flow field 驱动（第一性原理）
-      let dots: { x: number; y: number }[] = [];
+      // 点：坐标 + 预计算 u/v 空间系数（每帧省 2 次乘加）
+      let dots: { x: number; y: number; u: number; v: number }[] = [];
       let pX = -9999;
       let pY = -9999;
       let lX = -9999;
       let lY = -9999;
       let active = false;
+      let running = false;
 
       const build = () => {
         const r = canvas.getBoundingClientRect();
@@ -236,25 +224,14 @@ if (reduce) {
         canvas.width = Math.floor(cw * dpr);
         canvas.height = Math.floor(ch * dpr);
         ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+        // 小屏/高 DPR 降密
+        STEP = cw < 640 ? 14 : cw < 1024 && dpr > 1.5 ? 12 : 9;
         dots = [];
         for (let y = STEP / 2; y < ch; y += STEP) {
           for (let x = STEP / 2; x < cw; x += STEP) {
-            dots.push({ x, y });
+            dots.push({ x, y, u: x * 0.0055, v: y * 0.0055 });
           }
         }
-      };
-
-      // 连续 flow field f(x, y, t)：多个低频 sin/cos 叠加，构成空间连续的强度场
-      // 邻居点采样到相邻点 → 一样值 → 空间连续；场随时间缓慢漂移 → 光晕流动
-      const flowField = (x: number, y: number, t: number): number => {
-        const u = x * 0.0055;
-        const v = y * 0.0055;
-        // 时间系数提至 ~1.7x —— 流动更明显，但仍是慢节奏
-        return (
-          Math.sin(u + t * 0.00016) * Math.cos(v + t * 0.00022) * 0.6 +
-          Math.sin(u * 1.7 - t * 0.00030) * 0.4 +
-          Math.sin((u + v) * 1.3 + t * 0.00038) * 0.3
-        );
       };
 
       const draw = (t: number) => {
@@ -262,36 +239,70 @@ if (reduce) {
         // 指针拖尾
         lX += (pX - lX) * DAMP;
         lY += (pY - lY) * DAMP;
+        // alpha 桶：先收集每桶的点（x, y, rad），再逐桶一次 fill
+        const buckets: number[][] = Array.from({ length: BUCKETS }, () => []);
         for (const d of dots) {
-          // 采样全局场 —— 邻居点相关性产生“流动的光晕”
-          const n = flowField(d.x, d.y, t);
-          // 偏正向：峰值约 1.3，谷值约 -1.3；亮度仅在峰区
+          // 连续 flow field（u/v 已预计算）
+          const n =
+            Math.sin(d.u + t * 0.00016) * Math.cos(d.v + t * 0.00022) * 0.6 +
+            Math.sin(d.u * 1.7 - t * 0.0003) * 0.4 +
+            Math.sin((d.u + d.v) * 1.3 + t * 0.00038) * 0.3;
           const flow = Math.max(0, n + 0.45);
-          // 默认点阵更克制：环境 0.06、峰值 ~0.30；半径环境 0.7、峰值 ~1.35
-          let alpha = 0.06 + flow * 0.22;
+          let a = 0.06 + flow * 0.22;
           let rad = 0.7 + flow * 0.5;
-
-          // 指针 hover 增强（范围 RADIUS=200，柔和点亮）
           if (active) {
             const dx = d.x - lX;
             const dy = d.y - lY;
             const dist = Math.hypot(dx, dy);
             if (dist < RADIUS) {
               const k = 1 - dist / RADIUS;
-              alpha = Math.min(1, alpha + k * k * 0.24);
+              a = Math.min(1, a + k * k * 0.24);
               rad += k * 1.4;
             }
           }
-          ctx.fillStyle = `rgba(10, 108, 75, ${alpha.toFixed(3)})`;
+          const bi = Math.min(BUCKETS - 1, Math.floor(a * BUCKETS));
+          buckets[bi].push(d.x, d.y, rad);
+        }
+        for (let bi = 0; bi < BUCKETS; bi++) {
+          const vals = buckets[bi];
+          if (!vals.length) continue;
+          ctx.fillStyle = `rgba(10, 108, 75, ${((bi + 0.5) / BUCKETS).toFixed(3)})`;
           ctx.beginPath();
-          ctx.arc(d.x, d.y, rad, 0, Math.PI * 2);
+          for (let i = 0; i < vals.length; i += 3) {
+            const rx = vals[i];
+            const ry = vals[i + 1];
+            const rr = vals[i + 2];
+            ctx.moveTo(rx + rr, ry); // 避免相邻 arc 之间连线
+            ctx.arc(rx, ry, rr, 0, Math.PI * 2);
+          }
           ctx.fill();
         }
-        requestAnimationFrame(draw);
+        if (running) requestAnimationFrame(draw);
       };
 
+      const start = () => {
+        if (running) return;
+        running = true;
+        requestAnimationFrame(draw);
+      };
+      const stop = () => {
+        running = false;
+      };
+
+      // 后台标签页暂停；回到前台且 hero 在视口内则恢复
+      document.addEventListener('visibilitychange', () => {
+        if (document.hidden) stop();
+        else if (canvas.getBoundingClientRect().top < window.innerHeight) start();
+      });
+      // 滚动离屏暂停
+      if ('IntersectionObserver' in window) {
+        new IntersectionObserver((entries) => entries.forEach((e) => (e.isIntersecting ? start() : stop())), {
+          threshold: 0,
+        }).observe(canvas);
+      }
+
       build();
-      requestAnimationFrame(draw);
+      start();
 
       const heroEl = canvas.closest('.mesh-hero');
       if (heroEl) {
