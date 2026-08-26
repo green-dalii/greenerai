@@ -194,30 +194,39 @@ if (reduce) {
     }
   }
 
-  // Hero 光晕流场背景：canvas 圆点点阵，亮度由全局连续 flow field 驱动（第一性原理）。
-  // 性能：DPR 封顶 2、小屏降密、预计算 u/v 空间系数、alpha 桶批填充（fill 从 ~万次 → 12 次）、
-  // 离屏/后台暂停（IntersectionObserver + visibilitychange）、resize 防抖。
-  // 美学：双色调（深绿远 + 薄荷近）、加大的点（1.4-2.6px）、快速呼吸的 flow、twinkle 闪光、指针 halo 加强。
+  // Hero 背景：『光织』（Light Weave）——亚阈值细点点阵（~0.5px、间距 5px），
+  // 单点低于视觉分辨率，整场融为织物/纸纹；流场是透过织物的光斑，缓慢漂移。
+  // 密度：桌面 3px 网格 + 0.8-1.6px 点 + 明亮基线（密度与面积同步提，视觉可见差异）
+  // 设计原理：点大 + 网格可见 = 像素屏（拒绝）；点小 + 密网 + 边缘渐隐 = 织物质感（追求）。
+  // 性能：DPR 封顶 2、按视口自适应步长、typed-array 桶索引（零 GC）、边缘渐隐预计算、
+  // 离屏/后台暂停、帧时自适应降档（低端机自动降密）。
   const canvas = document.querySelector<HTMLCanvasElement>('#hero-ascii');
   if (canvas) {
     const ctx = canvas.getContext('2d');
     if (ctx) {
       const dpr = Math.min(window.devicePixelRatio || 1, 2);
-      const DAMP = 0.1;
-      const RADIUS = 280; // 指针光晕半径（+40%）
-      const BUCKETS = 12;
-      let STEP = 11; // 点间间距（+22%，点少 22%，大点占据空间感更强）
+      const DAMP = 0.09;
+      const RADIUS = 240;
+      const R2 = RADIUS * RADIUS;
+      const INV_R = 1 / RADIUS;
+      const FADE = 150; // 边缘渐隐带宽
+      const BUCKETS = 14;
+      let quality = 0; // 降档计数：0 全质，1/2 各 +2 步长
+      let STEP = 5;
       let cw = 0;
       let ch = 0;
-      // 点：坐标 + 预计算 u/v 空间系数 + 每点独立的 twinkle 计时
-      let dots: { x: number; y: number; u: number; v: number; phase: number; twinkleUntil: number }[] = [];
+      let dots: { x: number; y: number; u: number; v: number; e: number; tw: number }[] = [];
       let pX = -9999;
       let pY = -9999;
       let lX = -9999;
       let lY = -9999;
       let active = false;
       let running = false;
-      const startTime = performance.now();
+
+      const smooth = (v: number) => {
+        const c = Math.max(0, Math.min(1, v));
+        return c * c * (3 - 2 * c);
+      };
 
       const build = () => {
         const r = canvas.getBoundingClientRect();
@@ -226,29 +235,32 @@ if (reduce) {
         canvas.width = Math.floor(cw * dpr);
         canvas.height = Math.floor(ch * dpr);
         ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-        // 小屏/高 DPR 降密（保持视觉密度一致）
-        STEP = cw < 640 ? 16 : cw < 1024 && dpr > 1.5 ? 13 : 11;
+        // 细网基准步长 + 质量降档 + 数量安全阀（≤55k 点）
+        STEP = (cw < 600 ? 6 : cw < 900 ? 5 : 3.5) + quality * 2; // 密档覆盖 900+ 视口；900 以下退一档（性能）
+        while ((cw / STEP) * (ch / STEP) > 150000) STEP += 1;
         dots = [];
         for (let y = STEP / 2; y < ch; y += STEP) {
           for (let x = STEP / 2; x < cw; x += STEP) {
+            // 边缘渐隐：距边 FADE 内平滑衰减 —— 织物有边界，不生硬切边
+            const e = smooth(Math.min(x, cw - x, ch - y, y * 1.4) / FADE);
+            if (e <= 0.01) continue;
             dots.push({
               x,
               y,
-              u: x * 0.0058,
-              v: y * 0.0058,
-              phase: Math.random() * Math.PI * 2,
-              twinkleUntil: 0,
+              u: x * 0.0075,
+              v: y * 0.0075,
+              e,
+              tw: 0,
             });
           }
         }
       };
 
-      // 双色调：低 alpha 深绿（远静），高 alpha 薄荷（近亮）
-      const COLOR_LOW = [10, 108, 75]; // #0a6c4b
-      const COLOR_HIGH = [167, 243, 208]; // #a7f3d0 mint-bright
+      // 双色调：暗处深绿（退后），亮处薄荷（浮现）。幂混合让中间调保持绿的主导。
+      const COLOR_LOW = [10, 108, 75];
+      const COLOR_HIGH = [167, 243, 208];
       const lerpBucket = (bi: number, alpha: number) => {
-        const t = (bi + 0.5) / BUCKETS; // 0..1
-        // 用幂函数让中间色调偏深绿（远点的视觉权重），高亮处拉到薄荷
+        const t = (bi + 0.5) / BUCKETS;
         const mix = t * t;
         const r = Math.round(COLOR_LOW[0] * (1 - mix) + COLOR_HIGH[0] * mix);
         const g = Math.round(COLOR_LOW[1] * (1 - mix) + COLOR_HIGH[1] * mix);
@@ -256,63 +268,80 @@ if (reduce) {
         return `rgba(${r}, ${g}, ${b}, ${alpha.toFixed(3)})`;
       };
 
+      // 预分配桶索引表（每帧复用，零 GC）
+      const maxDots = 150000;
+      const bIdx: Int32Array[] = Array.from({ length: BUCKETS }, () => new Int32Array(maxDots));
+      const bCnt = new Int32Array(BUCKETS);
+
+      // 帧时自适应：滚动平均 > 30ms 持续 240 帧（~4s）才降一档——防加载抖动/低级环境误降吞掉视觉密度
+      let ftAcc = 0;
+      let ftN = 0;
+      let lastT = 0;
+
       const draw = (t: number) => {
-        ctx.clearRect(0, 0, cw, ch);
-        // 指针拖尾
-        lX += (pX - lX) * DAMP;
-        lY += (pY - lY) * DAMP;
-        // twinkle：每帧随机挑选一些点启动闪光（点缀·诗意在场感）
-        if (Math.random() < 0.12) {
-          const n = Math.floor(Math.random() * 3) + 1;
-          for (let i = 0; i < n; i++) {
-            const d = dots[Math.floor(Math.random() * dots.length)];
-            if (d) d.twinkleUntil = t + 380 + Math.random() * 280; // 闪光持续 380-660ms
+        if (lastT) {
+          ftAcc += t - lastT;
+          if (++ftN >= 240) {
+            if (ftAcc / ftN > 30 && quality < 2) {
+              quality += 1;
+              build();
+            }
+            ftAcc = 0;
+            ftN = 0;
           }
         }
-        // alpha 桶：先收集每桶的点（x, y, rad），再逐桶一次 fill
-        const buckets: number[][] = Array.from({ length: BUCKETS }, () => []);
-        for (const d of dots) {
-          // 连续 flow field（u/v 已预计算），加快节奏（+75% 时间常数）
+        lastT = t;
+        ctx.clearRect(0, 0, cw, ch);
+        lX += (pX - lX) * DAMP;
+        lY += (pY - lY) * DAMP;
+        // twinkle：稀疏微光（克制）
+        if (Math.random() < 0.07 && dots.length) {
+          const d = dots[Math.floor(Math.random() * dots.length)];
+          d.tw = t + 420 + Math.random() * 320;
+        }
+        bCnt.fill(0);
+        const tt1 = t * 0.0002;
+        const tt2 = t * 0.00027;
+        const tt3 = t * 0.00036;
+        for (let i = 0; i < dots.length; i++) {
+          const d = dots[i];
+          // 三项连续流场：空间频率决定光斑尺度（~800px 大池 + ~500px 波动）
           const n =
-            Math.sin(d.u + t * 0.00028) * Math.cos(d.v + t * 0.00036) * 0.7 +
-            Math.sin(d.u * 1.7 - t * 0.00048) * 0.55 +
-            Math.sin((d.u + d.v) * 1.3 + t * 0.00062) * 0.45;
-          const flow = Math.max(0, n + 0.42); // flow 范围 0.42-1.6
-          let a = 0.075 + flow * 0.20; // baseline 0.075；flow 缩放 0.20 —— 纹理在场但不竞争
-          let rad = 1.0 + flow * 0.8; // 基础点 1.0px；flow 放大到 ~2.3px
-          // twinkle 闪光：发光期内加亮
-          if (d.twinkleUntil > t) {
-            const remain = (d.twinkleUntil - t) / 600; // 0..1
-            const k = remain * remain; // ease-out 衰减
-            a = Math.min(1, a + k * 0.5);
-            rad += k * 1.2;
+            Math.sin(d.u + tt1) * Math.cos(d.v + tt2) * 0.65 +
+            Math.sin(d.u * 1.7 - tt3) * 0.35 +
+            Math.sin((d.u + d.v) * 0.9 + tt2) * 0.25;
+          const flow = Math.max(0, n * 0.5 + 0.5); // 0..1
+          let a = d.e * (0.08 + flow * 0.34); // 边缘渐隐 ×（明亮基线 + 光斑提亮）—— 密度提升必须配合亮度，否则看不见
+          // twinkle 微光
+          if (d.tw > t) {
+            const k = ((d.tw - t) / 740) ** 2;
+            a = Math.min(1, a + k * 0.45);
           }
+          // 指针光晕：平方衰减；包围盒外跳过（省 sqrt）
           if (active) {
             const dx = d.x - lX;
             const dy = d.y - lY;
-            const dist = Math.hypot(dx, dy);
-            if (dist < RADIUS) {
-              const k = 1 - dist / RADIUS;
-              a = Math.min(1, a + k * k * 0.42); // halo 强度 +75%
-              rad += k * 2.0; // halo 内点 +43%
+            const d2 = dx * dx + dy * dy;
+            if (d2 < R2) {
+              const k = 1 - Math.sqrt(d2) * INV_R;
+              a = Math.min(1, a + k * k * 0.32);
             }
           }
-          const bi = Math.min(BUCKETS - 1, Math.floor(a * BUCKETS));
-          buckets[bi].push(d.x, d.y, rad);
+          const bi = Math.min(BUCKETS - 1, (a * BUCKETS) | 0);
+          bIdx[bi][bCnt[bi]++] = i;
         }
+        // 半径由桶号确定性导出（亚像素下与逐点半径无视觉差异）
         for (let bi = 0; bi < BUCKETS; bi++) {
-          const vals = buckets[bi];
-          if (!vals.length) continue;
-          // alpha 桶的 alpha 取该桶中位数对应的实际 alpha
-          const alpha = ((bi + 0.5) / BUCKETS) * 0.95;
-          ctx.fillStyle = lerpBucket(bi, alpha);
+          const cnt = bCnt[bi];
+          if (!cnt) continue;
+          const rr = 0.8 + (bi / BUCKETS) * 0.8; // 点随密度放大（0.8-1.6px），密而不糊
+          const list = bIdx[bi];
+          ctx.fillStyle = lerpBucket(bi, ((bi + 0.5) / BUCKETS) * 0.85);
           ctx.beginPath();
-          for (let i = 0; i < vals.length; i += 3) {
-            const rx = vals[i];
-            const ry = vals[i + 1];
-            const rr = vals[i + 2];
-            ctx.moveTo(rx + rr, ry); // 避免相邻 arc 之间连线
-            ctx.arc(rx, ry, rr, 0, Math.PI * 2);
+          for (let j = 0; j < cnt; j++) {
+            const d = dots[list[j]];
+            ctx.moveTo(d.x + rr, d.y);
+            ctx.arc(d.x, d.y, rr, 0, Math.PI * 2);
           }
           ctx.fill();
         }
