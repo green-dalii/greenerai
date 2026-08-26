@@ -1,53 +1,84 @@
-# Greener-Dalii 公司官网（greenerai）
+# Greener-Dalii · greenerai.top
 
-为 AI 原生时代构建基础设施的格润达理（Greener-Dalii）公司官网。
+> Intelligence is no longer scarce. Leverage is the new company.
+> 智力不再稀缺。拼的不再是人头，是杠杆。
 
-> **Intelligence is a commodity. Leverage is the new company. Trust is the new currency.**
+Greener-Dalii (格润达理) company site. We turn what you know into leverage — a small team with company-scale reach, every tool open source, every number public.
 
-## 开发
+- **Live site**: https://greenerai.top/
+- **中文站**: https://greenerai.top/zh/
+- **Design studio (parallel track)**: https://greenerdalii.top
+
+## Development
 
 ```bash
 pnpm install
-pnpm dev        # 本地预览 http://localhost:4321
-pnpm build      # 构建到 ./dist
-pnpm preview    # 预览构建产物
-pnpm typecheck  # astro check（0 errors）
+pnpm dev        # local dev at http://localhost:4322
+pnpm build      # static build → ./dist
+pnpm preview    # preview the built site
+pnpm astro check  # type-check + a11y/lint, target 0/0/0
 ```
 
-## 技术栈
+> The dev server runs on **4322** (4321 is usually taken by greenerdalii.studio). Before starting, check whether a server is already listening: `lsof -iTCP:4322 -sTCP:LISTEN` and reuse it.
 
-- [Astro](https://astro.build)（static output） + [TailwindCSS v4](https://tailwindcss.com)（`@tailwindcss/vite`）
-- 内置 i18n：`defaultLocale: 'en'`（无前缀 `/`）+ `zh`（`/zh/`）
-- 字典：`src/i18n/locales/{en,zh}.ts`（类型契约见 `types.ts`）
-- 字体：Instrument Serif（display）/ Inter（UI）/ JetBrains Mono（code）
+## Stack
 
-## 内容与设计契约
+- [Astro 5](https://astro.build) — static output
+- [TailwindCSS v4](https://tailwindcss.com) — `@tailwindcss/vite`, CSS-first `@theme` tokens
+- Built-in i18n — `defaultLocale: 'en'` (no prefix) + `zh` (`/zh/`)
+- Dictionaries: `src/i18n/locales/{en,zh}.ts` (types in `types.ts`, helper in `i18n/index.ts`)
+- Fonts (self-hosted via `@fontsource`): Instrument Serif (display) / Inter (UI) / JetBrains Mono (code)
+- Motion: GSAP + ScrollTrigger, contract in `src/scripts/motion.ts` (respects `prefers-reduced-motion`)
 
-完整的内容叙事、配色 tokens、组件规格见 [SPEC.md](./SPEC.md)；项目协作约定见 [AGENTS.md](./AGENTS.md)；Mistral 视觉结构参考见 [DESIGN-mistral.ai.md](./DESIGN-mistral.ai.md)。
+## Contracts
 
-## 数据来源（Proof 区）
+- [`SPEC.md`](./SPEC.md) — full content narrative, color tokens, component specs, copy rules.
+- [`AGENTS.md`](./AGENTS.md) — collaboration conventions, banned-word list, brand and copy red lines.
+- [`DESIGN-mistral.ai.md`](./DESIGN-mistral.ai.md) — visual structure reference (Mistral editorial layout adapted to the Greener-Dalii green system).
 
-- obsidian-llm-wiki 下载量：`obsidianmd/obsidian-releases` 的 `community-plugin-stats.json`（`karpathywiki.downloads`）
-- pi-shift-router 下载量：npm `api.npmjs.org/downloads`
-- 星标：GitHub API
+## Source of truth for numbers (Proof section)
 
-数据为构建时常量；改动需核对权威源。
+| Number | Authoritative source |
+|---|---|
+| Karpathy LLM Wiki — 34,055 downloads | `obsidianmd/obsidian-releases` `community-plugin-stats.json` (`karpathywiki.downloads`) |
+| Karpathy LLM Wiki — 451 ★ | GitHub API |
+| Shift-Router (pi-shift-router) — 1,235 downloads/month | `api.npmjs.org/downloads/point/last-month/pi-shift-router` |
+| Shift-Router — 0 deps / ~409 kB install | packagephobia (README badges) |
 
-## 目录
+Numbers are build-time constants in the dictionaries. Change them only after re-checking the source above.
+
+## Layout
 
 ```
 src/
-  i18n/locales/{en,zh,types}.ts    文案字典 + 类型契约
-  i18n/index.ts                    getDict 辅助
-  layouts/Base.astro               根布局（head / Nav / Footer / slot）
-  components/                       Hero / Thesis / Proof(ProofCard) / Organism / Road / Open / Nav / Footer / Brand / LanguageSwitch
-  pages/index.astro                EN 首页（/）
-  pages/zh/index.astro             ZH 首页（/zh/）
+  i18n/locales/{en,zh,types}.ts    Copy dictionaries + type contract
+  i18n/index.ts                    getDict helper
+  layouts/Base.astro               Root layout (head / Nav / Footer / slot)
+  components/                      
+    Hero / HeroStack / HeroGraph
+    Thesis / Proof / ProofCard
+    Organism / Road / Open
+    Nav / Footer / Brand / LanguageSwitch
+  pages/index.astro                EN homepage (/)
+  pages/zh/index.astro             ZH homepage (/zh/)
+  scripts/motion.ts                GSAP entrance + canvas + 3D tilt
   styles/global.css                Tailwind 4 @theme tokens
 public/
-  favicon.svg                      品牌徽标
+  llms.txt                         LLMs summary (llmstxt.org spec)
+  llms-full.txt                    LLMs long-form reference
+  favicon.svg, logomark.svg, wordmark.svg
+  og-image.png, apple-touch-icon.png
+  robots.txt                       Crawler policy (GPTBot/ClaudeBot/... allowed)
 ```
 
-## 部署域名（占位）
+## SEO / GEO
 
-`astro.config.mjs` 的 `site` 设为 `https://greenerai.top`（产品子域根）。部署域名确定后更新。
+- `@astrojs/sitemap` produces `sitemap-index.xml` with `hreflang` alternates.
+- JSON-LD: `Organization` + `WebSite` + two `SoftwareApplication` (Karpathy LLM Wiki, Shift-Router).
+- `<link rel="canonical">` + `hreflang="en" / "zh-CN" / "x-default"`.
+- `robots.txt` explicitly allow-lists the major AI crawlers.
+- `llms.txt` and `llms-full.txt` follow [llmstxt.org](https://llmstxt.org) format.
+
+## Deployment
+
+`astro.config.mjs` sets `site: 'https://greenerai.top'` (canonical origin). Update the site URL before deploying to a different domain.
