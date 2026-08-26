@@ -9,14 +9,14 @@ Greener-Dalii (格润达理) turns what you know into leverage. We are a small t
 
 ## Products
 
-- obsidian-llm-wiki: A local-first Obsidian plugin that turns your files into a queryable knowledge base where every answer cites its source.
-  - https://github.com/green-dalii/obsidian-llm-wiki
-- Shift-Router (for Pi): Two-tier model routing for the Pi coding agent — everyday turns on affordable models, automatic step-up when it matters, zero runtime dependencies.
-  - https://github.com/green-dalii/pi-shift-router
-  - https://www.npmjs.com/package/pi-shift-router
-  - https://shiftrouter.greenerai.top
-- DSH Shift-Router (for DeepSeek Harness): The same two-tier design adapted for DeepSeek Harness.
-  - https://github.com/green-dalii/dsh-shift-router
+- Karpathy LLM Wiki: An Obsidian plugin that turns your notes into a connected, queryable knowledge base — every answer cites its source, local-first, no backend.
+  - https://github.com/green-dalii/obsidian-llm-wiki (repo)
+  - https://llmwiki.greenerai.top (official site)
+  - https://community.obsidian.md/plugins/karpathywiki (marketplace)
+- Shift-Router: Task-level router for coding agents. Every turn is triaged into one of two configured model tiers — instant upgrades, trend-based downgrades, cache-aware routing, same-turn failover on rate limits; on complex tasks the strong tier orchestrates like a CTO, delegating implementation to fast subagents. One brand, two hosts:
+  - Pi: https://github.com/green-dalii/pi-shift-router · https://www.npmjs.com/package/pi-shift-router
+  - DeepSeek Harness: https://github.com/green-dalii/dsh-shift-router
+  - Official site: https://shiftrouter.greenerai.top
 
 ## Projects
 

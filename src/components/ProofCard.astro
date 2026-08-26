@@ -20,20 +20,31 @@ const revealAttrs =
   href={card.href}
   target="_blank"
   rel="noreferrer"
-  class={`group flex h-full flex-col rounded-card border p-8 transition-all duration-200 hover:-translate-y-0.5 hover:shadow-[0_4px_12px_rgba(0,0,0,0.04)] ${containerClasses}`}
+  class={`group relative flex h-full flex-col rounded-card border p-8 transition-all duration-200 hover:-translate-y-0.5 hover:shadow-[0_16px_40px_-20px_rgba(10,108,75,0.22)] ${containerClasses}`}
   {...revealAttrs}
 >
   <span class="eyebrow flex items-center gap-2">
     <span class={`h-1.5 w-1.5 rounded-full ${featured ? 'bg-primary' : 'bg-mint'}`}></span>
     {card.tag}
   </span>
-  <h3 class="mt-5 font-display text-2xl font-medium text-ink transition-colors group-hover:text-primary">
+  <h3 class="mt-5 font-display text-[22px] font-medium leading-snug text-ink transition-colors group-hover:text-primary">
     {card.title}
   </h3>
   {card.subtag && (
     <p class="mt-2 font-mono text-[11px] uppercase tracking-[0.14em] text-steel">{card.subtag}</p>
   )}
-  <p class="mt-3 flex-grow text-[15px] leading-relaxed text-slate">{card.body}</p>
+
+  {/* 文字微流程：机制一句话可视化（纯文字+箭头字符，不自绘图形） */}
+  {card.flow && (
+    <p
+      class="mt-4 border-l-2 border-mint pl-3 text-[13px] leading-relaxed tracking-[0.01em] text-steel transition-colors duration-200 group-hover:border-primary group-hover:text-slate"
+    >
+      {card.flow}
+    </p>
+  )}
+
+  <p class="mt-3 flex-grow text-base leading-relaxed text-slate">{card.body}</p>
+
   {(card.stats.length > 0 || card.note) && (
     <div class="mt-8 border-t border-hairline pt-6">
       {card.stats.length > 0 && (
@@ -45,30 +56,31 @@ const revealAttrs =
                   data-count
                   data-count-to={s.countTo}
                   data-count-suffix={s.suffix ?? ''}
-                  class="font-display text-3xl tracking-tight text-ink"
+                  class="font-display text-[32px] leading-none tracking-tight text-ink"
                 >
                   {s.value}
                 </span>
               ) : (
-                <div class="font-display text-3xl tracking-tight text-ink">{s.value}</div>
+                <div class="font-display text-[32px] leading-none tracking-tight text-ink">{s.value}</div>
               )}
-              <div class="mt-1 font-mono text-[10.5px] uppercase tracking-wider text-steel">{s.label}</div>
+              <div class="mt-1.5 font-mono text-[11px] uppercase tracking-wider text-steel">{s.label}</div>
             </div>
           ))}
         </div>
       )}
       {card.note && (
-        <p class:list={["font-mono text-[11px] tracking-wide text-muted", card.stats.length > 0 && 'mt-4']}>
+        <p class:list={["mono-label text-[11px] tracking-wide text-muted", card.stats.length > 0 && 'mt-4']}>
           {card.note}
         </p>
       )}
     </div>
   )}
+
   <span
     class:list={[
-      'font-mono text-xs text-primary transition-transform group-hover:translate-x-0.5',
+      'inline-block font-mono text-xs text-primary',
       card.stats.length > 0 || card.note ? 'mt-6' : 'mt-8',
-      'inline-block',
+      'transition-transform duration-200 group-hover:translate-x-1',
     ]}
   >
     {card.cta} →

@@ -1,59 +1,64 @@
 ---
 import { getDict } from '../i18n';
 const o = getDict(Astro.currentLocale).open;
+const links = [
+  { label: o.cta1, href: o.cta1Href },
+  { label: o.cta2, href: o.cta2Href },
+  { label: o.cta3, href: o.cta3Href },
+];
 ---
 
 <section id="open" class="border-t border-hairline-soft bg-canvas py-20 md:py-28">
   <div class="container-site">
     <div class="rounded-card border border-mint-soft bg-surface-mint px-6 py-16 text-center md:px-16 md:py-24">
       <span class="eyebrow" data-reveal>{o.eyebrow}</span>
-      <h2
-        class="mx-auto mt-6 max-w-2xl font-display text-4xl font-medium leading-[1.1] tracking-tight text-ink md:text-5xl"
-        data-reveal
-        data-reveal-delay="80"
-      >
+      <h2 class="display-lg mx-auto mt-6 max-w-2xl" data-reveal data-reveal-delay="80">
         {o.heading}
       </h2>
       <p
-        class="mx-auto mt-6 max-w-xl text-lg leading-relaxed text-slate"
+        class="mx-auto mt-6 max-w-xl text-[17px] leading-relaxed text-slate"
         data-reveal
         data-reveal-delay="160"
       >
         {o.body}
       </p>
-      <div
-        class="mt-10 flex flex-col items-center justify-center gap-3 sm:flex-row"
-        data-reveal
-        data-reveal-delay="240"
-      >
-        <a class="btn-primary" href={o.cta1Href} target="_blank" rel="noreferrer">{o.cta1}</a>
-        <a class="btn-secondary" href={o.cta2Href} target="_blank" rel="noreferrer">{o.cta2}</a>
+
+      <!-- 链接行列表：读源码 / 查数字 / 跑起来（编辑式，无图标按钮） -->
+      <div class="mx-auto mt-12 max-w-md text-left" data-reveal data-reveal-delay="240">
+        {
+          links.map((l) => (
+            <a
+              href={l.href}
+              target="_blank"
+              rel="noreferrer"
+              class="group flex items-center justify-between gap-4 border-b border-hairline-strong/50 py-4 transition-colors first:border-t hover:bg-canvas/60"
+            >
+              <span class="text-[15px] font-medium text-ink transition-colors group-hover:text-primary">
+                {l.label}
+              </span>
+              <span
+                class="font-mono text-sm text-steel transition-all duration-200 group-hover:translate-x-0.5 group-hover:text-primary"
+                aria-hidden="true"
+              >
+                ↗
+              </span>
+            </a>
+          ))
+        }
       </div>
-      <div
-        class="mt-4 flex flex-col items-center justify-center gap-3 sm:flex-row"
-        data-reveal
-        data-reveal-delay="280"
-      >
-        <a
-          class="link-underline text-sm font-medium text-primary transition-colors duration-200 hover:text-primary-deep"
-          href={o.cta3Href}
-          target="_blank"
-          rel="noreferrer"
-        >
-          {o.cta3} →
-        </a>
-        <span class="hidden h-3 w-px bg-hairline sm:block" aria-hidden="true"></span>
-        <a
-          class="link-underline text-sm font-medium text-slate transition-colors duration-200 hover:text-primary"
-          href={o.email.href}
-        >
-          {o.email.label} · {o.email.href.replace('mailto:', '')} →
-        </a>
+
+      <!-- 写信：唯一实心主按钮，地址独立成行 -->
+      <div data-reveal data-reveal-delay="300">
+        <a class="btn-primary mt-9" href={o.email.href}>{o.email.label}</a>
+        <p class="mt-3 font-mono text-[11px] tracking-wide text-steel">
+          {o.email.href.replace('mailto:', '')}
+        </p>
       </div>
+
       <p
-        class="mt-8 font-mono text-[11px] uppercase tracking-wider text-steel"
+        class="mono-label mt-10 text-[11px] uppercase tracking-[0.14em] text-muted"
         data-reveal
-        data-reveal-delay="320"
+        data-reveal-delay="340"
       >
         {o.note}
       </p>

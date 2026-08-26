@@ -52,8 +52,9 @@
   .eyebrow {
     @apply font-mono text-[11px] font-semibold uppercase tracking-[1px] text-primary;
   }
+  /* 区块大标题：统一 32 → 40px 阶梯（Hero H1 48+ 之上留出层级差） */
   .display-lg {
-    @apply font-display text-3xl font-medium leading-[1.15] tracking-[-0.01em] text-ink md:text-4xl;
+    @apply font-display text-[32px] font-medium leading-[1.12] tracking-[-0.01em] text-ink md:text-[40px];
     text-wrap: balance;
   }
   .btn-primary {
@@ -143,6 +144,16 @@
 /* 锚点滚动留白 */
 section[id] {
   scroll-margin-top: 5rem;
+}
+
+/* 小标签（footer 分组名、来源注、桥线等）：默认 mono；
+   中文场景 JetBrains Mono 无 CJK 字形，自动回落 sans，避免混排两种质感 */
+.mono-label {
+  font-family: var(--font-mono);
+}
+html[lang='zh'] .mono-label {
+  font-family: var(--font-sans);
+  letter-spacing: 0.06em;
 }
 
 /* 链接下划线生长动效（nav/footer 文字链接） */

@@ -9,10 +9,10 @@
 - **公司是什么**：把个人的积累变成公司的杠杆——造这些杠杆，也运行在这些杠杆上。组织形态主张 = **小团队 + 高杠杆**（杠杆替代人头；**不用 OPC/一人公司作为主张**，那与真实的几人团队脱节）。
 - **稀缺性翻转（全站主线）**：智力不再稀缺 → 稀缺的是**人性的部分**，即三连词 **Know · Taste · Do / 知 · 品 · 行**（输入→选择→输出的完成管线）：知=你积累了什么（买不到抄不走）；品=你怎么选（生成越廉价取舍越值钱，核心信念）；行=你交付了什么（做完才是证明）。展示位用短形态 `知/品/行`，正文可展开「所知、品味、所行」。
 - **可信的来源（内部哲学注脚：构造式信任）**：当人人都能生成一切，承诺不再值钱，可信只能靠**机制**制造：人人可查的声称、自带出处的作品、诚实比违约更便宜的组织（比特币式：机制让诚实成为均衡）。**品牌 = 可查验的积累**。展示层**禁用 Trust / Judge / Judgement 词**——只呈现机制（出处可查、件件有源、经得起核），不命名、不喊词。开放不是口号，是铸币方式。
-- **双轨结构**：同一批人、两个牌子、两条平行轨道——AI 原生基础设施（本站）与设计（greenerdalii.top）。**不是"脱胎于"、不是副业**；设计工作室 = 品味的日常训练场。双向链接。
+- **双轨结构**：同一批人、两个牌子、两条平行轨道——AI 原生轨道（本站）与**格润达理工作室**（greenerdalii.top）是两条**平行**轨道。**不是"脱胎于"、不是副业**；设计工作室 = 品味的日常训练场。双向链接。
 - **产品定位**：现有工具是**开胃菜**——信念的练习场，不是主体、不是未来核心。读者 = 未来的协作者/加入者（用世界观与工作方式吸引同道，**不是招聘**）。
 - **技术栈分层（内部模型）**：
-  - Context（知识层 → Know·知）→ obsidian-llm-wiki（已交付）
+  - Context（知识层 → Know·知）→ Karpathy LLM Wiki（已交付）
   - Execution（执行层 → Do·行）→ Shift-Router 系列（已交付）
   - Proof（可查证层 → 品行合一的外显）→ 研究中（Road 上只写方向，不写承诺；主题 = 让作品自己开口）
 - **叙事禁区**：不夸大（不承诺"改变人类"）、不自限（不写成"几个小工具"）；不采用大公司八股（客户 logo 墙、公司规模炫耀、VC 背书）；**不表现招人**；**不锁死产品词**（笔记/路由/Obsidian/Dify 只作注脚）；**不说"脱胎于设计工作室"**；**无产品测试**——主叙事删掉全部产品名后依然完整成立，产品只出现在 Practice 卡 / Open 入口，主叙事不得用产品充当论据（官网不是产品介绍页）。
@@ -43,10 +43,10 @@
 
 | 数字 | 权威源 |
 |---|---|
-| obsidian-llm-wiki 下载 34,055 | `obsidianmd/obsidian-releases` community-plugin-stats.json（`karpathywiki.downloads`） |
-| obsidian-llm-wiki 451★ | GitHub API |
+| Karpathy LLM Wiki 下载 34,055（产品名；仓库 obsidian-llm-wiki） | `obsidianmd/obsidian-releases` community-plugin-stats.json（`karpathywiki.downloads`） |
+| Karpathy LLM Wiki 451★ | GitHub API |
 | pi-shift-router 月下载 1,235 | npm `api.npmjs.org/downloads/point/last-month/pi-shift-router` |
-| pi-shift-router 0 依赖 / ~196kB | README 徽章墙 |
+| pi-shift-router 0 依赖 / ~409kB install | README 徽章墙（packagephobia 口径，2026-08 核对） |
 
 数字为构建时常量（写入字典），改动需核对上表源。
 

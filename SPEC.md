@@ -60,8 +60,8 @@
 
 1. **Hero** — 口号两行 + 时代副句（≤2 句，无产品名）+ 双 CTA + 右侧轻量面板（**知/品/行 三行 + 一句话注解**，无状态徽章；底部 you→company-scale 杠杆线）
 2. **信念（Thesis）** — 五条：翻转 → 知是护城河 → 品是分野 → 行是证明 → 杠杆综合条（闭环论证口号第二行）
-3. **我们（Organism）** — 小团队高杠杆 + 双轨；org-chart 一行代码说清组织形态
-4. **实践（Practice）** — 三卡（与实现同步）：obsidian-llm-wiki（tag: Know · 知）/ Shift-Router for Pi（tag: Do · 行）/ DSH Shift-Router（tag: Do · 行）
+3. **我们（Organism）** — 小团队高杠杆 + 双轨结构卡：两品牌并列（格润达理 × 格润达理工作室），桥线点明「同一批人 · 同一个信念」——用结构表达双轨，不伪装成终端输出
+4. **实践（Practice）** — 两旗舰卡：**Karpathy LLM Wiki**（tag: Know · 知；产品名=Karpathy LLM Wiki，obsidian-llm-wiki 只是仓库名，展示层一律用产品名）/ **Shift-Router**（tag: Do · 行）。**Shift-Router 是统一品牌产品名**，其下分两个宿主实现（pi-shift-router / dsh-shift-router）——卡片必须表达「一个品牌、两个宿主」的包含关系，**严禁拆成并列两张卡**。
 5. **下一步（Road）** — 新主题「让作品自己开口 / Proof over promises」：方向 + 当下练习，零产品承诺，**无状态卡**
 6. **开放（Open）** — CTA 收尾 + 真实邮箱 `hi@greenerai.top`（mailto）
 + **Footer** — 品牌 + 项目链接带 + 语言切换 + 版权
@@ -92,13 +92,13 @@
 ### Organism（我们）
 - **标题弃用**"种子/天花板"类无锚点比喻；直接陈述小团队高杠杆（示例方向：`A handful of people. Company-scale reach.` / `人不多，事不小。`）
 - 双轨段保留要义，修掉「并行运行纪律 / disciplines run in parallel」类生硬表述（文案轮）
-- org-chart 代码卡保留：`$ org --chart / people: a handful / brands: 2 / reach: 11 languages / licenses: all open`
+- **双轨结构卡**（替代旧 org-chart 假终端）：tracks = 两张品牌卡 + 一条桥线。**工作室必须用本名「格润达理工作室」**，严禁用域名当名称。四行 CLI 内容已废弃：人数在标题、11 语言只在 Practice 数字卡、开源归 Open 区
 - 收尾保留：「我们不是预言，我们是其中之一——运行在自己构建的东西上。」
 - 「11 种语言」语义固定为**产品支持的语言数**，且此数字只在 Practice 数字卡出现一次，Organism 行文不再重复计数
 
 ### Practice（实践）
 - 开场保留「开胃菜/练习场」语义，但去掉自贬语气（文案轮措辞）
-- 三卡与实现同步（§2.4）；卡片 body 是给协作者看的产品一句话定位，不是 changelog
+- 两卡结构；Shift-Router 卡的 subtag 标注环境（for Pi & DeepSeek Harness）；**展示层禁用黑话**（宿主/档位/限流/子代理/判定一条都不许进正文），机制一律说人话（参考 §4 黑话对照表）；**产品描述必须与各宿主 README 一致**，核心机制三件套不可缺席：每轮轻量判定分诊（便宜档/强档）、限流同轮故障转移、复杂任务强档按 CTO 方式编排（规划→派发快速子代理→验收）；卡片 body 是给协作者看的产品一句话定位，不是 changelog；卡内机制用**文字微流程**一行表达（纯文字 + 箭头字符，不自绘 SVG 图形）
 - **stats 分级规则**：受众有感的权威数字进 stat-display 大字位（下载 34,055 / 星标 451 / 月下载 1,235）；工程琐数（runtime deps、tests passing、harness 名）降为 body-sm 脚注行，不占大数字位
 
 ### Road（下一步）— 新主题「让作品自己开口 / Proof over promises」
@@ -161,6 +161,8 @@
 
 ### 圆角 / 间距 / 层级
 - 圆角：按钮 8px（md）、卡片 12px（lg）、徽章 full。**禁胶囊按钮**。
+- 字号阶梯（全区块统一）：H1 48–56 / 区块 H2 40（`.display-lg`）/ 卡题 22 / 统计数字 32 / 正文 16（lead 17）/ mono 注释 11。
+- mono 只排拉丁与数字；含中文的小标签一律用 `.mono-label`（`html[lang=zh]` 下自动回落 sans，避免 CJK 回落穿帮）。
 - 间距：4px 基模；section 96px（营销页）、64px（内容页）；卡片内 24/32px。
 - 容器：1280px max-w / 32px gutter。
 - 层级：平为主，卡片 `rgba(0,0,0,0.04) 0 4px 12px`，代码面深底 12px 圆角 + 轻微投影。
@@ -168,7 +170,7 @@
 ### 签名组件
 - gradient-stripe（页脚上方全宽渐变带）
 - stat-display（衬线大字数字，Practice 统计；分级规则见 §3 Practice）
-- code-mockup（`$ org --chart` 场景，克制使用）
+- code-mockup（保留 token 与样式，当前无场景使用）
 - pill-badge（薄荷面标签；v3 起 HeroStack 不再使用状态徽章）
 
 ## 5. 技术架构
@@ -185,9 +187,8 @@
 ## 6. 数据来源（构建时常量）
 
 见 AGENTS.md「数据源」。数字改动必须核对官方源。
-- obsidian-llm-wiki：34,055 下载 / 451★ / 11 语言（stat-display 位）
-- Shift-Router（Pi）：1,235 月下载（stat-display 位）；0 依赖 / ~196kB 为脚注行
-- DSH Shift-Router：62 tests passing 为脚注行（不占大数字位）
+- **Karpathy LLM Wiki**（产品名；仓库名 obsidian-llm-wiki 仅内部用）：34,055 下载 / 451★ / 11 语言（stat-display 位）；官方站 llmwiki.greenerai.top
+- Shift-Router（统一品牌单卡）：1,235 月下载（npm·pi 实现，stat-display 位）；环境数不设统计位（双环境信息进 note：兼容 Pi 与 DeepSeek Harness）；脚注行 = 零依赖 · 安装体积约 409 kB（README 徽章墙 packagephobia 口径）
 
 ## 7. 验收清单（文案轮完成后逐项打勾）
 

@@ -14,6 +14,8 @@ export interface ProofCardData {
   title: string;
   /** 副标（产品口径，如 'for Pi'） */
   subtag?: string;
+  /** 卡片内嵌一行文字微流程（如「你的笔记 → 图检索 → 回答，每句附出处」），无自绘图形 */
+  flow?: string;
   body: string;
   /** 受众有感的权威数字（stat-display 大字位；工程琐数放 note 脚注） */
   stats: ProofStat[];
@@ -76,7 +78,9 @@ export interface Dict {
     eyebrow: string;
     heading: string;
     body: string[];
-    code: string[];
+    /** 双轨结构卡：一个品牌一张卡（用本名，不用域名），桥线点明同源 */
+    tracks: { name: string; role: string }[];
+    bridge: string;
   };
   road: {
     eyebrow: string;

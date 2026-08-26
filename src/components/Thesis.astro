@@ -5,24 +5,36 @@ const t = getDict(Astro.currentLocale).thesis;
 
 <section id="thesis" class="border-t border-hairline-soft bg-canvas py-20 md:py-28">
   <div class="container-site">
-    <div class="mb-14 max-w-2xl">
+    <div class="mb-12 max-w-2xl">
       <span class="eyebrow" data-reveal>{t.eyebrow}</span>
       <h2 class="display-lg mt-4" data-reveal data-reveal-delay="80">{t.heading}</h2>
     </div>
-    <div>
+
+    <!-- 五条论点：幽灵大序号 + hairline 分行（编辑排版式，无胶囊、无轨道） -->
+    <ol>
       {t.items.map((item, i) => (
-        <article
-          class="grid grid-cols-1 gap-3 border-t border-hairline py-10 md:grid-cols-12 md:gap-8"
+        <li
+          class:list={[
+            'grid grid-cols-[56px_1fr] gap-x-4 py-8 md:grid-cols-[96px_1fr] md:gap-x-8 md:py-10',
+            i > 0 && 'border-t border-hairline-soft',
+          ]}
           data-reveal
-          data-reveal-delay={i * 90}
+          data-reveal-delay={i * 70}
         >
-          <div class="md:col-span-2">
-            <span class="font-mono text-sm text-steel">{item.index}</span>
+          <span
+            class="select-none font-display text-[40px] leading-none text-hairline-strong md:text-[52px]"
+            aria-hidden="true"
+          >
+            {item.index}
+          </span>
+          <div class="min-w-0 pt-1.5 md:pt-2.5">
+            <h3 class="font-display text-[24px] font-medium leading-snug tracking-[-0.01em] text-ink md:text-[28px]">
+              {item.title}
+            </h3>
+            <p class="mt-3 max-w-xl text-base leading-relaxed text-slate">{item.body}</p>
           </div>
-          <h3 class="font-display text-2xl font-medium text-ink md:col-span-5 md:text-3xl">{item.title}</h3>
-          <p class="max-w-md text-base leading-relaxed text-slate md:col-span-5">{item.body}</p>
-        </article>
+        </li>
       ))}
-    </div>
+    </ol>
   </div>
 </section>

@@ -7,33 +7,44 @@ const o = getDict(Astro.currentLocale).organism;
   <div class="container-site">
     <div class="mx-auto max-w-3xl text-center">
       <span class="eyebrow" data-reveal>{o.eyebrow}</span>
-      <h2
-        class="mt-6 font-display text-3xl font-medium leading-[1.2] tracking-tight text-ink md:text-4xl"
-        data-reveal
-        data-reveal-delay="80"
-      >
+      <h2 class="display-lg mt-6" data-reveal data-reveal-delay="80">
         {o.heading}
       </h2>
-      <div class="mx-auto mt-8 max-w-2xl space-y-5 text-lg leading-relaxed text-slate">
+      <div class="mx-auto mt-8 max-w-2xl space-y-5 text-[17px] leading-relaxed text-slate">
         {o.body.map((b, i) => (
           <p data-reveal data-reveal-delay={160 + i * 80}>{b}</p>
         ))}
       </div>
+
+      <!-- 双轨结构：一条贯穿线居中标注「同一批人」，线下分出两条轨道（父→子语义） -->
       <div
-        class="mx-auto mt-10 max-w-md rounded-card border border-white/10 bg-code-bg p-5 text-left shadow-sm"
+        class="mx-auto mt-14 max-w-2xl"
         data-reveal
-        data-reveal-delay={160 + o.body.length * 80 + 80}
+        data-reveal-delay={160 + o.body.length * 80 + 40}
       >
-        {o.code.map((line, i) => (
-          <p
-            class:list={[
-              'font-mono text-[12.5px] leading-7',
-              i === 0 ? 'text-mint-bright' : 'text-muted',
-            ]}
-          >
-            {line}
-          </p>
-        ))}
+        <div class="flex items-center gap-4" aria-hidden="true">
+          <span class="h-px flex-1 bg-hairline-strong"></span>
+          <span class="mono-label whitespace-nowrap text-[11px] uppercase tracking-[0.16em] text-primary">
+            {o.bridge}
+          </span>
+          <span class="h-px flex-1 bg-hairline-strong"></span>
+        </div>
+        <!-- 桥线文字对读屏可见，装饰线才 aria-hidden -->
+        <p class="sr-only">{o.bridge}</p>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2">
+          {o.tracks.map((t, i) => (
+            <div
+              class:list={[
+                'px-4 py-8 text-center sm:px-6',
+                i > 0 && 'border-t border-hairline-soft sm:border-l sm:border-t-0',
+              ]}
+            >
+              <p class="font-display text-[22px] font-medium text-ink">{t.name}</p>
+              <p class="mt-2 text-[15px] leading-relaxed text-slate">{t.role}</p>
+            </div>
+          ))}
+        </div>
       </div>
     </div>
   </div>
