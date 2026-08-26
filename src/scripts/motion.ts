@@ -194,28 +194,35 @@ if (reduce) {
     }
   }
 
-  // Hero 背景：『光织』（Light Weave）——亚阈值细点点阵（~0.5px、间距 5px），
-  // 单点低于视觉分辨率，整场融为织物/纸纹；流场是透过织物的光斑，缓慢漂移。
-  // 密度：桌面 3px 网格 + 0.8-1.6px 点 + 明亮基线（密度与面积同步提，视觉可见差异）
-  // 设计原理：点大 + 网格可见 = 像素屏（拒绝）；点小 + 密网 + 边缘渐隐 = 织物质感（追求）。
-  // 性能：DPR 封顶 2、按视口自适应步长、typed-array 桶索引（零 GC）、边缘渐隐预计算、
-  // 离屏/后台暂停、帧时自适应降档（低端机自动降密）。
+  // Hero 背景：『光织』（Light Weave）——均匀密网细点阵 + 缓慢流动的光斑。
+  // 取向：默认淡（基线 0.05，文字可读）—— 动面强（flow×1.8速度 + smoothstep 对比增强，亮处 0.42+）
+  // 动效速度：flow 时间常数 ~0.0002-0.0004（均值周期约 20-30 帧），移动可感知但从容。
+  // 性能：DPR 封顶 2、flow 网格共享（三角函数 ~74k 次/帧 → ~2 万次）、typed-array 桶索引（零 GC）、
+  // 离屏/后台暂停、触屏/移动端直接禁用（用户明确要求）。低端桌面靠帧时自适应降档兜底。
   const canvas = document.querySelector<HTMLCanvasElement>('#hero-ascii');
-  if (canvas) {
+  // 触屏/移动端：无 hover/fine 指针 → 不渲染动态背景（CSS 渐变氛围已足够，省电省 GPU）
+  const coarsePointer =
+    window.matchMedia('(hover: none)').matches || window.matchMedia('(pointer: coarse)').matches;
+  if (canvas && !coarsePointer) {
     const ctx = canvas.getContext('2d');
     if (ctx) {
       const dpr = Math.min(window.devicePixelRatio || 1, 2);
       const DAMP = 0.09;
-      const RADIUS = 240;
+      const RADIUS = 320;
       const R2 = RADIUS * RADIUS;
       const INV_R = 1 / RADIUS;
-      const FADE = 150; // 边缘渐隐带宽
+      const FADE = 140; // 边缘渐隐带宽
       const BUCKETS = 14;
       let quality = 0; // 降档计数：0 全质，1/2 各 +2 步长
       let STEP = 5;
       let cw = 0;
       let ch = 0;
       let dots: { x: number; y: number; u: number; v: number; e: number; tw: number }[] = [];
+      // flow 网格：cellSize=8px 邻域共享同一 flow 值，三角函数开销降 ~30 倍
+      const CELL = 8;
+      let fgW = 0;
+      let fgH = 0;
+      let fg: Float32Array = new Float32Array(1024 * 16);
       let pX = -9999;
       let pY = -9999;
       let lX = -9999;
@@ -235,23 +242,40 @@ if (reduce) {
         canvas.width = Math.floor(cw * dpr);
         canvas.height = Math.floor(ch * dpr);
         ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-        // 细网基准步长 + 质量降档 + 数量安全阀（≤55k 点）
-        STEP = (cw < 600 ? 6 : cw < 900 ? 5 : 3.5) + quality * 2; // 密档覆盖 900+ 视口；900 以下退一档（性能）
-        while ((cw / STEP) * (ch / STEP) > 150000) STEP += 1;
+        // 桌面密网：>=900px 用 4px；600-900 用 5px；600px 以下（桌面小窗）6px。触屏已在上面排除。
+        STEP = (cw < 600 ? 6 : cw < 900 ? 5 : 4) + quality * 2; // 桌面 4px：过密回调，中间平衡值
+        while ((cw / STEP) * (ch / STEP) > 130000) STEP += 1;
         dots = [];
         for (let y = STEP / 2; y < ch; y += STEP) {
           for (let x = STEP / 2; x < cw; x += STEP) {
-            // 边缘渐隐：距边 FADE 内平滑衰减 —— 织物有边界，不生硬切边
             const e = smooth(Math.min(x, cw - x, ch - y, y * 1.4) / FADE);
             if (e <= 0.01) continue;
-            dots.push({
-              x,
-              y,
-              u: x * 0.0075,
-              v: y * 0.0075,
-              e,
-              tw: 0,
-            });
+            dots.push({ x, y, u: x * 0.0075, v: y * 0.0075, e, tw: 0 });
+          }
+        }
+        // 重建 flow 网格尺寸（CELL=8，采样稀疏但光斑是低频的，视觉无损）
+        fgW = Math.ceil(cw / CELL);
+        fgH = Math.ceil(ch / CELL);
+        if (fg.length < fgW * fgH) fg = new Float32Array(fgW * fgH);
+      };
+
+      const computeFlow = (t: number) => {
+        const w = fgW;
+        const h = fgH;
+        if (w * h > fg.length) fg = new Float32Array(w * h);
+        const tt1 = t * 0.00036;
+        const tt2 = t * 0.00049;
+        const tt3 = t * 0.00065; // 速度 ×1.8：流动更明显
+        for (let gy = 0; gy < h; gy++) {
+          const gyv = (gy * CELL + CELL / 2) * 0.0075;
+          const row = gy * w;
+          for (let gx = 0; gx < w; gx++) {
+            const gxu = (gx * CELL + CELL / 2) * 0.0075;
+            const n =
+              Math.sin(gxu + tt1) * Math.cos(gyv + tt2) * 0.65 +
+              Math.sin(gxu * 1.7 - tt3) * 0.35 +
+              Math.sin((gxu + gyv) * 0.9 + tt2) * 0.25;
+            fg[row + gx] = Math.max(0, n * 0.5 + 0.5);
           }
         }
       };
@@ -261,7 +285,8 @@ if (reduce) {
       const COLOR_HIGH = [167, 243, 208];
       const lerpBucket = (bi: number, alpha: number) => {
         const t = (bi + 0.5) / BUCKETS;
-        const mix = t * t;
+        // mix = t^1.4：中间调过渡均匀（t² 在低桶处斜率过陡 → 桶间色差跳变 = 色阶断层）
+        const mix = Math.pow(t, 1.4);
         const r = Math.round(COLOR_LOW[0] * (1 - mix) + COLOR_HIGH[0] * mix);
         const g = Math.round(COLOR_LOW[1] * (1 - mix) + COLOR_HIGH[1] * mix);
         const b = Math.round(COLOR_LOW[2] * (1 - mix) + COLOR_HIGH[2] * mix);
@@ -269,11 +294,11 @@ if (reduce) {
       };
 
       // 预分配桶索引表（每帧复用，零 GC）
-      const maxDots = 150000;
+      const maxDots = 120000;
       const bIdx: Int32Array[] = Array.from({ length: BUCKETS }, () => new Int32Array(maxDots));
       const bCnt = new Int32Array(BUCKETS);
 
-      // 帧时自适应：滚动平均 > 30ms 持续 240 帧（~4s）才降一档——防加载抖动/低级环境误降吞掉视觉密度
+      // 帧时自适应：滚动平均 > 30ms 持续 240 帧才降一档（低端机保护，正常硬件不触发）
       let ftAcc = 0;
       let ftN = 0;
       let lastT = 0;
@@ -294,49 +319,46 @@ if (reduce) {
         ctx.clearRect(0, 0, cw, ch);
         lX += (pX - lX) * DAMP;
         lY += (pY - lY) * DAMP;
+        computeFlow(t);
         // twinkle：稀疏微光（克制）
-        if (Math.random() < 0.07 && dots.length) {
+        if (Math.random() < 0.05 && dots.length) {
           const d = dots[Math.floor(Math.random() * dots.length)];
-          d.tw = t + 420 + Math.random() * 320;
+          d.tw = t + 500 + Math.random() * 300;
         }
         bCnt.fill(0);
-        const tt1 = t * 0.0002;
-        const tt2 = t * 0.00027;
-        const tt3 = t * 0.00036;
         for (let i = 0; i < dots.length; i++) {
           const d = dots[i];
-          // 三项连续流场：空间频率决定光斑尺度（~800px 大池 + ~500px 波动）
-          const n =
-            Math.sin(d.u + tt1) * Math.cos(d.v + tt2) * 0.65 +
-            Math.sin(d.u * 1.7 - tt3) * 0.35 +
-            Math.sin((d.u + d.v) * 0.9 + tt2) * 0.25;
-          const flow = Math.max(0, n * 0.5 + 0.5); // 0..1
-          let a = d.e * (0.08 + flow * 0.34); // 边缘渐隐 ×（明亮基线 + 光斑提亮）—— 密度提升必须配合亮度，否则看不见
-          // twinkle 微光
+          // 从 flow 网格采样（邻域共享，几乎零三角函数）
+          const gx = (d.x / CELL) | 0;
+          const gy = (d.y / CELL) | 0;
+          const flow = fg[gy * fgW + gx] ?? 0;
+          // 对比增强：smoothstep 把中间值推向两端（暗更暗、亮更亮）→ 光斑对比强烈但整体更淡
+          const fc = flow * flow * (3 - 2 * flow);
+          let a = d.e * (0.05 + fc * 0.42); // 基线下调至 0.05（文字更清晰）；亮处 0.42+（动效仍有存在感）
           if (d.tw > t) {
-            const k = ((d.tw - t) / 740) ** 2;
+            const k = ((d.tw - t) / 800) ** 2;
             a = Math.min(1, a + k * 0.45);
           }
-          // 指针光晕：平方衰减；包围盒外跳过（省 sqrt）
           if (active) {
             const dx = d.x - lX;
             const dy = d.y - lY;
             const d2 = dx * dx + dy * dy;
             if (d2 < R2) {
               const k = 1 - Math.sqrt(d2) * INV_R;
-              a = Math.min(1, a + k * k * 0.32);
+              // 光晕：k² 衰减 ×0.45 —— 柔和提亮，不抢主体；中心与边缘连续（无断层）
+              a = Math.min(1, a + k * k * 0.45);
             }
           }
           const bi = Math.min(BUCKETS - 1, (a * BUCKETS) | 0);
           bIdx[bi][bCnt[bi]++] = i;
         }
-        // 半径由桶号确定性导出（亚像素下与逐点半径无视觉差异）
         for (let bi = 0; bi < BUCKETS; bi++) {
           const cnt = bCnt[bi];
           if (!cnt) continue;
-          const rr = 0.8 + (bi / BUCKETS) * 0.8; // 点随密度放大（0.8-1.6px），密而不糊
+          // 点径实打实可见：1.4px 基线 → 2.4px 亮处（肉眼可辨的密网，不再是亚阈值）
+          const rr = 1.0 + (bi / BUCKETS) * 0.8; // 1.0-1.8px：再加大一档，点更饱满可见
           const list = bIdx[bi];
-          ctx.fillStyle = lerpBucket(bi, ((bi + 0.5) / BUCKETS) * 0.85);
+          ctx.fillStyle = lerpBucket(bi, ((bi + 0.4) / BUCKETS) * 0.94); // 桶内偏下采样 → 相邻桶亮度差缩减（防 banding）
           ctx.beginPath();
           for (let j = 0; j < cnt; j++) {
             const d = dots[list[j]];
@@ -370,6 +392,7 @@ if (reduce) {
       }
 
       build();
+      computeFlow(0);
       start();
 
       const heroEl = canvas.closest('.mesh-hero');
@@ -386,13 +409,7 @@ if (reduce) {
         });
       }
 
-      window.addEventListener(
-        'resize',
-        () => {
-          build();
-        },
-        { passive: true },
-      );
+      window.addEventListener('resize', build, { passive: true });
     }
   }
 }
