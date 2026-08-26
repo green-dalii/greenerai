@@ -4,7 +4,7 @@
 
 ## 定位与叙事（不可偏离）
 
-- **命题（两行口号，锁定）**：`Intelligence is no longer scarce. Leverage is the new company.` ｜ `智力不再稀缺。杠杆才是新的公司。`（原第三句 "Trust is the new currency." 已退役；口号全站仅 Hero H1 与 ogTitle 两处）
+- **命题（两行口号，锁定）**：`Intelligence is no longer scarce. Leverage is the new company.` ｜ `智力不再稀缺。拼的不再是人头，是杠杆。`（ZH 为母语重铸，非直译；「公司」全站 ≤2 次）（原第三句 "Trust is the new currency." 已退役；口号全站仅 Hero H1 与 ogTitle 两处）
 - **品类句（全站唯一自我描述）**：EN `We turn what you know into leverage.` ｜ ZH `我们把所知，变成杠杆。`——meta/OG/footer 一律用它或其短变体。
 - **公司是什么**：把个人的积累变成公司的杠杆——造这些杠杆，也运行在这些杠杆上。组织形态主张 = **小团队 + 高杠杆**（杠杆替代人头；**不用 OPC/一人公司作为主张**，那与真实的几人团队脱节）。
 - **稀缺性翻转（全站主线）**：智力不再稀缺 → 稀缺的是**人性的部分**，即三连词 **Know · Taste · Do / 知 · 品 · 行**（输入→选择→输出的完成管线）：知=你积累了什么（买不到抄不走）；品=你怎么选（生成越廉价取舍越值钱，核心信念）；行=你交付了什么（做完才是证明）。展示位用短形态 `知/品/行`，正文可展开「所知、品味、所行」。

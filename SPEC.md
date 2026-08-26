@@ -29,6 +29,7 @@
 - **禁用展示词**：Trust（作关键词/标题/徽章/状态字）、Judge / Judgement、"One person, amplified" 及一切一人公司暗示。理念只呈现机制（出处可查、件件有源、经得起核），不命名、不喊词。
 
 - **重复定律**：每个论点只在 Thesis 完整讲一次；其余章节最多一句回指，禁止整段复述。同一比喻全站最多出现一次。
+- **中文独立创作（非镜像翻译）**：口号与标题的中文按母语语感重写，允许脱离英文字面——H1b 中文形态锁定为「拼的不再是人头，是杠杆。」。「公司」一词全站中文最多出现 2 次（当前：面板刻度「公司级」+ Thesis 05 对比句），不得再新增。
 
 ## 1. 定位
 
@@ -71,7 +72,7 @@
 ## 3. 叙事蓝图（文案轮的逐段依据；标题方向已锁定，正文由文案轮产出）
 
 ### Hero
-- **H1**：两行口号（锁定）
+- **H1**：EN 两行锁定；ZH = 智力不再稀缺。/ 拼的不再是人头，是杠杆。（锁定，见 §0）
 - **eyebrow**：`Leverage for the AI-native era` / `AI 时代的杠杆`（锁定）
 - **副句要求**：≤2 句；讲清「智力变便宜 → 稀缺的是知/品/行」；不用禁用词；不提产品；中英各自母语级，禁止互译腔
 - **面板（HeroStack）**：headLabel `what stays scarce` / `如今稀缺的`；三行 = `知 / 品 / 行` 各配一句话注解（如 知——留在你手里的积累）；底部 you→company-scale 杠杆线；**删除 shipped/researching 徽章与 legend**；caption 废除 "One person, amplified"
@@ -84,12 +85,12 @@
 | 02 | What you know is the moat. | 知，是护城河。 | 积累买不到抄不走；本地优先、默认私有 |
 | 03 | What you choose is the edge. | 品，是分野。 | 生成廉价化后取舍值钱；设计工作室=每日练习（双轨一笔带过） |
 | 04 | What you finish is the proof. | 行，是证明。 | 点子廉价，做完才算数；小团队的活计休息时也在走 |
-| 05 | Leverage turns all three into a company. | 杠杆，把三者变成公司。 | 综合条：02–04 相乘，直接论证口号第二行 |
+| 05 | Leverage turns all three into a company. | 乘上杠杆，小即是强。 | 综合条：02–04 相乘，直接论证口号第二行 |
 
 正文写作规则：每条 body ≤2 句；五条之间不得复述彼此；05 不引入任何新概念。
 
 ### Organism（我们）
-- **标题弃用**"种子/天花板"类无锚点比喻；直接陈述小团队高杠杆（示例方向：`A handful of people. Company-scale reach.` / `几个人，公司级的分量。`）
+- **标题弃用**"种子/天花板"类无锚点比喻；直接陈述小团队高杠杆（示例方向：`A handful of people. Company-scale reach.` / `人不多，事不小。`）
 - 双轨段保留要义，修掉「并行运行纪律 / disciplines run in parallel」类生硬表述（文案轮）
 - org-chart 代码卡保留：`$ org --chart / people: a handful / brands: 2 / reach: 11 languages / licenses: all open`
 - 收尾保留：「我们不是预言，我们是其中之一——运行在自己构建的东西上。」
