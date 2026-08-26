@@ -202,24 +202,47 @@ const links = [
     transition: height 0.6s cubic-bezier(0.4, 0, 0.2, 1);
   }
 
-  /* 下滑态：居中半透明胶囊，纯横向收缩（Y 轴不动） */
+  /* 下滑态（桌面 ≥lg）：居中半透明胶囊，纯横向收缩（Y 轴不动） */
   [data-header].is-scrolled {
     /* 纯横向形变：padding-top 保持 0，不上下浮 */
   }
-  [data-header].is-scrolled .nav-shell {
-    max-width: 680px;
-    padding: 9px 24px; /* 水平 padding 与顶部一致 — 胶囊不太瘪 */
-    margin-top: 8px;
-    border-radius: 999px;
-    background: rgba(255, 255, 255, 0.55);
-    backdrop-filter: blur(20px) saturate(1.6);
-    -webkit-backdrop-filter: blur(20px) saturate(1.6);
-    box-shadow:
-      0 12px 40px rgba(10, 108, 75, 0.1),
-      0 2px 8px rgba(0, 0, 0, 0.04);
+  @media (min-width: 1024px) {
+    [data-header].is-scrolled .nav-shell {
+      max-width: 680px;
+      padding: 9px 24px; /* 水平 padding 与顶部一致 — 胶囊不太瘪 */
+      margin-top: 8px;
+      border-radius: 999px;
+    }
+    [data-header].is-scrolled .nav-inner {
+      height: 52px; /* 内高不变 */
+    }
   }
-  [data-header].is-scrolled .nav-inner {
-    height: 52px; /* 内高不变 */
+
+  /* 下滑态（移动端 <lg）：视口本来就容不下 680 胶囊，收缩无从谈起 ——
+     改为全宽半透明毛玻璃条：无圆角、不缩进，只给玻璃底 + 细分隔线 */
+  @media (max-width: 1023.98px) {
+    [data-header].is-scrolled .nav-shell {
+      border-radius: 0;
+      margin-top: 0;
+      background: rgba(255, 255, 255, 0.72);
+      backdrop-filter: blur(16px) saturate(1.5);
+      -webkit-backdrop-filter: blur(16px) saturate(1.5);
+      box-shadow:
+        0 1px 0 var(--color-hairline-soft),
+        0 8px 24px rgba(10, 108, 75, 0.06);
+    }
+  }
+
+  /* 桌面胶囊的玻璃底色也归入 ≥lg 断点（移动端用上面自己的玻璃参数） */
+  @media (min-width: 1024px) {
+    [data-header].is-scrolled .nav-shell {
+      background: rgba(255, 255, 255, 0.55);
+      backdrop-filter: blur(20px) saturate(1.6);
+      -webkit-backdrop-filter: blur(20px) saturate(1.6);
+      box-shadow:
+        0 12px 40px rgba(10, 108, 75, 0.1),
+        0 2px 8px rgba(0, 0, 0, 0.04);
+    }
   }
 
   @media (prefers-reduced-motion: reduce) {

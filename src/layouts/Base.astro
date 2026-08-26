@@ -31,6 +31,12 @@ const organizationLd = {
   url: siteUrl + '/',
   logo: siteUrl + '/logomark.svg',
   description: dict.meta.description,
+  contactPoint: {
+    '@type': 'ContactPoint',
+    contactType: 'customer support',
+    email: 'hi@greenerai.top',
+    availableLanguage: ['English', 'zh-Hans'],
+  },
   knowsAbout: ['leverage for the AI-native era', 'local-first knowledge tools', 'model routing for coding agents', 'open source'],
   industry: 'Software',
   sameAs: [
@@ -47,6 +53,34 @@ const websiteLd = {
   url: siteUrl + '/',
   inLanguage: ldLang,
 };
+// GEO 关键：让 LLM 拿到两个产品的机器可读字段（license / 价格 / 来源 / 同件）
+const productLd = (name: string, url: string, license: string, repoUrl: string, description: string) => ({
+  '@context': 'https://schema.org',
+  '@type': 'SoftwareApplication',
+  name,
+  url,
+  applicationCategory: 'DeveloperApplication',
+  operatingSystem: 'Cross-platform',
+  license,
+  offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' },
+  codeRepository: repoUrl,
+  publisher: { '@type': 'Organization', name: 'Greener-Dalii', url: siteUrl + '/' },
+  description,
+});
+const karpathyWikiLd = productLd(
+  'Karpathy LLM Wiki',
+  'https://llmwiki.greenerai.top/',
+  'Apache-2.0',
+  'https://github.com/green-dalii/obsidian-llm-wiki',
+  "Karpathy's LLM Wiki, rebuilt as an Obsidian plugin. Your notes become a knowledge base that answers — every answer cites its source, nothing leaves your machine.",
+);
+const shiftRouterLd = productLd(
+  'Shift-Router',
+  'https://shiftrouter.greenerai.top/',
+  'MIT',
+  'https://github.com/green-dalii/pi-shift-router',
+  'Task-level router for coding agents. Every turn is triaged, instant upgrades when it counts, same-turn failover on rate limits. One brand, two hosts (Pi & DeepSeek Harness).',
+);
 ---
 
 <!doctype html>
@@ -63,7 +97,6 @@ const websiteLd = {
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
     <link rel="canonical" href={canonical} />
-    <link rel="alternate" type="text/markdown" href="/llms.txt" />
 
     <link rel="alternate" hreflang="en" href={hreflangEn} />
     <link rel="alternate" hreflang="zh-CN" href={hreflangZh} />
@@ -82,12 +115,15 @@ const websiteLd = {
     <meta property="og:locale:alternate" content={isZh ? 'en_US' : 'zh_CN'} />
 
     <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:site" content="@greenerdalii" />
     <meta name="twitter:title" content={dict.meta.ogTitle} />
     <meta name="twitter:description" content={dict.meta.ogDescription} />
     <meta name="twitter:image" content={siteUrl + '/og-image.png'} />
 
     <script type="application/ld+json" is:inline set:html={JSON.stringify(organizationLd)}></script>
     <script type="application/ld+json" is:inline set:html={JSON.stringify(websiteLd)}></script>
+    <script type="application/ld+json" is:inline set:html={JSON.stringify(karpathyWikiLd)}></script>
+    <script type="application/ld+json" is:inline set:html={JSON.stringify(shiftRouterLd)}></script>
 
     <!-- 早期标记 js：无 JS 时 [data-reveal] 保持可见（不做 .js 门控） -->
     <script is:inline>

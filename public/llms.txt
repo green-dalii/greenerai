@@ -1,34 +1,39 @@
 # Greener-Dalii · 格润达理
 
 > Intelligence is no longer scarce. Leverage is the new company.
-> 智力不再稀缺。杠杆才是新的公司。
+> We turn what you know into leverage. / 我们把所知，变成杠杆。
+
+> Detailed reference (long-form, with mechanism + numbers + sources): [llms-full.txt](https://greenerai.top/llms-full.txt)
 
 ## About
 
-Greener-Dalii (格润达理) turns what you know into leverage. We are a small team with company-scale reach — everything open source, every number public, running on our own stack.
+- [Greener-Dalii · 格润达理](https://greenerai.top/): A handful of people with company-scale reach. We turn what you know into leverage — everything open source, every number public, running on our own stack.
+- [Why we build](https://greenerai.top/#thesis): The full belief — intelligence is no longer scarce, so the moat moved to what you know, how you choose, and what you finish.
+- [Our story](https://greenerai.top/#organism): Two parallel tracks, one team — Greener-Dalii (AI-native leverage) and Greener-Dalii Studio (daily practice of taste).
 
 ## Products
 
-- Karpathy LLM Wiki: An Obsidian plugin that turns your notes into a connected, queryable knowledge base — every answer cites its source, local-first, no backend.
-  - https://github.com/green-dalii/obsidian-llm-wiki (repo)
-  - https://llmwiki.greenerai.top (official site)
-  - https://community.obsidian.md/plugins/karpathywiki (marketplace)
-- Shift-Router: Task-level router for coding agents. Every turn is triaged into one of two configured model tiers — instant upgrades, trend-based downgrades, cache-aware routing, same-turn failover on rate limits; on complex tasks the strong tier orchestrates like a CTO, delegating implementation to fast subagents. One brand, two hosts:
-  - Pi: https://github.com/green-dalii/pi-shift-router · https://www.npmjs.com/package/pi-shift-router
-  - DeepSeek Harness: https://github.com/green-dalii/dsh-shift-router
-  - Official site: https://shiftrouter.greenerai.top
+- [Karpathy LLM Wiki](https://llmwiki.greenerai.top/): Karpathy's LLM Wiki, rebuilt as an Obsidian plugin. Your notes become a knowledge base that answers — every answer cites its source, nothing leaves your machine.
+- [Karpathy LLM Wiki · GitHub](https://github.com/green-dalii/obsidian-llm-wiki): Open-source repository for the Karpathy LLM Wiki plugin (Apache-2.0).
+- [Karpathy LLM Wiki · Marketplace](https://community.obsidian.md/plugins/karpathywiki): Official listing on the Obsidian community plugins directory.
+- [Shift-Router](https://shiftrouter.greenerai.top/): Task-level router for coding agents. Every turn is triaged, instant upgrades when it counts, same-turn failover on rate limits. One brand, two hosts.
+- [Shift-Router for Pi](https://www.npmjs.com/package/pi-shift-router): Pi extension. Zero runtime dependencies, ~409 kB install, 1,235 monthly downloads.
+- [Shift-Router · GitHub](https://github.com/green-dalii/pi-shift-router): Source for the Pi implementation (MIT).
+- [Shift-Router for DeepSeek Harness](https://github.com/green-dalii/dsh-shift-router): Source for the DeepSeek Harness implementation.
 
-## Projects
+## Other projects
 
-- diflowy: https://diflowy.greenerai.top · https://github.com/green-dalii/diflowy
-- d2l-note: https://github.com/green-dalii/d2l-note
+- [Diflowy](https://diflowy.greenerai.top/): Workflow notes tool.
+- [Diflowy · GitHub](https://github.com/green-dalii/diflowy): Source for Diflowy.
+- [d2l-note](https://github.com/green-dalii/d2l-note): Open-source note utilities.
 
 ## Organization
 
-- Website: https://greenerai.top
-- GitHub: https://github.com/green-dalii
-- Design Studio (parallel track): https://greenerdalii.top
+- [Greener-Dalii on GitHub](https://github.com/green-dalii): All repositories.
+- [Design Studio — greenerdalii.top](https://greenerdalii.top): The parallel design track. Same people, different daily craft.
+- [Contact — hi@greenerai.top](mailto:hi@greenerai.top): We answer.
 
-## Contact
+## Optional
 
-Email hi@greenerai.top — we answer.
+- [Sitemap](https://greenerai.top/sitemap-index.xml): All pages, en + zh-CN.
+- [robots.txt](https://greenerai.top/robots.txt): Crawler policy, with explicit allow-listing for GPTBot, ClaudeBot, PerplexityBot, CCBot, and Google-Extended.

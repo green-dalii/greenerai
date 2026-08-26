@@ -4,17 +4,21 @@ const dict = getDict(Astro.currentLocale);
 const current = Astro.currentLocale;
 ---
 
+<!--
+  语言切换：8px 圆角分段控件（遵守禁胶囊按钮红线）。
+  触控目标 ≥36px；.mono-label 让 zh 下「中文」回落 sans，避免 mono 无 CJK 字形穿帮。
+-->
 <nav
-  class="flex items-center rounded-full border border-hairline bg-surface p-0.5"
+  class="flex w-fit items-center gap-0.5 rounded-btn border border-hairline bg-surface p-1"
   aria-label={dict.langSwitch.label}
 >
   <a
     href="/"
     aria-current={current === 'en' ? 'page' : undefined}
     class:list={[
-      'rounded-full px-3 py-1.5 font-mono text-[11px] font-medium transition-colors duration-200',
+      'mono-label rounded-[6px] px-3.5 py-2 text-center text-[11px] font-medium leading-none tracking-wide transition-colors duration-200',
       current === 'en'
-        ? 'bg-ink text-white'
+        ? 'bg-primary text-white'
         : 'text-steel hover:text-ink',
     ]}
   >
@@ -24,9 +28,9 @@ const current = Astro.currentLocale;
     href="/zh/"
     aria-current={current === 'zh' ? 'page' : undefined}
     class:list={[
-      'rounded-full px-3 py-1.5 font-mono text-[11px] font-medium transition-colors duration-200',
+      'mono-label rounded-[6px] px-3.5 py-2 text-center text-[11px] font-medium leading-none tracking-wide transition-colors duration-200',
       current === 'zh'
-        ? 'bg-ink text-white'
+        ? 'bg-primary text-white'
         : 'text-steel hover:text-ink',
     ]}
   >
