@@ -1,23 +1,26 @@
 # Greener-Dalii · 格润达理
 
-> Intelligence is no longer scarce. Leverage is the new company. Trust is the new currency.
-> 智力不再稀缺。杠杆才是新的公司。信任是新的通货。
+> Intelligence is no longer scarce. Leverage is the new company.
+> 智力不再稀缺。杠杆才是新的公司。
 
 ## About
 
-Greener-Dalii (格润达理) builds the infrastructure of the AI-native era. We are a small team running on leverage and trust by construction — everything open source, every number public, no curtain.
+Greener-Dalii (格润达理) turns what you know into leverage. We are a small team with company-scale reach — everything open source, every number public, running on our own stack.
 
 ## Products
 
 - obsidian-llm-wiki: A local-first Obsidian plugin that turns your files into a queryable knowledge base where every answer cites its source.
   - https://github.com/green-dalii/obsidian-llm-wiki
-- pi-shift-router: Auto-routing for coding agents — the right model for every task, with automatic failover and zero runtime dependencies.
+- Shift-Router (for Pi): Two-tier model routing for the Pi coding agent — everyday turns on affordable models, automatic step-up when it matters, zero runtime dependencies.
   - https://github.com/green-dalii/pi-shift-router
   - https://www.npmjs.com/package/pi-shift-router
+  - https://shiftrouter.greenerai.top
+- DSH Shift-Router (for DeepSeek Harness): The same two-tier design adapted for DeepSeek Harness.
+  - https://github.com/green-dalii/dsh-shift-router
 
 ## Projects
 
-- diflowy: https://github.com/green-dalii/diflowy
+- diflowy: https://diflowy.greenerai.top · https://github.com/green-dalii/diflowy
 - d2l-note: https://github.com/green-dalii/d2l-note
 
 ## Organization
@@ -28,4 +31,4 @@ Greener-Dalii (格润达理) builds the infrastructure of the AI-native era. We 
 
 ## Contact
 
-Write via GitHub issues — we answer.
+Email hi@greenerai.top — we answer.

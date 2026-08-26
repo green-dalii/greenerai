@@ -1,12 +1,11 @@
 ---
 /**
- * 轻量「人所稀缺的东西」状态面板 —— 一眼可读，无需解释：
- * 所知 / 所行 / 所信 三行（人话词 + 状态，无产品名）。
- * 底部一条杠杆线：you ──► company-scale（一个人 + 对的工具 = 公司级产出）。
+ * 轻量「如今稀缺的」状态面板 —— 一眼可读，无需解释：
+ * 知 / 品 / 行 三行（单词 + 一句话注解，无状态徽章，无产品名）。
+ * 底部一条杠杆线：you ──► company-scale。
  *
  * 全浅色：白卡 + mint 细线，无深色块。装饰性，aria-hidden。
- * 动效由 motion.ts 的 heroStack() 编排：行交错入场、状态胶囊弹出、
- * 杠杆线绘制 + mint 脉冲持续扫过、指针物理按压。
+ * 动效由 motion.ts 的 heroStack() 编排：行交错入场、杠杆线绘制 + mint 脉冲、指针物理按压。
  */
 import { getDict } from '../i18n';
 const s = getDict(Astro.currentLocale).stack;
@@ -16,18 +15,14 @@ const s = getDict(Astro.currentLocale).stack;
   <div class="stack" data-hs-tilt>
     <div class="stack-head">
       <span class="stack-head-label">{s.headLabel}</span>
-      <span class="stack-head-legend">
-        <i class="dot is-on"></i>{s.legend.shipped}
-        <i class="dot is-off"></i>{s.legend.researching}
-      </span>
     </div>
 
     {s.rows.map((l) => (
       <div class="stack-row" data-hs-row>
         <span class="stack-idx">{l.idx}</span>
-        <span class="stack-name">{l.name}</span>
-        <span class={`stack-pill ${l.shipped ? 'is-on' : 'is-off'}`} data-hs-pill>
-          {l.status}
+        <span class="stack-main">
+          <span class="stack-name">{l.name}</span>
+          <span class="stack-gloss">{l.gloss}</span>
         </span>
       </div>
     ))}
@@ -46,7 +41,6 @@ const s = getDict(Astro.currentLocale).stack;
   /* 透视舞台：仅作结构容器。透视由 GSAP transformPerspective 内联提供，
      避免与父级 perspective 叠加造成双重畸变/抖动 */
   .stack-stage {
-    /* 透视刻意不设：由 GSAP transformPerspective 内联提供，避免双重畸变 */
     width: 100%;
     max-width: 440px;
     margin-inline: auto;
@@ -63,9 +57,6 @@ const s = getDict(Astro.currentLocale).stack;
   }
 
   .stack-head {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
     padding: 13px 18px;
     border-bottom: 1px solid var(--color-hairline-soft);
   }
@@ -76,35 +67,13 @@ const s = getDict(Astro.currentLocale).stack;
     text-transform: uppercase;
     color: var(--color-steel);
   }
-  .stack-head-legend {
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    font-family: var(--font-mono);
-    font-size: 10px;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    color: var(--color-steel);
-  }
-  .dot {
-    width: 5px;
-    height: 5px;
-    border-radius: 50%;
-    display: inline-block;
-  }
-  .dot.is-on {
-    background: var(--color-mint);
-  }
-  .dot.is-off {
-    background: var(--color-hairline-strong);
-  }
 
   .stack-row {
     display: grid;
-    grid-template-columns: 26px 1fr auto;
+    grid-template-columns: 26px 1fr;
     align-items: center;
     gap: 10px;
-    padding: 13px 18px;
+    padding: 14px 18px;
   }
   .stack-row + .stack-row {
     border-top: 1px solid var(--color-hairline-soft);
@@ -114,28 +83,25 @@ const s = getDict(Astro.currentLocale).stack;
     font-size: 10px;
     color: var(--color-steel);
   }
+  .stack-main {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 12px;
+    min-width: 0;
+  }
   .stack-name {
     font-family: var(--font-display);
-    font-size: 20px;
+    font-size: 22px;
     line-height: 1.2;
     color: var(--color-ink);
   }
-  .stack-pill {
+  .stack-gloss {
     font-family: var(--font-mono);
-    font-size: 10px;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    padding: 3px 9px;
-    border-radius: 999px;
-    white-space: nowrap;
-  }
-  .stack-pill.is-on {
-    background: var(--color-mint-soft);
-    color: var(--color-primary-deep);
-  }
-  .stack-pill.is-off {
-    border: 1px solid var(--color-hairline);
+    font-size: 11px;
+    letter-spacing: 0.02em;
     color: var(--color-steel);
+    text-align: right;
   }
 
   /* 底部杠杆线 */

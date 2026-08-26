@@ -71,11 +71,10 @@ if (reduce) {
     );
   });
 
-  // Hero 技术栈面板（data-hero-stack）：行交错入场 + 胶囊弹出 + 杠杆线绘制/脉冲
+  // Hero 稀缺面板（data-hero-stack）：行交错入场 + 杠杆线绘制/脉冲
   const stack = document.querySelector<HTMLElement>('[data-hero-stack]');
   if (stack) {
     const rows = stack.querySelectorAll<HTMLElement>('[data-hs-row]');
-    const pills = stack.querySelectorAll<HTMLElement>('[data-hs-pill]');
     const line = stack.querySelector<HTMLElement>('[data-hs-line]');
     const pulse = stack.querySelector<HTMLElement>('[data-hs-pulse]');
 
@@ -86,15 +85,9 @@ if (reduce) {
     tls.fromTo(
       rows,
       { autoAlpha: 0, y: 18 },
-      { autoAlpha: 1, y: 0, duration: 0.6, stagger: 0.09 },
+      { autoAlpha: 1, y: 0, duration: 0.6, stagger: 0.12 },
       0.15,
     )
-      .fromTo(
-        pills,
-        { autoAlpha: 0, scale: 0.7 },
-        { autoAlpha: 1, scale: 1, duration: 0.4, stagger: 0.09, transformOrigin: 'center center' },
-        '-=0.35',
-      )
       .fromTo(
         line,
         { scaleX: 0 },

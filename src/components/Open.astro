@@ -28,6 +28,12 @@ const o = getDict(Astro.currentLocale).open;
       >
         <a class="btn-primary" href={o.cta1Href} target="_blank" rel="noreferrer">{o.cta1}</a>
         <a class="btn-secondary" href={o.cta2Href} target="_blank" rel="noreferrer">{o.cta2}</a>
+      </div>
+      <div
+        class="mt-4 flex flex-col items-center justify-center gap-3 sm:flex-row"
+        data-reveal
+        data-reveal-delay="280"
+      >
         <a
           class="link-underline text-sm font-medium text-primary transition-colors duration-200 hover:text-primary-deep"
           href={o.cta3Href}
@@ -35,6 +41,13 @@ const o = getDict(Astro.currentLocale).open;
           rel="noreferrer"
         >
           {o.cta3} →
+        </a>
+        <span class="hidden h-3 w-px bg-hairline sm:block" aria-hidden="true"></span>
+        <a
+          class="link-underline text-sm font-medium text-slate transition-colors duration-200 hover:text-primary"
+          href={o.email.href}
+        >
+          {o.email.label} · {o.email.href.replace('mailto:', '')} →
         </a>
       </div>
       <p

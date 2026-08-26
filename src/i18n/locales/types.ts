@@ -12,20 +12,15 @@ export interface ProofStat {
 export interface ProofCardData {
   tag: string;
   title: string;
-  /** 副标（产品口径，如 'for Pi · DeepSeek Harness'） */
+  /** 副标（产品口径，如 'for Pi'） */
   subtag?: string;
   body: string;
+  /** 受众有感的权威数字（stat-display 大字位；工程琐数放 note 脚注） */
   stats: ProofStat[];
+  /** 工程琐数脚注（依赖数/测试数等），小字显示 */
+  note?: string;
   cta: string;
   href: string;
-}
-
-export interface RoadLayerData {
-  key: string;
-  title: string;
-  body: string;
-  status: string;
-  statusType: 'shipped' | 'researching';
 }
 
 export interface Dict {
@@ -55,16 +50,15 @@ export interface Dict {
     ctaPrimaryHref: string;
     ctaSecondary: string;
     ctaSecondaryHref: string;
-    /** Hero 右侧面板的图注 */
+    /** 面板下方的一行图注（杠杆语义收束） */
     stackCaption: string;
-    /** Hero 底部 mono 脚注（许可/开源声明） */
+    /** Hero 底部 mono 脚注 */
     footnote: string;
   };
-  /** Hero 右侧状态面板（所知/所行/所信，无产品名） */
+  /** Hero 右侧面板：知/品/行 三行 + 一句话注解（无状态徽章，无产品名） */
   stack: {
     headLabel: string;
-    legend: { shipped: string; researching: string };
-    rows: { idx: string; name: string; status: string; shipped: boolean }[];
+    rows: { idx: string; name: string; gloss: string }[];
     lever: { you: string; companyScale: string };
   };
   thesis: {
@@ -88,7 +82,8 @@ export interface Dict {
     eyebrow: string;
     heading: string;
     sub: string;
-    layers: RoadLayerData[];
+    /** 当下练习三条（chips 展示） */
+    practices: string[];
     coda: string;
   };
   open: {
@@ -101,6 +96,8 @@ export interface Dict {
     cta2Href: string;
     cta3: string;
     cta3Href: string;
+    /** 写信入口（mailto，真实可达） */
+    email: { label: string; href: string };
     note: string;
   };
   footer: {
@@ -109,6 +106,8 @@ export interface Dict {
     langsLabel: string;
     github: string;
     studio: string;
+    /** 邮箱（mailto 直显地址） */
+    email: string;
     /** 项目链接带（diflowy / d2l-note 在此，不占主叙事） */
     projects: { label: string; items: { name: string; href: string }[] };
     rights: string;
