@@ -125,11 +125,8 @@ const shiftRouterLd = productLd(
     <script type="application/ld+json" is:inline set:html={JSON.stringify(karpathyWikiLd)}></script>
     <script type="application/ld+json" is:inline set:html={JSON.stringify(shiftRouterLd)}></script>
 
-    <!-- 早期标记 js：无 JS 时 [data-reveal] 保持可见（不做 .js 门控） -->
-    <script is:inline>
-      document.documentElement.classList.add('js');
-    </script>
-    <noscript><style>[data-reveal]{opacity:1 !important}</style></noscript>
+    <!-- 注意：内容隐藏由 motion.ts 成功初始化后加上的 .motion-ready 门控。
+         无 JS / 脚本失败 → 不加该类 → 内容保持可见（不会再出现整页空白）。 -->
   </head>
   <body>
     <Nav />

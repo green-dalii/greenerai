@@ -1,162 +1,315 @@
 @import "tailwindcss";
 
+/* ============================================================
+   Design tokens — 8 colors, each with one job.
+   增减任何一个 token 都必须先说明它替掉了谁。
+   ============================================================ */
 @theme {
-  /* Greener-Dalii green system (Mistral structure × Studio green) */
-  --color-primary: #0a6c4b;
-  --color-primary-deep: #065f40;
-  --color-mint: #34d399;
-  --color-mint-bright: #68fcbf;
-  --color-mint-soft: #d1fae5;
-  --color-surface-mint: #f0faf5;
-  --color-surface-mint-soft: #f6fcf9;
-  --color-canvas: #ffffff;
-  --color-surface: #fafafa;
-  --color-ink: #18181b;
-  --color-slate: #52525b;
-  --color-steel: #71717a;
-  --color-muted: #a1a1aa;
-  --color-hairline: #e5e7eb;
-  --color-hairline-soft: #eef1ef;
-  --color-hairline-strong: #c7c9cc;
-  --color-code-bg: #1c1c1e;
+  --color-ink: #14161a; /* 标题 + 正文 — 17.6:1 */
+  --color-muted: #6b7280; /* 次级文字 / 图注 — 4.83:1 (AA) */
+  --color-paper: #ffffff;
+  --color-paper-tint: #f7faf8;
+  --color-rule: #e6e8e6; /* 发丝分隔线 */
+  --color-rule-strong: #cfd2cf; /* 需要被看见的规则线 */
+  --color-primary: #0a6c4b; /* 6.44:1 */
+  --color-accent: #34d399; /* 纯装饰 — 全站 ≤3 处 */
 
-  /* Fonts: editorial serif display + Inter UI + JetBrains Mono（自托管） */
-  --font-display: "Instrument Serif", Georgia, "Songti SC", "Noto Serif SC", "Source Han Serif SC", "Times New Roman", serif;
-  --font-display-weight: 400;
-  /* display 标题：浏览器合成 medium（Instrument Serif 只有 400，无法直接合成真粗）—给 Hero 以外的大标题加视觉重量 */
-  --font-display-bold: 500;
-  --font-sans: "Inter", ui-sans-serif, system-ui, -apple-system, sans-serif;
+  /* 字体：编辑感衬线 display + Inter UI + JetBrains Mono（自托管，latin 子集） */
+  --font-display: "Instrument Serif", "Greener Serif CJK", Georgia, "Songti SC", "Noto Serif SC",
+    "Source Han Serif SC", serif;
+  --font-sans: "Inter", "Greener Sans CJK", ui-sans-serif, system-ui, -apple-system, sans-serif;
   --font-mono: "JetBrains Mono", ui-monospace, "SF Mono", Menlo, Consolas, monospace;
 
-  /* Radius: 8px buttons, 12px cards — no pills */
+  /* 圆形度：按钮 8px / 卡片 12px —— 无胶囊 */
   --radius-btn: 8px;
   --radius-card: 12px;
 }
 
+/* ============================================================
+   Base
+   ============================================================ */
 @layer base {
   html {
     scroll-behavior: smooth;
+    -webkit-text-size-adjust: 100%;
   }
   body {
-    @apply bg-canvas font-sans text-ink antialiased;
+    @apply bg-paper font-sans text-ink antialiased;
+    font-size: 1rem;
+    line-height: 1.7;
+    font-feature-settings: "kern" 1, "liga" 1, "calt" 1;
+    text-rendering: optimizeLegibility;
   }
   ::selection {
-    @apply bg-mint-bright text-primary-deep;
+    background: color-mix(in oklab, var(--color-accent) 45%, white);
+    color: var(--color-primary);
+  }
+  /* 表单控件不吃页面字体 —— 在 base 层统一，组件层仍可覆盖 */
+  :is(button, input, select, textarea) {
+    font: inherit;
+    color: inherit;
+  }
+  /* 标题不吃段落行高；字距收紧是衬线 display 的必须动作 */
+  h1,
+  h2,
+  h3 {
+    text-wrap: balance;
+  }
+  /* 中文：正文行高 1.85、字距微开、标点挤压、中西文自动间隙 */
+  html[lang^="zh"] body {
+    line-height: 1.85;
+    letter-spacing: 0.01em;
+  }
+  html[lang^="zh"] :is(h1, h2, h3) {
+    line-height: 1.32;
+    letter-spacing: 0.005em;
+    line-break: strict;
+    word-break: normal;
+    text-autospace: normal;
+  }
+  /* 行首全角标点负缩进（悬挂标点），Safari/新版 Chrome 生效，其余静默降级 */
+  :is(p, h1, h2, h3, li) {
+    hanging-punctuation: first allow-end;
+  }
+  html[lang^="zh"] p {
+    text-spacing-trim: trim-start;
   }
 }
 
+/* ============================================================
+   Layout
+   ============================================================ */
 @layer components {
   .container-site {
     @apply mx-auto w-full max-w-[1280px] px-6 md:px-8;
   }
+
+  /* ---------- 排版阶梯：每级只承担一种职能 ----------
+     30/34/36/48/60  Hero（受栏宽硬约束，逐断点标定）
+     28 → 44        论点陈述（本节主角，刻意大于节标题）
+     26 → 34        节标题
+     20 → 28        条目名
+     19             导语
+     16             正文
+     13             注脚
+     11             mono 标签                                                 */
+
+  .t-hero {
+    font-family: var(--font-display);
+    font-size: 30px;
+    line-height: 1.16;
+    letter-spacing: -0.012em;
+  }
+  .t-statement {
+    font-family: var(--font-display);
+    font-size: clamp(1.75rem, 3.1vw, 2.75rem);
+    line-height: 1.14;
+    letter-spacing: -0.015em;
+  }
+  .t-h2 {
+    font-family: var(--font-display);
+    font-size: clamp(1.625rem, 2.5vw, 2.125rem);
+    line-height: 1.16;
+    letter-spacing: -0.012em;
+  }
+  .t-entry {
+    font-family: var(--font-display);
+    font-size: clamp(1.25rem, 1.7vw, 1.75rem);
+    line-height: 1.2;
+    letter-spacing: -0.01em;
+  }
+  .t-lead {
+    font-size: 1.1875rem;
+    line-height: 1.65;
+  }
+  .t-body {
+    font-size: 1rem;
+    line-height: 1.7;
+  }
+  .t-note {
+    font-size: 0.8125rem;
+    line-height: 1.6;
+  }
+  /* 幽灵编号：大到成为版面元素，而非文字 */
+  .t-numeral {
+    font-family: var(--font-display);
+    font-size: clamp(3rem, 7vw, 5.5rem);
+    line-height: 0.82;
+    letter-spacing: -0.02em;
+    font-variant-numeric: lining-nums;
+  }
+  /* 统计数字 */
+  .t-stat {
+    font-family: var(--font-display);
+    font-size: clamp(1.75rem, 2.6vw, 2.25rem);
+    line-height: 1;
+    letter-spacing: -0.01em;
+    font-variant-numeric: tabular-nums lining-nums;
+  }
+}
+
+@media (min-width: 640px) {
+  .t-hero {
+    font-size: 34px;
+  }
+}
+@media (min-width: 768px) {
+  .t-hero {
+    font-size: 36px;
+  }
+}
+@media (min-width: 1024px) {
+  .t-hero {
+    font-size: 48px;
+  }
+}
+@media (min-width: 1280px) {
+  .t-hero {
+    font-size: 60px;
+  }
+  /* 中文 12 字一行，60px 会溢出栏宽 → 降到 52px */
+  html[lang^="zh"] .t-hero {
+    font-size: 52px;
+  }
+}
+
+@layer components {
+  /* ---------- 标签 ---------- */
   .eyebrow {
-    @apply font-mono text-[11px] font-semibold uppercase tracking-[1px] text-primary;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--color-primary);
   }
-  /* 区块大标题：统一 32 → 40px 阶梯（Hero H1 48+ 之上留出层级差） */
-  .display-lg {
-    @apply font-display text-[32px] font-medium leading-[1.12] tracking-[-0.01em] text-ink md:text-[40px];
-    text-wrap: balance;
+  /* CJK 场景 JetBrains Mono 无字形 → 回落 sans，避免混排两种质感 */
+  .mono-label {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
   }
+  html[lang^="zh"] .mono-label {
+    font-family: var(--font-sans);
+    letter-spacing: 0.08em;
+    text-transform: none;
+  }
+  /* eyebrow 同理：JetBrains Mono 无 CJK 字形，回落 generic monospace 会挑到系统衬线，
+     与拉丁部分产生两种质感 */
+  html[lang^="zh"] .eyebrow {
+    font-family: var(--font-sans);
+    letter-spacing: 0.09em;
+    text-transform: none;
+    font-size: 12px;
+    font-weight: 500;
+  }
+
+  /* ---------- 按钮：8px 圆角，无胶囊 ---------- */
   .btn-primary {
-    @apply inline-flex items-center justify-center gap-2 rounded-btn bg-primary px-5 py-2.5 text-sm font-medium text-white transition-colors duration-200 hover:bg-primary-deep;
+    @apply inline-flex items-center justify-center gap-2 rounded-btn px-5 py-2.5 text-sm font-medium text-white transition-colors duration-200;
+    background: var(--color-primary);
+  }
+  .btn-primary:hover {
+    background: color-mix(in oklab, var(--color-primary) 86%, black);
   }
   .btn-secondary {
-    @apply inline-flex items-center justify-center gap-2 rounded-btn border border-hairline-strong bg-transparent px-5 py-2.5 text-sm font-medium text-ink transition-colors duration-200 hover:bg-surface;
+    @apply inline-flex items-center justify-center gap-2 rounded-btn border bg-transparent px-5 py-2.5 text-sm font-medium transition-colors duration-200;
+    border-color: var(--color-rule-strong);
+    color: var(--color-ink);
+  }
+  .btn-secondary:hover {
+    background: var(--color-paper-tint);
+    border-color: var(--color-ink);
   }
 }
 
-/* 键盘可达性：统一的 focus-visible 焦点环（mint，不依赖浏览器默认） */
-:where(a, button, [role='button'], [tabindex]):focus-visible {
-  outline: 2px solid var(--color-mint);
-  outline-offset: 2px;
-  border-radius: 4px;
-}
+/* ============================================================
+   Editorial devices — 结构可见，而非装饰堆叠
+   ============================================================ */
 
-/* Mistral 式签名渐变带 —— 替代 sunset stripe，绿色系 */
-.gradient-signature {
-  background-image: linear-gradient(
-    90deg,
-    #0a6c4b 0%,
-    #059669 25%,
-    #34d399 50%,
-    #68fcbf 75%,
-    #f0faf5 100%
-  );
-}
-
-/* Hero 背景：双向 mint 渐变光晕（中心偏左上亮 + 右下深绿点） + canvas 点阵补充 */
-.mesh-hero {
-  position: relative;
-  background-color: #f6fcf9;
-  background-image:
-    radial-gradient(ellipse 640px 460px at 30% 26%, rgba(167, 243, 208, 0.30), transparent 68%),
-    radial-gradient(ellipse 520px 400px at 84% 80%, rgba(10, 108, 75, 0.07), transparent 70%);
-}
-.mesh-hero::after {
-  /* Hero 底部柔化晕（柔和过渡到下一节） */
-  content: '';
-  position: absolute;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  height: 180px;
-  background: linear-gradient(to bottom, transparent, #f6fcf9 80%);
-  pointer-events: none;
-  z-index: 1;
-}
-.hero-ascii {
+/* 版式骨架：12 栏发丝线（Hero 用）。极淡，只暗示结构，不构成图形 */
+.scaffold-cols {
   position: absolute;
   inset: 0;
-  width: 100%;
-  height: 100%;
-  display: block; /* canvas 默认 inline; display:block + width/height 100% 强制填满父级 */
-  z-index: 2;
+  pointer-events: none;
+  background-image: repeating-linear-gradient(
+    to right,
+    color-mix(in oklab, var(--color-primary) 7%, transparent) 0 1px,
+    transparent 1px 8.3333%
+  );
+  /* 左右两侧不留线：裁到容器内 */
+  mask-image: linear-gradient(to right, transparent 0, black 2px, black calc(100% - 2px), transparent 100%);
+}
+
+/* 窄屏隐藏骨架：12 栏在 390px 下退化成密梳，既噪声又违背「不用密集图形」 */
+@media (max-width: 767.98px) {
+  .scaffold-cols,
+  .crop-marks {
+    display: none;
+  }
+}
+
+/* 裁切标记：印前套准记号，四角 L 形 */
+.crop-marks {
+  position: absolute;
+  inset: 0;
   pointer-events: none;
 }
-
-/* ---------- Motion system（对应 src/scripts/motion.ts） ---------- */
-
-/* 滚动入场：初始态由 GSAP 接管（motion.ts），此处仅保留无 JS / reduced-motion 回退 */
-/* 滚动入场：仅 JS 可用时隐藏（无 JS / 脚本失败 → 内容可见） */
-.js [data-reveal] {
-  opacity: 0;
+.crop-marks i {
+  position: absolute;
+  width: 11px;
+  height: 11px;
+  border-color: var(--color-rule-strong);
+  border-style: solid;
+  border-width: 0;
 }
-[data-reveal].is-in {
-  opacity: 1;
+.crop-marks i:nth-child(1) {
+  top: 0;
+  left: 0;
+  border-top-width: 1px;
+  border-left-width: 1px;
 }
-
-/* Hero 眉题：mono 小字 + mint 圆点（不用胶囊） */
-.hero-eyebrow {
-  @apply inline-flex items-center gap-2.5 font-mono text-[11px] font-semibold uppercase tracking-[0.16em] text-primary;
+.crop-marks i:nth-child(2) {
+  top: 0;
+  right: 0;
+  border-top-width: 1px;
+  border-right-width: 1px;
 }
-.hero-eyebrow-dot {
-  @apply h-1.5 w-1.5 rounded-full bg-mint;
+.crop-marks i:nth-child(3) {
+  bottom: 0;
+  left: 0;
+  border-bottom-width: 1px;
+  border-left-width: 1px;
 }
-
-/* Hero 大标题：遮罩内上滑（mask = 行盒，clips descender 以下区域） */
-.hero-line-mask {
-  overflow: hidden;
-}
-.hero-line-inner {
-  will-change: transform;
-}
-
-/* 锚点滚动留白 */
-section[id] {
-  scroll-margin-top: 5rem;
-}
-
-/* 小标签（footer 分组名、来源注、桥线等）：默认 mono；
-   中文场景 JetBrains Mono 无 CJK 字形，自动回落 sans，避免混排两种质感 */
-.mono-label {
-  font-family: var(--font-mono);
-}
-html[lang='zh'] .mono-label {
-  font-family: var(--font-sans);
-  letter-spacing: 0.06em;
+.crop-marks i:nth-child(4) {
+  bottom: 0;
+  right: 0;
+  border-bottom-width: 1px;
+  border-right-width: 1px;
 }
 
-/* 链接下划线生长动效（nav/footer 文字链接） */
+/* 幽灵编号：淡品牌绿，纯装饰（宿主已 aria-hidden） */
+.numeral-ghost {
+  color: color-mix(in oklab, var(--color-primary) 30%, white);
+}
+
+/* 自有签名线：primary 实线 + 12% 长 accent 短划（不是借来的彩虹渐变） */
+.signature-rule {
+  position: relative;
+  height: 2px;
+  background: var(--color-primary);
+}
+.signature-rule::after {
+  content: "";
+  position: absolute;
+  inset-block: 0;
+  left: 0;
+  width: 12%;
+  background: var(--color-accent);
+}
+
+/* 链接下划线生长 */
 .link-underline {
   background-image: linear-gradient(currentColor, currentColor);
   background-size: 0% 1px;
@@ -168,11 +321,163 @@ html[lang='zh'] .mono-label {
   background-size: 100% 1px;
 }
 
+/* 键盘可达性：统一 focus 环 */
+:where(a, button, [role="button"], summary, [tabindex]):focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+/* 锚点滚动留白 */
+section[id] {
+  scroll-margin-top: 5rem;
+}
+
+/* ============================================================
+   Receipt — 回执：把「声称」变成「可核验的物件」
+   ============================================================ */
+/* 回执单元：竖排（触发 → 固定标签 → 面板），保证展开时标签位置稳定 */
+.receipt {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: flex-start;
+  max-width: 100%;
+}
+
+.receipt-trigger {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 0.35em;
+  cursor: pointer;
+  text-align: left;
+  text-decoration-line: underline;
+  text-decoration-style: dotted;
+  text-decoration-color: color-mix(in oklab, var(--color-primary) 45%, transparent);
+  text-underline-offset: 0.32em;
+  transition:
+    text-decoration-color 0.2s ease,
+    opacity 0.2s ease;
+}
+.receipt-trigger:hover {
+  text-decoration-color: var(--color-primary);
+}
+/* 触发标记：一个小方角，暗示「可以展开一张单据」 */
+.receipt-trigger::after {
+  content: "";
+  width: 0.32em;
+  height: 0.32em;
+  border: 1px solid currentColor;
+  border-radius: 1px;
+  opacity: 0.5;
+  transform: translateY(-0.1em);
+  transition: opacity 0.2s ease;
+}
+.receipt-trigger[aria-expanded="true"]::after {
+  opacity: 1;
+  background: currentColor;
+}
+
+.receipt-panel {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows 0.42s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.receipt-panel[data-open="true"] {
+  grid-template-rows: 1fr;
+}
+.receipt-panel > div {
+  overflow: hidden;
+}
+.receipt-body {
+  margin-top: 0.85rem;
+  border-top: 1px dashed var(--color-rule-strong);
+  padding-top: 0.85rem;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  line-height: 1.9;
+  letter-spacing: 0.01em;
+  color: var(--color-muted);
+  /* 回执内部始终 mono：它是单据，不是叙述 */
+}
+html[lang^="zh"] .receipt-body {
+  font-family: var(--font-mono);
+  letter-spacing: 0.02em;
+}
+.receipt-row {
+  display: grid;
+  grid-template-columns: 5.5rem 1fr;
+  gap: 0.75rem;
+}
+.receipt-key {
+  color: var(--color-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+.receipt-val {
+  color: var(--color-ink);
+  overflow-wrap: anywhere;
+}
+.receipt-val a {
+  color: var(--color-primary);
+  text-decoration: underline;
+  text-decoration-style: dotted;
+  text-underline-offset: 0.25em;
+}
+.receipt-verify {
+  margin-top: 0.4rem;
+  padding: 0.5rem 0.65rem;
+  background: var(--color-paper-tint);
+  border: 1px solid var(--color-rule);
+  border-radius: 4px;
+  color: var(--color-ink);
+  /* 换行而非裁切：被截断的命令看起来像坏了，也复制不全 */
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  user-select: all;
+}
+
+/* ============================================================
+   Motion — 初始态由 GSAP 接管；无 JS / reduced-motion / 打印必须可见
+   ============================================================ */
+/* 注意：门控类是 .motion-ready（由 motion.ts 在成功初始化后才加上），
+   不是 .js。脚本自身失败时内容保持可见 —— 不会整页空白。 */
+.motion-ready [data-reveal] {
+  opacity: 0;
+}
+[data-reveal].is-in {
+  opacity: 1;
+}
+
+/* Hero 大标题：遮罩内上滑（mask = 行盒） */
+.hero-line-mask {
+  overflow: hidden;
+}
+.hero-line-inner {
+  will-change: transform;
+}
+
 @media (prefers-reduced-motion: reduce) {
-  .mesh-hero {
-    animation: none !important;
+  html {
+    scroll-behavior: auto;
   }
-  .js [data-reveal] {
+  .motion-ready [data-reveal] {
     opacity: 1;
+  }
+  .receipt-panel {
+    transition: none;
+  }
+}
+
+/* 打印 / PDF：任何依赖 reveal 的内容都必须可见（否则整页空白） */
+@media print {
+  [data-reveal],
+  .motion-ready [data-reveal] {
+    opacity: 1 !important;
+    visibility: visible !important;
+    transform: none !important;
+  }
+  .scaffold-cols,
+  .crop-marks {
+    display: none !important;
   }
 }

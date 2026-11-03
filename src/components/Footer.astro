@@ -6,89 +6,67 @@ const dict = getDict(Astro.currentLocale);
 ---
 
 <footer>
-  <div class="gradient-signature h-2 w-full" aria-hidden="true"></div>
+  <!-- 自有签名线：primary 实线 + 12% 长 accent 短划（替代移植来的五段彩虹渐变） -->
+  <div class="signature-rule w-full" aria-hidden="true"></div>
 
-  <div class="bg-surface-mint-soft">
-    <div class="container-site py-16">
-      <div class="flex flex-col justify-between gap-10 md:flex-row md:items-start">
-        <div class="max-w-xs" data-reveal>
+  <div class="bg-paper">
+    <div class="container-site py-16 md:py-20">
+      <div class="flex flex-col justify-between gap-12 md:flex-row md:items-start">
+        <div class="max-w-[16rem]" data-reveal>
           <Brand />
-          <p class="mt-4 text-sm leading-relaxed text-steel">
-            {dict.footer.tagline}
-          </p>
+          <p class="t-note mt-4 text-muted">{dict.footer.tagline}</p>
         </div>
 
-        <div class="flex flex-col gap-8 sm:flex-row sm:gap-16">
+        <div class="flex flex-col gap-10 sm:flex-row sm:gap-16">
           <div class="flex flex-col gap-3" data-reveal data-reveal-delay="80">
-            <span
-              class="mono-label text-[11px] uppercase tracking-wider text-steel"
-            >
-              {dict.footer.connectLabel}
-            </span>
+            <span class="mono-label text-muted">{dict.footer.connectLabel}</span>
             <a
-              class="link-underline text-sm text-slate transition-colors duration-200 hover:text-primary"
+              class="link-underline t-note text-muted transition-colors duration-200 hover:text-primary"
               href="https://github.com/green-dalii"
               target="_blank"
-              rel="noreferrer"
+              rel="noreferrer">{dict.footer.github}</a
             >
-              {dict.footer.github}
-            </a>
             <a
-              class="link-underline text-sm text-slate transition-colors duration-200 hover:text-primary"
+              class="link-underline t-note text-muted transition-colors duration-200 hover:text-primary"
               href="https://greenerdalii.top"
               target="_blank"
-              rel="noreferrer"
+              rel="noreferrer">{dict.footer.studio}</a
             >
-              {dict.footer.studio}
-            </a>
             <a
-              class="link-underline text-sm text-slate transition-colors duration-200 hover:text-primary"
-              href={`mailto:${dict.footer.email}`}
+              class="link-underline t-note text-muted transition-colors duration-200 hover:text-primary"
+              href={`mailto:${dict.footer.email}`}>{dict.footer.email}</a
             >
-              {dict.footer.email}
-            </a>
           </div>
 
           <div class="flex flex-col gap-3" data-reveal data-reveal-delay="120">
-            <span
-              class="mono-label text-[11px] uppercase tracking-wider text-steel"
-            >
-              {dict.footer.projects.label}
-            </span>
-            {dict.footer.projects.items.map((p) => (
-              <a
-                class="link-underline text-sm text-slate transition-colors duration-200 hover:text-primary"
-                href={p.href}
-                target="_blank"
-                rel="noreferrer"
-              >
-                {p.name}
-              </a>
-            ))}
+            <span class="mono-label text-muted">{dict.footer.projects.label}</span>
+            {
+              dict.footer.projects.items.map((p) => (
+                <a
+                  class="link-underline t-note text-muted transition-colors duration-200 hover:text-primary"
+                  href={p.href}
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  {p.name}
+                </a>
+              ))
+            }
           </div>
 
           <div class="flex flex-col gap-3" data-reveal data-reveal-delay="160">
-            <span
-              class="mono-label text-[11px] uppercase tracking-wider text-steel"
-            >
-              {dict.footer.langsLabel}
-            </span>
+            <span class="mono-label text-muted">{dict.footer.langsLabel}</span>
             <LanguageSwitch />
           </div>
         </div>
       </div>
 
+      <!-- 版本记录行：不参与入场动效（它是扉页，不是内容） -->
       <div
-        class="mt-14 flex flex-col gap-2 border-t border-hairline pt-6 text-[13px] text-steel sm:flex-row sm:items-center sm:justify-between"
-        data-reveal
-        data-reveal-delay="240"
+        class="mt-16 flex flex-col gap-2 border-t border-rule pt-6 sm:flex-row sm:items-center sm:justify-between"
       >
-        <p>{dict.footer.rights}</p>
-        <p
-          class="mono-label text-[11px] uppercase tracking-wider"
-        >
-          {dict.footer.builtOpen}
-        </p>
+        <p class="t-note text-muted">{dict.footer.rights}</p>
+        <p class="mono-label text-muted">{dict.footer.builtOpen}</p>
       </div>
     </div>
   </div>

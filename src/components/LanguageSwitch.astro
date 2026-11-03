@@ -9,7 +9,7 @@ const current = Astro.currentLocale;
   触控目标 ≥36px；.mono-label 让 zh 下「中文」回落 sans，避免 mono 无 CJK 字形穿帮。
 -->
 <nav
-  class="flex w-fit items-center gap-0.5 rounded-btn border border-hairline bg-surface p-1"
+  class="flex w-fit items-center gap-0.5 rounded-btn border border-rule bg-paper-tint p-1"
   aria-label={dict.langSwitch.label}
 >
   <a
@@ -19,7 +19,7 @@ const current = Astro.currentLocale;
       'mono-label rounded-[6px] px-3.5 py-2 text-center text-[11px] font-medium leading-none tracking-wide transition-colors duration-200',
       current === 'en'
         ? 'bg-primary text-white'
-        : 'text-steel hover:text-ink',
+        : 'text-muted hover:text-ink',
     ]}
   >
     EN
@@ -31,7 +31,7 @@ const current = Astro.currentLocale;
       'mono-label rounded-[6px] px-3.5 py-2 text-center text-[11px] font-medium leading-none tracking-wide transition-colors duration-200',
       current === 'zh'
         ? 'bg-primary text-white'
-        : 'text-steel hover:text-ink',
+        : 'text-muted hover:text-ink',
     ]}
   >
     中文

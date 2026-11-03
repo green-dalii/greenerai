@@ -8,60 +8,50 @@ const links = [
 ];
 ---
 
-<section id="open" class="border-t border-hairline-soft bg-canvas py-20 md:py-28">
+<!--
+  全出血收束带：不再套一张圆角薄荷卡片 —— 卡片会把它降级成「又一个内容块」。
+  整节贯穿视口宽度，是本页第二个、也是最后一个破格。
+-->
+<section id="open" class="bg-paper-tint pt-24 pb-24 md:pt-28 md:pb-32">
   <div class="container-site">
-    <div class="rounded-card border border-mint-soft bg-surface-mint px-6 py-16 text-center md:px-16 md:py-24">
-      <span class="eyebrow" data-reveal>{o.eyebrow}</span>
-      <h2 class="display-lg mx-auto mt-6 max-w-2xl" data-reveal data-reveal-delay="80">
-        {o.heading}
-      </h2>
-      <p
-        class="mx-auto mt-6 max-w-xl text-[17px] leading-relaxed text-slate"
-        data-reveal
-        data-reveal-delay="160"
-      >
-        {o.body}
-      </p>
-
-      <!-- 链接行列表：读源码 / 查数字 / 跑起来（编辑式，无图标按钮） -->
-      <div class="mx-auto mt-12 max-w-md text-left" data-reveal data-reveal-delay="240">
-        {
-          links.map((l) => (
-            <a
-              href={l.href}
-              target="_blank"
-              rel="noreferrer"
-              class="group flex items-center justify-between gap-4 border-b border-hairline-strong/50 py-4 transition-colors first:border-t hover:bg-canvas/60"
-            >
-              <span class="text-[15px] font-medium text-ink transition-colors group-hover:text-primary">
-                {l.label}
-              </span>
-              <span
-                class="font-mono text-sm text-steel transition-all duration-200 group-hover:translate-x-0.5 group-hover:text-primary"
-                aria-hidden="true"
-              >
-                ↗
-              </span>
-            </a>
-          ))
-        }
-      </div>
-
-      <!-- 写信：唯一实心主按钮，地址独立成行 -->
-      <div data-reveal data-reveal-delay="300">
-        <a class="btn-primary mt-9" href={o.email.href}>{o.email.label}</a>
-        <p class="mt-3 font-mono text-[11px] tracking-wide text-steel">
-          {o.email.href.replace('mailto:', '')}
-        </p>
-      </div>
-
-      <p
-        class="mono-label mt-10 text-[11px] uppercase tracking-[0.14em] text-muted"
-        data-reveal
-        data-reveal-delay="340"
-      >
-        {o.note}
-      </p>
+    <div class="mx-auto max-w-2xl text-center">
+      <span class="eyebrow block" data-reveal>{o.eyebrow}</span>
+      <h2 class="t-h2 mt-5 text-ink" data-reveal data-reveal-delay="80">{o.heading}</h2>
+      <p class="t-lead mt-6 text-ink/85" data-reveal data-reveal-delay="160">{o.body}</p>
     </div>
+
+    <!-- 链接行：读源码 / 查数字 / 跑起来（编辑式列表，无图标按钮） -->
+    <div class="mx-auto mt-14 max-w-xl" data-reveal data-reveal-delay="240">
+      {
+        links.map((l) => (
+          <a
+            href={l.href}
+            target="_blank"
+            rel="noreferrer"
+            class="group flex items-center justify-between gap-4 border-b border-rule-strong/60 py-4 transition-colors first:border-t hover:border-primary"
+          >
+            <span class="t-body font-medium text-ink transition-colors group-hover:text-primary">
+              {l.label}
+            </span>
+            <span
+              class="text-sm text-muted transition-all duration-200 group-hover:translate-x-0.5 group-hover:text-primary"
+              aria-hidden="true"
+            >
+              ↗
+            </span>
+          </a>
+        ))
+      }
+    </div>
+
+    <!-- 写信：唯一实心主按钮，地址独立成行 -->
+    <div class="mt-12 text-center" data-reveal data-reveal-delay="300">
+      <a class="btn-primary" href={o.email.href}>{o.email.label}</a>
+      <p class="mono-label mt-3.5 text-muted">{o.email.href.replace('mailto:', '')}</p>
+    </div>
+
+    <p class="mono-label mt-14 text-center text-muted" data-reveal data-reveal-delay="360">
+      {o.note}
+    </p>
   </div>
 </section>

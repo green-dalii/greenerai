@@ -1,5 +1,19 @@
 // 全站文案字典类型 —— 唯一的文案契约。任何组件/页面不得绕过此接口。
 
+/** 回执：把一条「声称」变成可核验的物件。source/endpoint/verify 必须真实可访问。 */
+export interface Receipt {
+  /** 人类可读的来源名（如 'npm downloads API'） */
+  source: string;
+  /** 可直接打开的源地址 */
+  endpoint: string;
+  /** 取自源里的哪个字段（存在才显示） */
+  key?: string;
+  /** 构建/核对时间（ISO 日期即可，如 '2026-08-28'） */
+  fetched: string;
+  /** 可复制执行的核验命令 */
+  verify: string;
+}
+
 export interface ProofStat {
   value: string;
   label: string;
@@ -7,20 +21,28 @@ export interface ProofStat {
   countTo?: number;
   /** 计数后缀，如 ' kB'（仅与 countTo 同用时生效） */
   suffix?: string;
+  /** 该数字的来源回执 */
+  receipt?: Receipt;
+}
+
+/** 硬声称（依赖数 / 体积 / 许可）：每条都能自证 */
+export interface Claim {
+  text: string;
+  receipt: Receipt;
 }
 
 export interface ProofCardData {
   tag: string;
   title: string;
-  /** 副标（产品口径，如 'for Pi'） */
+  /** 副标（产品口径，如 'for Pi & DeepSeek Harness'） */
   subtag?: string;
-  /** 卡片内嵌一行文字微流程（如「你的笔记 → 图检索 → 回答，每句附出处」），无自绘图形 */
+  /** 条目内嵌一行文字微流程（纯文字，无自绘图形） */
   flow?: string;
   body: string;
-  /** 受众有感的权威数字（stat-display 大字位；工程琐数放 note 脚注） */
+  /** 受众有感的权威数字（stat 大字位；工程琐数放 claims 脚注） */
   stats: ProofStat[];
-  /** 工程琐数脚注（依赖数/测试数等），小字显示 */
-  note?: string;
+  /** 硬声称清单（每条带回执） */
+  claims?: Claim[];
   cta: string;
   href: string;
 }
@@ -66,19 +88,38 @@ export interface Dict {
   thesis: {
     eyebrow: string;
     heading: string;
-    items: { index: string; title: string; body: string }[];
+    items: {
+      /** 罗马数字 I–IV；收束项用 ∴ */
+      index: string;
+      title: string;
+      body: string;
+      /** 收束项（不是第五个并列支柱，是前四条的合成） */
+      synthesis?: boolean;
+    }[];
   };
   practice: {
     eyebrow: string;
     heading: string;
     sub: string;
+    /** 右栏凭据区标题 */
+    evidenceLabel: string;
+    /** 回执界面标签 */
+    receiptUi: {
+      open: string;
+      close: string;
+      source: string;
+      endpoint: string;
+      key: string;
+      fetched: string;
+      verify: string;
+    };
     cards: ProofCardData[];
   };
   organism: {
     eyebrow: string;
     heading: string;
     body: string[];
-    /** 双轨结构卡：一个品牌一张卡（用本名，不用域名），桥线点明同源 */
+    /** 双轨结构：一个品牌一轨（用本名，不用域名），桥线点明同源 */
     tracks: { name: string; role: string }[];
     bridge: string;
   };
@@ -86,7 +127,7 @@ export interface Dict {
     eyebrow: string;
     heading: string;
     sub: string;
-    /** 当下练习三条（chips 展示） */
+    /** 当下练习三条 */
     practices: string[];
     coda: string;
   };

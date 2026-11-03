@@ -1,5 +1,11 @@
 import type { Dict } from './types';
 
+/** 所有回执的核对日期 —— 每次改数字必须同步改这里 */
+const VERIFIED = '2026-11-03';
+const STATS_STREAM =
+  'https://cdn.jsdelivr.net/gh/obsidianmd/obsidian-releases@master/community-plugin-stats.json';
+const GH_WIKI = 'https://api.github.com/repos/GD4AI/obsidian-llm-wiki';
+
 export const en: Dict = {
   meta: {
     title: 'Greener-Dalii — We turn what you know into leverage.',
@@ -56,29 +62,30 @@ export const en: Dict = {
     heading: 'Why we build.',
     items: [
       {
-        index: '01',
+        index: 'I',
         title: 'Intelligence is no longer scarce.',
         body: "AI is doing to intelligence what engines did to muscle: overnight, supply spiked and value collapsed. The moat has moved.",
       },
       {
-        index: '02',
+        index: 'II',
         title: 'What you know is the moat.',
         body: "Decisions made, tuition paid, instincts honed over years — none of it can be bought, scraped, or copied. It's yours alone.",
       },
       {
-        index: '03',
+        index: 'III',
         title: 'What you choose is the edge.',
         body: "When anyone can generate anything, the difference comes down to taste — knowing what deserves to exist. So we keep a design studio at hand; day in, day out, that's where the eye gets trained.",
       },
       {
-        index: '04',
+        index: 'IV',
         title: 'What you finish is the proof.',
         body: "Ideas are a dime a dozen — shipping is the proof. Tools do the grinding; people make the calls.",
       },
       {
-        index: '05',
+        index: '',
         title: 'Leverage turns all three into a company.',
-        body: "Know, taste, do — each one compounds through the right tool. A handful of people now carries the weight a company used to.",
+        body: 'Know, taste, do — each one compounds through the right tool. A handful of people now carries the weight a company used to.',
+        synthesis: true,
       },
     ],
   },
@@ -87,30 +94,128 @@ export const en: Dict = {
     eyebrow: 'Practice',
     heading: 'The beliefs, in practice.',
     sub: "The daily practice, shipped as tools. We're early and small — and that's exactly why every number is public.",
+    evidenceLabel: 'Evidence',
+    receiptUi: {
+      open: 'Show receipt',
+      close: 'Hide receipt',
+      source: 'Source',
+      endpoint: 'Endpoint',
+      key: 'Field',
+      fetched: 'Verified',
+      verify: 'Verify',
+    },
     cards: [
       {
         tag: 'Know',
         title: 'Karpathy LLM Wiki',
         flow: 'Your notes → graph retrieval → answers with sources attached',
-        body: "Built for Obsidian: your notes become a knowledge base that answers — every answer brings its source along, and nothing leaves your machine.",
+        body: 'Built for Obsidian: your notes become a knowledge base that answers — every answer brings its source along, and nothing leaves your machine.',
         stats: [
-          { value: '34,055', label: 'downloads', countTo: 34055 },
-          { value: '451', label: 'stars', countTo: 451 },
-          { value: '11', label: 'languages', countTo: 11 },
+          {
+            value: '67,153',
+            label: 'downloads',
+            countTo: 67153,
+            receipt: {
+              source: 'Obsidian community plugin stats',
+              endpoint: STATS_STREAM,
+              key: 'karpathywiki.downloads',
+              fetched: VERIFIED,
+              verify: `curl -s ${STATS_STREAM} | jq -r .karpathywiki.downloads`,
+            },
+          },
+          {
+            value: '768',
+            label: 'stars',
+            countTo: 768,
+            receipt: {
+              source: 'GitHub REST API',
+              endpoint: 'https://github.com/GD4AI/obsidian-llm-wiki',
+              key: 'stargazers_count',
+              fetched: VERIFIED,
+              verify: `curl -s ${GH_WIKI} | jq -r .stargazers_count`,
+            },
+          },
+          {
+            value: '11',
+            label: 'languages',
+            countTo: 11,
+            receipt: {
+              source: 'Repository i18n directory',
+              endpoint: 'https://github.com/GD4AI/obsidian-llm-wiki/tree/main/src/texts',
+              key: 'src/texts/*.ts',
+              fetched: VERIFIED,
+              verify: `curl -s ${GH_WIKI}/contents/src/texts | jq length`,
+            },
+          },
+        ],
+        claims: [
+          {
+            text: 'Apache-2.0',
+            receipt: {
+              source: 'GitHub license detection',
+              endpoint: 'https://github.com/GD4AI/obsidian-llm-wiki',
+              key: 'license.spdx_id',
+              fetched: VERIFIED,
+              verify: `curl -s ${GH_WIKI} | jq -r .license.spdx_id`,
+            },
+          },
         ],
         cta: 'GitHub',
-        href: 'https://github.com/green-dalii/obsidian-llm-wiki',
+        href: 'https://github.com/GD4AI/obsidian-llm-wiki',
       },
       {
         tag: 'Do',
         title: 'Shift-Router',
         subtag: 'for Pi & DeepSeek Harness',
         flow: 'Triage each turn → cheap lane by default → strong model when it counts',
-        body: "Every turn gets a cheap once-over first — routine work stays with the affordable model, the calls that matter jump straight to the best. Provider throttling? It swaps models mid-task without missing a beat. On complex jobs it takes charge: plans, hands implementation off to fast workers, and checks their work. One architecture, fits both Pi and DeepSeek Harness.",
+        body: 'Every turn gets a cheap once-over first — routine work stays with the affordable model, the calls that matter jump straight to the best. Provider throttling? It swaps models mid-task without missing a beat. On complex jobs it takes charge: plans, hands implementation off to fast workers, and checks their work. One architecture, fits both Pi and DeepSeek Harness.',
         stats: [
-          { value: '1,235', label: 'downloads / mo', countTo: 1235 },
+          {
+            value: '2,293',
+            label: 'downloads / mo',
+            countTo: 2293,
+            receipt: {
+              source: 'npm downloads API — both implementations',
+              endpoint: 'https://api.npmjs.org/downloads/point/last-month/pi-shift-router',
+              key: 'downloads (pi) + downloads (dsh)',
+              fetched: VERIFIED,
+              verify:
+                'for p in pi-shift-router dsh-shift-router; do curl -s https://api.npmjs.org/downloads/point/last-month/$p; done',
+            },
+          },
         ],
-        note: 'zero runtime deps · ~409 kB · fits Pi & DeepSeek Harness',
+        claims: [
+          {
+            text: 'zero runtime dependencies',
+            receipt: {
+              source: 'npm registry manifest',
+              endpoint: 'https://www.npmjs.com/package/pi-shift-router',
+              key: 'dependencies',
+              fetched: VERIFIED,
+              verify: 'npm view pi-shift-router dependencies',
+            },
+          },
+          {
+            text: '636 kB unpacked',
+            receipt: {
+              source: 'npm registry dist',
+              endpoint: 'https://www.npmjs.com/package/pi-shift-router',
+              key: 'dist.unpackedSize',
+              fetched: VERIFIED,
+              verify: 'npm view pi-shift-router dist.unpackedSize',
+            },
+          },
+          {
+            text: 'MIT',
+            receipt: {
+              source: 'npm registry manifest',
+              endpoint: 'https://www.npmjs.com/package/pi-shift-router',
+              key: 'license',
+              fetched: VERIFIED,
+              verify: 'npm view pi-shift-router license',
+            },
+          },
+        ],
         cta: 'shiftrouter.greenerai.top',
         href: 'https://shiftrouter.greenerai.top',
       },
@@ -136,7 +241,7 @@ export const en: Dict = {
     heading: 'Proof over promises.',
     sub: "When anyone can generate anything, words get cheap. The next layer we're building gives every claim its own receipt — provenance you can check, work that points back to its origin, numbers that trace to a source. It's not finished, so we're practicing on ourselves: everything open, everything sourced.",
     practices: ['Everything open', 'Everything sourced', 'Tested on ourselves'],
-    coda: "Shipped the only way we know how: in the open.",
+    coda: 'Shipped the only way we know how: in the open.',
   },
 
   open: {
@@ -144,7 +249,7 @@ export const en: Dict = {
     heading: 'See for yourself.',
     body: 'Read the source. Check the numbers. Run it yourself. Want to talk? We answer.',
     cta1: 'Karpathy LLM Wiki on GitHub',
-    cta1Href: 'https://github.com/green-dalii/obsidian-llm-wiki',
+    cta1Href: 'https://github.com/GD4AI/obsidian-llm-wiki',
     cta2: 'Shift-Router — shiftrouter.greenerai.top',
     cta2Href: 'https://shiftrouter.greenerai.top',
     cta3: 'Our GitHub org',
@@ -169,7 +274,7 @@ export const en: Dict = {
         { name: 'd2l-note', href: 'https://github.com/green-dalii/d2l-note' },
       ],
     },
-    rights: '© 2026 Greener-Dalii. All rights reserved.',
+    rights: '© 2026 Greener-Dalii',
     builtOpen: 'Built in the open',
   },
 };

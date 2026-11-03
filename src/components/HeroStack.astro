@@ -38,8 +38,7 @@ const s = getDict(Astro.currentLocale).stack;
 </div>
 
 <style>
-  /* 透视舞台：仅作结构容器。透视由 GSAP transformPerspective 内联提供，
-     避免与父级 perspective 叠加造成双重畸变/抖动 */
+  /* 透视舞台：仅作结构容器。透视由 GSAP transformPerspective 内联提供 */
   .stack-stage {
     width: 100%;
     max-width: 440px;
@@ -47,25 +46,26 @@ const s = getDict(Astro.currentLocale).stack;
   }
   .stack {
     transform-style: preserve-3d;
-    --card-lift: 12px; /* 阴影抬升量（motion.ts 动态驱动） */
-    border: 1px solid var(--color-mint-soft);
+    --card-lift: 12px;
+    border: 1px solid var(--color-rule);
     border-radius: 12px;
-    background: rgba(255, 255, 255, 0.85);
+    /* 微微透明：让背后的版式骨架透出来 —— 「结构，可见」 */
+    background: color-mix(in oklab, var(--color-paper) 92%, transparent);
     box-shadow:
-      0 1px 0 rgba(10, 108, 75, 0.04),
-      0 var(--card-lift, 12px) 24px -18px rgba(10, 108, 75, 0.16);
+      0 1px 0 color-mix(in oklab, var(--color-primary) 5%, transparent),
+      0 var(--card-lift, 12px) 28px -18px color-mix(in oklab, var(--color-primary) 22%, transparent);
   }
 
   .stack-head {
     padding: 13px 18px;
-    border-bottom: 1px solid var(--color-hairline-soft);
+    border-bottom: 1px solid var(--color-rule);
   }
   .stack-head-label {
     font-family: var(--font-mono);
     font-size: 10px;
     letter-spacing: 0.18em;
     text-transform: uppercase;
-    color: var(--color-steel);
+    color: var(--color-muted);
   }
 
   .stack-row {
@@ -73,15 +73,15 @@ const s = getDict(Astro.currentLocale).stack;
     grid-template-columns: 26px 1fr;
     align-items: center;
     gap: 10px;
-    padding: 14px 18px;
+    padding: 15px 18px;
   }
   .stack-row + .stack-row {
-    border-top: 1px solid var(--color-hairline-soft);
+    border-top: 1px solid var(--color-rule);
   }
   .stack-idx {
     font-family: var(--font-mono);
     font-size: 10px;
-    color: var(--color-steel);
+    color: var(--color-muted);
   }
   .stack-main {
     display: flex;
@@ -92,15 +92,16 @@ const s = getDict(Astro.currentLocale).stack;
   }
   .stack-name {
     font-family: var(--font-display);
-    font-size: 22px;
-    line-height: 1.2;
+    font-size: 24px;
+    line-height: 1.15;
+    letter-spacing: -0.01em;
     color: var(--color-ink);
   }
   .stack-gloss {
     font-family: var(--font-mono);
     font-size: 11px;
     letter-spacing: 0.02em;
-    color: var(--color-steel);
+    color: var(--color-muted);
     text-align: right;
   }
 
@@ -110,7 +111,7 @@ const s = getDict(Astro.currentLocale).stack;
     align-items: center;
     gap: 12px;
     padding: 14px 18px 16px;
-    border-top: 1px dashed var(--color-mint-soft);
+    border-top: 1px dashed var(--color-rule-strong);
   }
   .lever-label {
     font-family: var(--font-mono);
@@ -120,14 +121,14 @@ const s = getDict(Astro.currentLocale).stack;
     color: var(--color-primary);
   }
   .lever-label.is-accent {
-    color: var(--color-primary-deep);
+    color: var(--color-primary);
     font-weight: 600;
   }
   .lever-line {
     flex: 1;
     height: 1.5px;
     border-radius: 1px;
-    background: var(--color-hairline-soft);
+    background: var(--color-rule);
     position: relative;
     overflow: hidden;
     transform-origin: left center;
@@ -139,7 +140,20 @@ const s = getDict(Astro.currentLocale).stack;
     height: 100%;
     width: 42%;
     border-radius: 1px;
-    background: linear-gradient(90deg, var(--color-mint), var(--color-primary));
+    background: linear-gradient(90deg, var(--color-accent), var(--color-primary));
     transform-origin: left center;
+  }
+
+  /* 中文：mono 无 CJK 字形 → 回落 sans，避免混排两种质感 */
+  html[lang^='zh'] .stack-head-label,
+  html[lang^='zh'] .lever-label,
+  html[lang^='zh'] .stack-gloss {
+    font-family: var(--font-sans);
+    letter-spacing: 0.08em;
+    text-transform: none;
+  }
+  html[lang^='zh'] .stack-name {
+    font-size: 26px;
+    letter-spacing: 0.04em;
   }
 </style>

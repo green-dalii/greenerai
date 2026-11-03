@@ -3,22 +3,29 @@ import { getDict } from '../i18n';
 import ProofCard from './ProofCard.astro';
 const p = getDict(Astro.currentLocale).practice;
 const cards = p.cards;
+const ordinals = ['01', '02', '03', '04'];
 ---
 
-<section id="proof" class="border-t border-hairline-soft bg-surface-mint-soft py-20 md:py-28">
+<section id="proof" class="bg-paper pt-14 pb-6 md:pt-16 md:pb-8">
   <div class="container-site">
-    <div class="mb-14 max-w-2xl">
-      <span class="eyebrow" data-reveal>{p.eyebrow}</span>
-      <h2 class="display-lg mt-4" data-reveal data-reveal-delay="80">{p.heading}</h2>
-      <p class="mt-4 text-base leading-relaxed text-slate" data-reveal data-reveal-delay="160">
-        {p.sub}
-      </p>
+    <div class="max-w-[34rem]">
+      <span class="eyebrow block" data-reveal>{p.eyebrow}</span>
+      <h2 class="t-h2 mt-4 text-ink" data-reveal data-reveal-delay="80">{p.heading}</h2>
+      <p class="t-body mt-5 text-ink/80" data-reveal data-reveal-delay="160">{p.sub}</p>
     </div>
 
-    <div class={`grid grid-cols-1 gap-6 ${cards.length >= 3 ? 'lg:grid-cols-3' : 'lg:grid-cols-2'}`}>
-      {cards.map((card, i) => (
-        <ProofCard card={card} featured={i === 0} revealDelay={i * 120} />
-      ))}
+    <div class="mt-14 md:mt-16">
+      {
+        cards.map((card, i) => (
+          <ProofCard
+            card={card}
+            ordinal={ordinals[i] ?? String(i + 1).padStart(2, '0')}
+            evidenceLabel={p.evidenceLabel}
+            ui={p.receiptUi}
+            revealDelay={i * 100}
+          />
+        ))
+      }
     </div>
   </div>
 </section>

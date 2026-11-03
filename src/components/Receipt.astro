@@ -1,0 +1,125 @@
+---
+/**
+ * 回执（Receipt）—— 把一条「声称」变成可核验的物件。
+ *
+ * 设计意图：站点唯一的真实声称是「一切可查」，所以让人查。
+ * 这不是装饰，是把品牌机制变成交互：模板抄不走，因为背后需要真实数据管道。
+ *
+ * 可访问性：
+ *  - <button aria-expanded aria-controls> 驱动，键盘可达
+ *  - 面板用 grid-template-rows 0fr→1fr 过渡（无需测量高度）
+ *  - 触发按钮里有 sr-only 的动作说明，展开后切换为「收起」
+ *  - prefers-reduced-motion 时过渡关闭（见 global.css）
+ */
+import type { Receipt as ReceiptData } from '../i18n/locales/types';
+
+interface Props {
+  /** 被核验的声称文字（触发按钮上显示的内容本身） */
+  claim: string;
+  receipt: ReceiptData;
+  /** 界面标签（来自字典） */
+  ui: {
+    open: string;
+    close: string;
+    source: string;
+    endpoint: string;
+    key: string;
+    fetched: string;
+    verify: string;
+  };
+  /** 触发按钮的排版类（继承宿主语境：stat 大字 / 注脚小字） */
+  triggerClass?: string;
+  /** 数字下方的固定标签（如 'downloads'），保证展开时顺序稳定 */
+  sublabel?: string;
+  sublabelClass?: string;
+}
+
+const {
+  claim,
+  receipt,
+  ui,
+  triggerClass = '',
+  sublabel,
+  sublabelClass = 'mono-label mt-2 text-muted',
+} = Astro.props;
+
+// 唯一 id 供 aria-controls —— endpoint + claim 生成稳定短哈希
+const raw = `${receipt.endpoint}|${claim}`;
+let h = 0;
+for (let i = 0; i < raw.length; i++) h = (h * 31 + raw.charCodeAt(i)) | 0;
+const id = `receipt-${Math.abs(h).toString(36)}`;
+
+const isLink = /^https?:\/\//.test(receipt.endpoint);
+---
+
+<span class="receipt">
+  <button
+    type="button"
+    class:list={['receipt-trigger', triggerClass]}
+    aria-expanded="false"
+    aria-controls={id}
+    data-receipt-trigger
+    data-label-open={ui.open}
+    data-label-close={ui.close}
+  >
+    <span>{claim}<span class="sr-only" data-receipt-label> — {ui.open}</span></span>
+  </button>
+
+  {sublabel && <span class={sublabelClass}>{sublabel}</span>}
+
+  <div class="receipt-panel" id={id} data-receipt-panel data-open="false" role="region">
+    <div>
+      <div class="receipt-body">
+        <div class="receipt-row">
+          <span class="receipt-key">{ui.source}</span>
+          <span class="receipt-val">{receipt.source}</span>
+        </div>
+        <div class="receipt-row">
+          <span class="receipt-key">{ui.endpoint}</span>
+          <span class="receipt-val">
+            {
+              isLink ? (
+                <a href={receipt.endpoint} target="_blank" rel="noreferrer">
+                  {receipt.endpoint}
+                </a>
+              ) : (
+                receipt.endpoint
+              )
+            }
+          </span>
+        </div>
+        {
+          receipt.key && (
+            <div class="receipt-row">
+              <span class="receipt-key">{ui.key}</span>
+              <span class="receipt-val">{receipt.key}</span>
+            </div>
+          )
+        }
+        <div class="receipt-row">
+          <span class="receipt-key">{ui.fetched}</span>
+          <span class="receipt-val">{receipt.fetched}</span>
+        </div>
+        <div class="receipt-verify">{receipt.verify}</div>
+      </div>
+    </div>
+  </div>
+</span>
+
+<script>
+  // 单一事件委托：全站回执共用一个监听器
+  document.addEventListener('click', (e) => {
+    const btn = (e.target as HTMLElement | null)?.closest?.<HTMLButtonElement>(
+      '[data-receipt-trigger]',
+    );
+    if (!btn) return;
+    const panel = document.getElementById(btn.getAttribute('aria-controls') ?? '');
+    if (!panel) return;
+    const open = btn.getAttribute('aria-expanded') === 'true';
+    btn.setAttribute('aria-expanded', String(!open));
+    panel.dataset.open = String(!open);
+    const label = btn.querySelector<HTMLElement>('[data-receipt-label]');
+    const next = open ? btn.dataset.labelOpen : btn.dataset.labelClose;
+    if (label && next) label.textContent = ` — ${next}`;
+  });
+</script>

@@ -1,5 +1,11 @@
 import type { Dict } from './types';
 
+/** 所有回执的核对日期 —— 每次改数字必须同步改这里 */
+const VERIFIED = '2026-11-03';
+const STATS_STREAM =
+  'https://cdn.jsdelivr.net/gh/obsidianmd/obsidian-releases@master/community-plugin-stats.json';
+const GH_WIKI = 'https://api.github.com/repos/GD4AI/obsidian-llm-wiki';
+
 export const zh: Dict = {
   meta: {
     title: '格润达理 — 智力不再稀缺，杠杆才是新的公司。',
@@ -55,29 +61,30 @@ export const zh: Dict = {
     heading: '我们为何而建。',
     items: [
       {
-        index: '01',
+        index: 'I',
         title: '智力不再稀缺。',
         body: 'AI 对付智力，就像发动机当年对付体力：一夜之间，供给爆发，价值崩塌。护城河，换了地方。',
       },
       {
-        index: '02',
+        index: 'II',
         title: '知，是护城河。',
         body: '做过的决定、付过学费的教训、练了多年的直觉——买不到，抄不走。它们只属于你自己。',
       },
       {
-        index: '03',
+        index: 'III',
         title: '品，是分野。',
         body: '人人都会生成的年代，差别就剩品味：知道什么值得做出来。所以我们手边还开着家设计工作室，天天练这个眼力。',
       },
       {
-        index: '04',
+        index: 'IV',
         title: '行，是证明。',
         body: '点子不值钱，做出来才算数。工具在干活，人在做决定。',
       },
       {
-        index: '05',
+        index: '',
         title: '乘上杠杆，小即是强。',
         body: '知、品、行，样样都有对得上的工具去放大。几个人乘上杠杆，顶得过从前一整个公司。',
+        synthesis: true,
       },
     ],
   },
@@ -86,6 +93,16 @@ export const zh: Dict = {
     eyebrow: '实践',
     heading: '信念，落到实践。',
     sub: '平时练手，顺手做成了工具。刚起步不久，数字不大，但都敢公开。',
+    evidenceLabel: '凭据',
+    receiptUi: {
+      open: '查看回执',
+      close: '收起回执',
+      source: '来源',
+      endpoint: '地址',
+      key: '字段',
+      fetched: '核对',
+      verify: '核验',
+    },
     cards: [
       {
         tag: '知',
@@ -93,12 +110,57 @@ export const zh: Dict = {
         flow: '你的笔记 ─→ 图检索 ─→ 回答，每句附出处',
         body: '做进 Obsidian 的插件：你的笔记变成会回答问题的知识库，每个答案都写着出处，数据只留在你自己的电脑里。',
         stats: [
-          { value: '34,055', label: '下载', countTo: 34055 },
-          { value: '451', label: '星标', countTo: 451 },
-          { value: '11', label: '语言', countTo: 11 },
+          {
+            value: '67,153',
+            label: '下载',
+            countTo: 67153,
+            receipt: {
+              source: 'Obsidian 社区插件统计',
+              endpoint: STATS_STREAM,
+              key: 'karpathywiki.downloads',
+              fetched: VERIFIED,
+              verify: `curl -s ${STATS_STREAM} | jq -r .karpathywiki.downloads`,
+            },
+          },
+          {
+            value: '768',
+            label: '星标',
+            countTo: 768,
+            receipt: {
+              source: 'GitHub REST API',
+              endpoint: 'https://github.com/GD4AI/obsidian-llm-wiki',
+              key: 'stargazers_count',
+              fetched: VERIFIED,
+              verify: `curl -s ${GH_WIKI} | jq -r .stargazers_count`,
+            },
+          },
+          {
+            value: '11',
+            label: '语言',
+            countTo: 11,
+            receipt: {
+              source: '仓库多语言目录',
+              endpoint: 'https://github.com/GD4AI/obsidian-llm-wiki/tree/main/src/texts',
+              key: 'src/texts/*.ts',
+              fetched: VERIFIED,
+              verify: `curl -s ${GH_WIKI}/contents/src/texts | jq length`,
+            },
+          },
+        ],
+        claims: [
+          {
+            text: 'Apache-2.0',
+            receipt: {
+              source: 'GitHub 许可识别',
+              endpoint: 'https://github.com/GD4AI/obsidian-llm-wiki',
+              key: 'license.spdx_id',
+              fetched: VERIFIED,
+              verify: `curl -s ${GH_WIKI} | jq -r .license.spdx_id`,
+            },
+          },
         ],
         cta: 'GitHub',
-        href: 'https://github.com/green-dalii/obsidian-llm-wiki',
+        href: 'https://github.com/GD4AI/obsidian-llm-wiki',
       },
       {
         tag: '行',
@@ -107,9 +169,52 @@ export const zh: Dict = {
         flow: '每轮先分流 ─→ 便宜轨日常跑 ─→ 关键处上强档',
         body: '每轮对话，先让省钱的模型快速瞄一眼：日常小事就交给它，要紧的事直接上最强的。服务商抽风了？当场换别的模型，手上的活不打断。复杂任务，它自己当指挥——拆解、派活、验收。一套架构，Pi 和 DeepSeek Harness 都能装。',
         stats: [
-          { value: '1,235', label: '月下载', countTo: 1235 },
+          {
+            value: '2,293',
+            label: '月下载',
+            countTo: 2293,
+            receipt: {
+              source: 'npm 下载 API — 两个实现合计',
+              endpoint: 'https://api.npmjs.org/downloads/point/last-month/pi-shift-router',
+              key: 'downloads (pi) + downloads (dsh)',
+              fetched: VERIFIED,
+              verify:
+                'for p in pi-shift-router dsh-shift-router; do curl -s https://api.npmjs.org/downloads/point/last-month/$p; done',
+            },
+          },
         ],
-        note: '零依赖 · 约 409 kB · Pi、DeepSeek Harness 都能装',
+        claims: [
+          {
+            text: '零运行时依赖',
+            receipt: {
+              source: 'npm registry 清单',
+              endpoint: 'https://www.npmjs.com/package/pi-shift-router',
+              key: 'dependencies',
+              fetched: VERIFIED,
+              verify: 'npm view pi-shift-router dependencies',
+            },
+          },
+          {
+            text: '636 kB（解包）',
+            receipt: {
+              source: 'npm registry dist',
+              endpoint: 'https://www.npmjs.com/package/pi-shift-router',
+              key: 'dist.unpackedSize',
+              fetched: VERIFIED,
+              verify: 'npm view pi-shift-router dist.unpackedSize',
+            },
+          },
+          {
+            text: 'MIT',
+            receipt: {
+              source: 'npm registry 清单',
+              endpoint: 'https://www.npmjs.com/package/pi-shift-router',
+              key: 'license',
+              fetched: VERIFIED,
+              verify: 'npm view pi-shift-router license',
+            },
+          },
+        ],
         cta: 'shiftrouter.greenerai.top',
         href: 'https://shiftrouter.greenerai.top',
       },
@@ -143,7 +248,7 @@ export const zh: Dict = {
     heading: '自己来看。',
     body: '读源码。查数字。自己跑起来。想聊聊，写信必回。',
     cta1: 'Karpathy LLM Wiki · GitHub',
-    cta1Href: 'https://github.com/green-dalii/obsidian-llm-wiki',
+    cta1Href: 'https://github.com/GD4AI/obsidian-llm-wiki',
     cta2: 'Shift-Router — shiftrouter.greenerai.top',
     cta2Href: 'https://shiftrouter.greenerai.top',
     cta3: 'GitHub 组织主页',

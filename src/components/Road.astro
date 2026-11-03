@@ -1,63 +1,64 @@
 ---
 import { getDict } from '../i18n';
 const r = getDict(Astro.currentLocale).road;
+const isZh = Astro.currentLocale === 'zh';
 ---
 
-<section id="road" class="border-t border-hairline-soft bg-canvas py-20 md:py-28">
+<section id="road" class="road-section bg-paper pt-24 pb-20 md:pt-28 md:pb-24">
   <div class="container-site">
-    <div class="mb-12 max-w-2xl">
-      <span class="eyebrow" data-reveal>{r.eyebrow}</span>
-      <h2 class="display-lg mt-4" data-reveal data-reveal-delay="80">{r.heading}</h2>
-      <p class="mt-5 text-base leading-relaxed text-slate" data-reveal data-reveal-delay="160">{r.sub}</p>
-    </div>
+    <div class="grid gap-10 md:grid-cols-12 md:gap-x-12">
+      <div class="md:col-span-6">
+        <span class="eyebrow block" data-reveal>{r.eyebrow}</span>
+        <h2 class="t-h2 mt-4 text-ink" data-reveal data-reveal-delay="80">{r.heading}</h2>
+        <p class="t-body mt-6 max-w-[32rem] text-ink/85" data-reveal data-reveal-delay="160">
+          {r.sub}
+        </p>
+      </div>
 
-    <!-- 三条底线逐行打勾 → coda 收束 -->
-    <div class="mx-auto max-w-xl">
-      <div
-        class="rounded-card border border-hairline-soft bg-surface-mint-soft p-7 md:p-9"
-        data-reveal
-        data-reveal-delay="240"
-      >
-        <div class="space-y-6">
-          {r.practices.map((p, i) => (
-            <div
-              class="flex items-center gap-4"
-              data-reveal
-              data-reveal-delay={280 + i * 90}
-            >
-              <svg
-                width="18"
-                height="18"
-                viewBox="0 0 18 18"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="2.4"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                class="flex-none text-primary"
-                aria-hidden="true"
-              >
-                <path d="M3 9.5 7.2 13.7 15 4.8" />
-              </svg>
-              <span class="text-[16px] font-medium text-ink">{p}</span>
-            </div>
-          ))}
-        </div>
+      <!-- 三条底线 + coda：不再包一张薄荷卡片，改为规则线上的三行自检 -->
+      <div class="md:col-span-6 md:pl-12">
+        <ul class="border-t border-rule-strong" data-reveal data-reveal-delay="240">
+          {
+            r.practices.map((p) => (
+              <li class="flex items-center gap-4 border-b border-rule py-5">
+                <svg
+                  width="15"
+                  height="15"
+                  viewBox="0 0 18 18"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2.2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  class="flex-none text-primary"
+                  aria-hidden="true"
+                >
+                  <path d="M3 9.5 7.2 13.7 15 4.8" />
+                </svg>
+                <span class="t-body font-medium text-ink">{p}</span>
+              </li>
+            ))
+          }
+        </ul>
 
-        <div class="mt-8 border-t border-hairline pt-7 text-center">
-          <p
-            class:list={[
-              'font-display text-xl leading-snug text-primary md:text-[24px]',
-              // 中文斜体为合成伪斜，去斜保留颜色强调
-              Astro.currentLocale === 'zh' ? 'not-italic' : 'italic',
-            ]}
-            data-reveal
-            data-reveal-delay="460"
-          >
-            {r.coda}
-          </p>
-        </div>
+        <p
+          class:list={[
+            't-entry mt-9 text-primary',
+            isZh ? 'not-italic' : 'italic',
+          ]}
+          data-reveal
+          data-reveal-delay="360"
+        >
+          {r.coda}
+        </p>
       </div>
     </div>
   </div>
 </section>
+
+<style>
+  /* 这一节的结句是要「破格」的：让 coda 的中文/英文在窄栏里也不至于被挤成两行碎句 */
+  .road-section .t-entry {
+    text-wrap: balance;
+  }
+</style>

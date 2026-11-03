@@ -3,59 +3,55 @@ import { getDict } from '../i18n';
 import HeroStack from './HeroStack.astro';
 
 const d = getDict(Astro.currentLocale).hero;
+const isZh = Astro.currentLocale === 'zh';
 ---
 
-<section class="mesh-hero relative overflow-hidden">
-  <!-- ASCII 像素点背景：canvas 点阵 (`·`/JetBrains Mono)，指针热区变亮+变字符 -->
-  <canvas id="hero-ascii" class="hero-ascii" aria-hidden="true"></canvas>
+<!--
+  Hero = 版式骨架可见。
+  删掉了点阵 canvas：粒子场是 AI 站点的陈词，且在窄屏压在正文背后损害可读性。
+  取而代之的是 12 栏发丝线 + 四角裁切标记 —— 宣告「结构，可见」，与「声称，可查」同源。
+  纯 CSS，零 canvas，零 rAF，零 GPU 常驻。
+-->
+<section class="relative overflow-hidden bg-paper-tint">
+  <!-- 骨架层（装饰，不进可访问树） -->
+  <div class="pointer-events-none absolute inset-0" aria-hidden="true">
+    <div class="container-site relative h-full">
+      <div class="scaffold-cols"></div>
+      <div class="crop-marks"><i></i><i></i><i></i><i></i></div>
+    </div>
+  </div>
 
   <div
     class="container-site relative z-10 grid grid-cols-1 items-center gap-12 pt-24 pb-16 md:grid-cols-12 md:gap-10 md:pt-28 md:pb-24 lg:pt-32 lg:pb-28"
   >
-    <!-- Left: editorial manifesto -->
+    <!-- 左：编辑式宣言 -->
     <div class="md:col-span-7">
-      <span class="hero-eyebrow" data-reveal>
-        <span class="hero-eyebrow-dot" aria-hidden="true"></span>
-        {d.eyebrow}
-      </span>
+      <span class="eyebrow block" data-reveal>{d.eyebrow}</span>
 
-      <h1
-        class="mt-7 font-display text-[30px] leading-[1.18] tracking-[-0.01em] text-ink sm:text-[36px] md:text-[42px] lg:text-[48px]"
-      >
+      <h1 class="t-hero mt-6 text-ink md:mt-7">
         <span class="hero-line-mask block">
-          <span class="hero-line-inner block text-balance" data-hero-line>{d.h1a}</span>
+          <span class="hero-line-inner block" data-hero-line>{d.h1a}</span>
         </span>
         <span class="hero-line-mask block">
           <span
-            class="hero-line-inner block text-balance"
+            class="hero-line-inner block"
             data-hero-line
             data-hero-line-delay="140"
           >
             <!-- 中文斜体是合成伪斜（Instrument Serif 无 CJK 字形），中文只用颜色强调 -->
             <em
-              class:list={[
-                'text-primary',
-                Astro.currentLocale === 'zh' ? 'not-italic' : 'italic',
-              ]}
+              class:list={['text-primary', isZh ? 'not-italic' : 'italic']}
               >{d.h1b}</em
             >
           </span>
         </span>
       </h1>
 
-      <p
-        class="mt-7 max-w-xl text-base leading-relaxed text-slate md:text-[17px]"
-        data-reveal
-        data-reveal-delay="240"
-      >
+      <p class="t-lead mt-7 max-w-xl text-ink/85 md:mt-8" data-reveal data-reveal-delay="240">
         {d.sub}
       </p>
 
-      <div
-        class="mt-9 flex flex-col gap-3 sm:flex-row"
-        data-reveal
-        data-reveal-delay="320"
-      >
+      <div class="mt-9 flex flex-col gap-3 sm:flex-row" data-reveal data-reveal-delay="320">
         <a class="btn-primary" href={d.ctaPrimaryHref}>{d.ctaPrimary}</a>
         <a
           class="btn-secondary"
@@ -65,25 +61,31 @@ const d = getDict(Astro.currentLocale).hero;
         >
       </div>
 
-      <p
-        class="mt-6 font-mono text-[10.5px] uppercase tracking-[0.14em] text-steel"
-        data-reveal
-        data-reveal-delay="380"
-      >
+      <p class="mono-label hero-footnote mt-7 text-muted" data-reveal data-reveal-delay="380">
         {d.footnote}
       </p>
     </div>
 
-    <!-- Right: the stack, at a glance -->
+    <!-- 右：稀缺面板（知/品/行 + 杠杆线） -->
     <div class="md:col-span-5">
       <HeroStack />
-      <p
-        class="mt-5 text-center font-mono text-[10.5px] uppercase tracking-[0.16em] text-steel"
-        data-reveal
-        data-reveal-delay="300"
-      >
+      <p class="mono-label mt-5 text-center text-muted" data-reveal data-reveal-delay="300">
         {d.stackCaption}
       </p>
     </div>
   </div>
 </section>
+
+<style>
+  /* 43 字符 mono 在 390px 下会折成孤字：窄屏收字号与字距，保证一行 */
+  .hero-footnote {
+    font-size: 10px;
+    letter-spacing: 0.08em;
+  }
+  @media (min-width: 640px) {
+    .hero-footnote {
+      font-size: 11px;
+      letter-spacing: 0.12em;
+    }
+  }
+</style>
