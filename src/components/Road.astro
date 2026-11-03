@@ -19,22 +19,13 @@ const isZh = Astro.currentLocale === 'zh';
       <div class="md:col-span-6 md:pl-12">
         <ul class="border-t border-rule-strong" data-reveal data-reveal-delay="240">
           {
-            r.practices.map((p) => (
-              <li class="flex items-center gap-4 border-b border-rule py-5">
-                <svg
-                  width="15"
-                  height="15"
-                  viewBox="0 0 18 18"
-                  fill="none"
-                  stroke="currentColor"
-                  stroke-width="2.2"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  class="flex-none text-primary"
-                  aria-hidden="true"
-                >
-                  <path d="M3 9.5 7.2 13.7 15 4.8" />
-                </svg>
+            r.practices.map((p, i) => (
+              <li class="flex items-baseline gap-4 border-b border-rule py-5">
+                {/* 去掉对勾：对勾是信任徽章的语法，而这三行不是「已达成」，是「我们怎么做事」。
+                    换成不带评价的序号，读者自己判断。 */}
+                <span class="mono-label flex-none text-muted" aria-hidden="true">
+                  {String(i + 1).padStart(2, '0')}
+                </span>
                 <span class="t-body font-medium text-ink">{p}</span>
               </li>
             ))

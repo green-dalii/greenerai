@@ -10,10 +10,10 @@ export const en: Dict = {
   meta: {
     title: 'Greener-Dalii — We turn what you know into leverage.',
     description:
-      'Intelligence is no longer scarce. Greener-Dalii turns what stays scarce — what you know, how you choose, what you finish — into leverage. Everything open, every number public.',
+      'We build tools for the three things AI made more valuable by making everything else cheap: what you have lived through, what you refuse to ship, and what you actually finish. Everything open, every number carrying a receipt.',
     ogTitle: 'Intelligence is no longer scarce. Leverage is the new company.',
     ogDescription:
-      'A handful of people, company-scale reach. Every number open, every one checkable.',
+      'A small team with company-scale reach. Every number open, every one checkable.',
   },
 
   brand: {
@@ -35,26 +35,24 @@ export const en: Dict = {
   },
 
   hero: {
-    eyebrow: 'Leverage for the AI-native era',
+    eyebrow: "Tools for what AI can't generate",
     h1a: 'Intelligence is no longer scarce.',
     h1b: 'Leverage is the new company.',
-    sub: "Every week AI makes raw intelligence worth a little less. What's scarce now lives in the human part — what you know, how you choose, what you finish. We turn those three into leverage — and we're running on it.",
+    sub: "AI didn't make us smarter. It made thinking cheap — which makes everything else worth more: what you've actually lived through, what you refuse to ship, what you finish. We build tools for those three, then run this company on them.",
     ctaPrimary: 'See the practice',
     ctaPrimaryHref: '#proof',
     ctaSecondary: 'Star on GitHub',
     ctaSecondaryHref: 'https://github.com/green-dalii',
     stackCaption: "What compounds when headcount doesn't.",
-    footnote: 'Open source · public numbers · easy to check',
+    footnote: 'All open source. Every number carries a receipt.',
   },
 
   stack: {
-    headLabel: 'what stays scarce',
     rows: [
-      { idx: '01', name: 'Know', gloss: 'years in the making' },
-      { idx: '02', name: 'Taste', gloss: 'the choice behind the work' },
-      { idx: '03', name: 'Do', gloss: 'done counts' },
+      { idx: '01', name: 'Know', gloss: "what you've lived through" },
+      { idx: '02', name: 'Taste', gloss: 'what you refuse to ship' },
+      { idx: '03', name: 'Do', gloss: 'what you actually finish' },
     ],
-    lever: { you: 'you', companyScale: 'company-scale' },
   },
 
   thesis: {
@@ -64,27 +62,32 @@ export const en: Dict = {
       {
         index: 'I',
         title: 'Intelligence is no longer scarce.',
-        body: "AI is doing to intelligence what engines did to muscle: overnight, supply spiked and value collapsed. The moat has moved.",
+        body:
+          'AI is doing to thinking what engines did to muscle. Supply went up, price went down, and every advantage built on top of it had to be rebuilt somewhere else.',
       },
       {
         index: 'II',
         title: 'What you know is the moat.',
-        body: "Decisions made, tuition paid, instincts honed over years — none of it can be bought, scraped, or copied. It's yours alone.",
+        body:
+          "The decisions you got wrong and paid for. The instincts that took years. None of it can be bought, scraped, or copied — which is why it is worth more now than it was two years ago.",
       },
       {
         index: 'III',
         title: 'What you choose is the edge.',
-        body: "When anyone can generate anything, the difference comes down to taste — knowing what deserves to exist. So we keep a design studio at hand; day in, day out, that's where the eye gets trained.",
+        body:
+          'When anyone can generate anything, the only question left is what deserves to exist. That one is never answered in the abstract — it gets answered by hand, at small scale, over and over. Ours gets answered in a design studio: one page, one rejected draft, one millimetre at a time.',
       },
       {
         index: 'IV',
         title: 'What you finish is the proof.',
-        body: "Ideas are a dime a dozen — shipping is the proof. Tools do the grinding; people make the calls.",
+        body:
+          'Anyone can start; almost nobody finishes. The tools do the grinding, the people make the calls. Finishing is the only part other people can see.',
       },
       {
         index: '',
         title: 'Leverage turns all three into a company.',
-        body: 'Know, taste, do — each one compounds through the right tool. A handful of people now carries the weight a company used to.',
+        body:
+          "Know, taste, do — each one gets bigger when a tool carries it. That is the whole trick: a few people can now carry what used to take a department.",
         synthesis: true,
       },
     ],
@@ -93,7 +96,8 @@ export const en: Dict = {
   practice: {
     eyebrow: 'Practice',
     heading: 'The beliefs, in practice.',
-    sub: "The daily practice, shipped as tools. We're early and small — and that's exactly why every number is public.",
+    sub:
+      'Two tools so far. Both open. Every number below carries a receipt — open one and you get the endpoint, the field, and the command to check it yourself.',
     evidenceLabel: 'Evidence',
     receiptUi: {
       open: 'Show receipt',
@@ -108,8 +112,9 @@ export const en: Dict = {
       {
         tag: 'Know',
         title: 'Karpathy LLM Wiki',
-        flow: 'Your notes → graph retrieval → answers with sources attached',
-        body: 'Built for Obsidian: your notes become a knowledge base that answers — every answer brings its source along, and nothing leaves your machine.',
+        flow: 'Your notes → connected pages → answers with sources attached',
+        body:
+          'Built for Obsidian. Your notes become a knowledge base you can ask questions — every answer links back to the note it came from, and nothing leaves your machine.',
         stats: [
           {
             value: '67,153',
@@ -167,8 +172,9 @@ export const en: Dict = {
         tag: 'Do',
         title: 'Shift-Router',
         subtag: 'for Pi & DeepSeek Harness',
-        flow: 'Triage each turn → cheap lane by default → strong model when it counts',
-        body: 'Every turn gets a cheap once-over first — routine work stays with the affordable model, the calls that matter jump straight to the best. Provider throttling? It swaps models mid-task without missing a beat. On complex jobs it takes charge: plans, hands implementation off to fast workers, and checks their work. One architecture, fits both Pi and DeepSeek Harness.',
+        flow: 'Cheap model by default → strong model when it counts',
+        body:
+          "You are paying for the expensive model and the cheap one, and each message can only use one of them. This decides per message, so the expensive one only sees work that needs it — and if a provider cuts you off mid-task, it switches and keeps going.", 
         stats: [
           {
             value: '2,293',
@@ -216,7 +222,7 @@ export const en: Dict = {
             },
           },
         ],
-        cta: 'shiftrouter.greenerai.top',
+        cta: 'Project site',
         href: 'https://shiftrouter.greenerai.top',
       },
     ],
@@ -226,36 +232,38 @@ export const en: Dict = {
     eyebrow: 'Who we are',
     heading: 'A handful of people. Company-scale reach.',
     body: [
-      "No hierarchies, no ceremony — a few right people with the right tools doing a whole department's work.",
-      "We're not predicting how organizations will change — we're one of the answers: few people, tools of our own, already running.",
+      'No layers, no ceremony. A few people, each carrying more than their job title — and tools that pick up the rest.',
+      "We are not predicting how companies get organised in five years. We are one version of the answer, and it is already running — that is the only version of this claim we can make honestly.",
     ],
     tracks: [
-      { name: 'Greener-Dalii', role: 'builds leverage for the AI-native era' },
-      { name: 'Greener-Dalii Studio', role: 'daily practice of taste' },
+      { name: 'Greener-Dalii', role: 'Products, tools, and the company that runs on them' },
+      { name: 'Greener-Dalii Studio', role: 'Client work — the daily practice of choosing' },
     ],
-    bridge: 'Same people · the same eye.',
+    bridge: 'Same people. Two brands. Two parallel lines.',
   },
 
   road: {
     eyebrow: "What's next",
     heading: 'Proof over promises.',
-    sub: "When anyone can generate anything, words get cheap. The next layer we're building gives every claim its own receipt — provenance you can check, work that points back to its origin, numbers that trace to a source. It's not finished, so we're practicing on ourselves: everything open, everything sourced.",
-    practices: ['Everything open', 'Everything sourced', 'Tested on ourselves'],
-    coda: 'Shipped the only way we know how: in the open.',
+    sub:
+      "You have opened the receipts on this page. They cost us nothing to publish, and they tell you more than any testimonial could. The next thing we are building applies the same move to the work itself — a piece that shows where it came from: the source, the version, the hand that changed it, It is not finished. When it is, you will check it the way you checked these.",
+    practices: ['Open by default', "Sourced or it doesn't ship", 'We go first'],
+    coda: 'Nothing here is finished. Everything here is checkable.',
   },
 
   open: {
     eyebrow: 'Open',
     heading: 'See for yourself.',
-    body: 'Read the source. Check the numbers. Run it yourself. Want to talk? We answer.',
-    cta1: 'Karpathy LLM Wiki on GitHub',
+    body:
+      'The code is open. The numbers have receipts. You can run either one. If you would rather talk to a person, write — one of us reads it.',
+    cta1: 'Karpathy LLM Wiki',
     cta1Href: 'https://github.com/GD4AI/obsidian-llm-wiki',
-    cta2: 'Shift-Router — shiftrouter.greenerai.top',
+    cta2: 'Shift-Router',
     cta2Href: 'https://shiftrouter.greenerai.top',
-    cta3: 'Our GitHub org',
+    cta3: 'GitHub org',
     cta3Href: 'https://github.com/green-dalii',
     email: { label: 'Write to us', href: 'mailto:hi@greenerai.top' },
-    note: 'Apache-2.0 · MIT · nothing here is hard to check',
+    note: 'Apache-2.0 · MIT · check anything on this page',
   },
 
   footer: {
