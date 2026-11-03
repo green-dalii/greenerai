@@ -1,0 +1,120 @@
+---
+/**
+ * Ledger —— 全页唯一一道满宽数字带（第三处、也是最后一处破格）。
+ *
+ * 为什么需要它：整站的主张是「人少 × 杠杆」，但读者滑到一半时并不知道这个主张有多大。
+ * 三个带凭据的数字，排成一句衬线句子之外的东西 —— 数字在这儿是凭据，不是修辞，
+ * 所以走 .t-figure（Inter + tabular-nums），不走装饰衬线。
+ *
+ * 每个数字都能点回实践区的回执 —— 这里的数字不是终点，是入口。
+ */
+import { getDict } from '../i18n';
+const l = getDict(Astro.currentLocale).evidence.ledger;
+---
+
+<section class="ledger" aria-labelledby="ledger-claim">
+  <div class="container-site">
+    <p id="ledger-claim" class="ledger-claim" data-reveal>{l.claim}</p>
+
+    <ul class="ledger-items">
+      {
+        l.items.map((it, i) => (
+          <li data-reveal data-reveal-delay={i * 70}>
+            <a class="ledger-cell" href={l.href}>
+              <span class="ledger-value">{it.value}</span>
+              <span class="mono-label ledger-label">{it.label}</span>
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+
+    <p class="mono-label ledger-note" data-reveal data-reveal-delay="260">
+      {l.note} <span aria-hidden="true">→</span>
+    </p>
+  </div>
+</section>
+
+<style>
+  .ledger {
+    background: var(--color-paper-tint);
+    border-top: 1px solid var(--color-rule);
+    border-bottom: 1px solid var(--color-rule);
+    padding-block: 3.5rem 3.75rem;
+  }
+  @media (min-width: 768px) {
+    .ledger {
+      padding-block: 4.5rem 5rem;
+    }
+  }
+
+  .ledger-claim {
+    font-family: var(--font-display);
+    font-size: clamp(1.5rem, 2.6vw, 2.25rem);
+    line-height: 1.2;
+    letter-spacing: -0.012em;
+    color: var(--color-ink);
+    max-width: 24rem;
+  }
+  html[lang^='zh'] .ledger-claim {
+    font-family:
+      'Instrument Serif', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei',
+      'Noto Sans CJK SC', sans-serif;
+    max-width: 20rem;
+  }
+
+  .ledger-items {
+    display: grid;
+    grid-template-columns: 1fr;
+    margin-top: 2.25rem;
+    border-top: 1px solid var(--color-rule-strong);
+  }
+  @media (min-width: 640px) {
+    .ledger-items {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+  }
+
+  .ledger-cell {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+    padding: 1.5rem 0 1.35rem;
+    border-bottom: 1px solid var(--color-rule);
+    transition: color 0.2s ease;
+  }
+  @media (min-width: 640px) {
+    .ledger-cell {
+      border-bottom: 0;
+      padding: 1.6rem 1.5rem 1.4rem 0;
+    }
+    .ledger-items > li + li .ledger-cell {
+      border-left: 1px solid var(--color-rule);
+      padding-left: 1.5rem;
+    }
+  }
+
+  /* 数字是凭据，不是修辞：Inter + tabular-nums（见 SPEC §4 字体跟随功能） */
+  .ledger-value {
+    font-family: var(--font-sans);
+    font-size: clamp(2rem, 4vw, 3rem);
+    font-weight: 500;
+    line-height: 1;
+    letter-spacing: -0.03em;
+    font-variant-numeric: tabular-nums lining-nums;
+    color: var(--color-ink);
+    transition: color 0.2s ease;
+  }
+  .ledger-cell:hover .ledger-value,
+  .ledger-cell:focus-visible .ledger-value {
+    color: var(--color-primary);
+  }
+  .ledger-label {
+    color: var(--color-muted);
+  }
+
+  .ledger-note {
+    margin-top: 1.5rem;
+    color: var(--color-primary);
+  }
+</style>

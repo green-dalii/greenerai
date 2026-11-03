@@ -47,6 +47,43 @@ export const en: Dict = {
     footnote: 'All open source. Every number carries a receipt.',
   },
 
+  evidence: {
+    translation: {
+      label: 'What it actually does',
+      beforeLabel: 'A flat note',
+      beforePath: 'notes/machine-learning.md',
+      beforeNote: 'One file, no structure.',
+      afterLabel: 'What you get back',
+      afterPath: 'wiki/concepts/supervised-learning.md',
+      rows: [
+        { k: 'aliases', v: 'supervised learning · SL' },
+        { k: 'links', v: '[[unsupervised-learning]] [[training-data]]' },
+        { k: 'sources', v: 'quoted where they land' },
+        { k: 'index', v: 'wiki/index.md → Concepts' },
+      ],
+      caption: 'The before-and-after the project README documents.',
+    },
+    session: {
+      label: 'One session',
+      lines: [
+        { text: 'deepseek-v4.1-flash → fix the failing test', tag: 'routine' },
+        { text: 'claude-fable-5 ← \"design the auth flow\"', tag: 'upgraded' },
+        { text: 'deepseek-v4.1-flash 429 → glm-5.3-flash', tag: 'failed over' },
+      ],
+      caption: 'Excerpt from the project README, icons removed.',
+    },
+    ledger: {
+      claim: 'Three numbers you can check without taking our word for it.',
+      items: [
+        { value: '67,153', label: 'downloads' },
+        { value: '2,293', label: 'installs a month' },
+        { value: '0', label: 'runtime dependencies' },
+      ],
+      note: 'each one opens into a receipt',
+      href: '#proof',
+    },
+  },
+
   stack: {
     rows: [
       { idx: '01', name: 'Know', gloss: "what you've lived through" },

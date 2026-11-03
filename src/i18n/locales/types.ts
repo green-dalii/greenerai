@@ -79,6 +79,38 @@ export interface Dict {
     /** Hero 底部 mono 脚注 */
     footnote: string;
   };
+  /**
+   * 证据层（P5-A 新增命名空间）。
+   * 所有内容都必须能溯源到项目自己的 README / 仓库 —— 在主张「可查验」的站上，
+   * 编造一个看起来像产品的实物是最重的自伤。
+   */
+  evidence: {
+    /** 笔记 → wiki 页的转化（源自 obsidian-llm-wiki README 文档化的原例） */
+    translation: {
+      label: string;
+      beforeLabel: string;
+      beforePath: string;
+      beforeNote: string;
+      afterLabel: string;
+      afterPath: string;
+      rows: { k: string; v: string }[];
+      caption: string;
+    };
+    /** 真实会话摘录（源自 pi-shift-router README 的 How it works 代码块） */
+    session: {
+      label: string;
+      lines: { text: string; tag: string }[];
+      caption: string;
+    };
+    /** 满宽数字带：三个带凭据的真实数字 */
+    ledger: {
+      claim: string;
+      items: { value: string; label: string }[];
+      note: string;
+      href: string;
+    };
+  };
+
   /** Hero 右侧面板：知/品/行 三行（无徽章、无图例、无杠杆仪表、无产品名） */
   stack: {
     rows: { idx: string; name: string; gloss: string }[];

@@ -32,6 +32,12 @@ interface Props {
   /** 数字下方的固定标签（如 'downloads'），保证展开时顺序稳定 */
   sublabel?: string;
   sublabelClass?: string;
+  /**
+   * 排布：
+   *  - inline —— 埋在正文里的声称（Apache-2.0 / MIT），提示跟在文字后面
+   *  - block  —— 统计数字，提示另起一行
+   */
+  layout?: 'inline' | 'block';
 }
 
 const {
@@ -40,7 +46,8 @@ const {
   ui,
   triggerClass = '',
   sublabel,
-  sublabelClass = 'mono-label mt-2 text-muted',
+  sublabelClass = 'mono-label text-muted',
+  layout = 'inline',
 } = Astro.props;
 
 // 唯一 id 供 aria-controls —— endpoint + claim 生成稳定短哈希
@@ -50,22 +57,35 @@ for (let i = 0; i < raw.length; i++) h = (h * 31 + raw.charCodeAt(i)) | 0;
 const id = `receipt-${Math.abs(h).toString(36)}`;
 
 const isLink = /^https?:\/\//.test(receipt.endpoint);
+
+/**
+ * 视觉提示：stat 用整句（SHOW RECEIPT），内联声称只留一个 +/− 记号。
+ * 一条卡里有 3–4 处内联声称，各写一遍「SHOW RECEIPT」会变成噪音；
+ * 而可读的按钮名走 aria-label，不受视觉提示影响。
+ */
+const cueOpen = layout === 'inline' ? '＋' : ui.open;
+const cueClose = layout === 'inline' ? '−' : ui.close;
 ---
 
-<span class="receipt">
+<span class="receipt" data-layout={layout}>
   <button
     type="button"
     class:list={['receipt-trigger', triggerClass]}
     aria-expanded="false"
     aria-controls={id}
+    aria-label={`${claim} — ${ui.open}`}
     data-receipt-trigger
-    data-label-open={ui.open}
-    data-label-close={ui.close}
+    data-label-open={cueOpen}
+    data-label-close={cueClose}
+    data-aria-open={ui.open}
+    data-aria-close={ui.close}
   >
-    <span>{claim}<span class="sr-only" data-receipt-label> — {ui.open}</span></span>
+    <span class="receipt-claim">{claim}</span>
+    <span class="receipt-meta">
+      {sublabel && <span class={sublabelClass}>{sublabel}</span>}
+      <span class="receipt-cue" data-receipt-label aria-hidden="true">{cueOpen}</span>
+    </span>
   </button>
-
-  {sublabel && <span class={sublabelClass}>{sublabel}</span>}
 
   <div class="receipt-panel" id={id} data-receipt-panel data-open="false" role="region">
     <div>
@@ -120,6 +140,9 @@ const isLink = /^https?:\/\//.test(receipt.endpoint);
     panel.dataset.open = String(!open);
     const label = btn.querySelector<HTMLElement>('[data-receipt-label]');
     const next = open ? btn.dataset.labelOpen : btn.dataset.labelClose;
-    if (label && next) label.textContent = ` — ${next}`;
+    if (label && next) label.textContent = next;
+    const aria = open ? btn.dataset.ariaOpen : btn.dataset.ariaClose;
+    const claimText = btn.querySelector('.receipt-claim')?.textContent?.trim() ?? '';
+    if (aria) btn.setAttribute('aria-label', `${claimText} — ${aria}`);
   });
 </script>

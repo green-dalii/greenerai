@@ -161,7 +161,13 @@
 | `.t-body` | 16（ZH lh 1.85） | 正文 |
 | `.t-note` | 13 | 注脚 / 链接 |
 | `.t-numeral` | 48 → 88 | 幽灵编号（I–IV，装饰，`aria-hidden`） |
-| `.t-stat` | 28 → 36 | 统计数字 |
+| `.t-figure` | 26 → 32 | **可核的数字**（Inter + tabular-nums） |
+| `.t-stat` | 28 → 36 | 叙述性数字（只用于句子内部） |
+
+**字体跟随功能**：可核的数字不用装饰字体。
+Instrument Serif 的 `1` 是一根纯竖线，`11`（语言数）会被读成 `II`（罗马数字二），
+与 Thesis 序号同形；`67,153` / `768` / `11` 右边缘也对不齐。
+所以凡是「需要被精确阅读的数字」一律 `.t-figure`；衬线只留给词。
 
 **层级倒置（编辑排版的关键动作）**：论点陈述刻意**大于**节标题。
 五条信念是本节的真正主角，不该和「See for yourself」同字号。
@@ -182,7 +188,10 @@ Thesis 编号为 I–IV + 收束项；收束项不用第五个序号，改用一
 - **裁切标记** `.crop-marks`：四角 L 形印前套准记号，仅 Hero。
 - **签名线** `.signature-rule`：primary 2px 实线 + 12% 长 accent 短划，用于 Footer 顶边。
   ⚠️ 旧的 `.gradient-signature` 五段绿渐变**已删除** —— 那是移植自 Mistral 的 sunset stripe，借用别家签名在创意维度是负分。
-- **回执** `.receipt-*`：见 §5。
+- **回执** `.receipt-*`：见 §5。触发提示必须**写字**（`· SHOW RECEIPT` / `· 查看回执`），
+  内联声称用 `＋`/`−` 记号，`aria-label` 承载可读名称。静默的小方角已被证否。
+- **Ledger**：全页唯一一道满宽数字带（第三处破格），三个带凭据的数字，每个点回自己那张回执。
+- **Translation / SessionLog**：全站唯一的「实物」。见 §5「零编造」。
 - 出血破格：Thesis 每条论点的分隔线出血到视口边缘（`100vw` + `overflow-x: clip`），正文留在栏内。
 
 ### 签名组件
@@ -201,6 +210,14 @@ Thesis 编号为 I–IV + 收束项；收束项不用第五个序号，改用一
   - 3s 兜底扫描 + `beforeprint`/`@media print` 强制全可见
   - 尊重 `prefers-reduced-motion`
 - **Hero 背景**：CSS 版式骨架（12 栏 + 裁切标记）。点阵 canvas 已删除（-215 行 JS，零 rAF、零 GPU 常驻）。
+  HeroStack 的 3D 指针按压也已删除 —— 悬停倾斜是 2021 年的把戏，与编辑克制相抵。
+- **签名缓动**：GSAP 侧 `expo.out`（`motion.ts` 的 `EASE` 常量），CSS 侧 `--ease-signature:
+  cubic-bezier(.16,.84,.24,1)`。两处同一条手感，改一起改。
+- **导航当前节高亮**：复用 IntersectionObserver（`rootMargin: -45% 0 -50%`），零滚动监听；
+  当前节转 ink + 2px primary 底线，与语言切换的当前态同一种记号。
+- **零编造**：`Translation.astro` 与 `SessionLog.astro` 的内容**全部**来自
+  `GD4AI/obsidian-llm-wiki` 与 `pi-shift-router` 的 README 原文，PR 里给出原文链接。
+  在主张「可查验」的站上，编造一个看起来像产品的 UI 是最重的自伤 —— 这条优先于任何视觉考虑。
 - **Receipt 交互**：`<button aria-expanded aria-controls>` + `grid-template-rows: 0fr → 1fr` 过渡，单一事件委托，键盘可达，无需测量高度。
 - Hero 右侧：HeroStack.astro（知/品/行 三行 + 注解 + 杠杆线）
 - i18n：`defaultLocale:'en'` 无前缀；`zh` → `/zh/`；字典 `src/i18n/locales/{en,zh}.ts`（typed）
@@ -231,7 +248,10 @@ Thesis 编号为 I–IV + 收束项；收束项不用第五个序号，改用一
 - [ ] **重复定律抽查**：任一论点全文完整展开仅一次；无比喻复用
 - [ ] 中英双字典术语一致（知/品/行 ↔ Know/Taste/Do）；zh 逐句朗读无翻译腔
 - [ ] Thesis 结构 = I–IV + 收束项（收束项用规则线记号，不用序号）
-- [ ] HeroStack：三行 + 注解 + 杠杆线，无徽章无 legend；产品名不进 Hero
+- [ ] HeroStack：三行 + 注解，无徽章、无 legend、无杠杆仪表；产品名不进 Hero
+- [ ] **实物可溯源**：Translation / SessionLog 的每一行都能在项目 README 里对上原文
+- [ ] **回执可发现**：每个回执都有可见的文字或记号提示，`aria-label` 可读
+- [ ] **数字字体**：可核数字走 `.t-figure`（Inter tabular），衬线不出现在凭据位
 - [ ] Hero 无 canvas；版式骨架在 `md` 以下隐藏
 - [ ] 回执 8 处齐全，`SOURCE/ENDPOINT/FIELD/VERIFIED` 非空，核验命令可复制
 - [ ] **reveal 完整性探针**：滚动全页后 `[data-reveal]` 不可见数 = 0
