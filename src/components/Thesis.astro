@@ -1,61 +1,64 @@
 ---
 import { getDict } from '../i18n';
 const t = getDict(Astro.currentLocale).thesis;
+
+/**
+ * 结构：四个支柱（I–IV）排成两栏对照行 + 一个收束项（满宽薄荷带）。
+ *
+ * 为什么两栏：原来序号飘在 110px 空槽里、标题与正文上下叠、右半屏全空，
+ * 1556px 装 ~950px 内容。改成「序号 │ 标题 │ 正文」三列后，横向填满、扫读变快。
+ *
+ * 为什么收束项离开 <ol>：它不是第五根支柱，是「所以」。
+ * 让它留在列表里，读者只会数到五；把它做成满宽带，它才成为句点。
+ */
+const pillars = t.items.filter((i) => !i.synthesis);
+const synthesis = t.items.find((i) => i.synthesis);
 ---
 
-<!--
-  编辑排版的关键动作：层级倒置。
-  节标题刻意小于论点陈述 —— 五条信念是本节的主角，不是「See for yourself」的同级兄弟。
-  编号 I–IV + 收束符号 ∴（四个支柱 + 一个合成，不是五个并列项）。
-  分隔线全出血到视口边缘，正文留在栏内 —— 一次真正的破格。
--->
-<section id="thesis" class="thesis-section bg-paper pt-24 pb-14 md:pt-32 md:pb-16">
+<section id="thesis" class="thesis-section bg-paper pt-24 pb-0 md:pt-32">
   <div class="container-site">
     <div class="max-w-[26rem]">
       <span class="eyebrow block" data-reveal>{t.eyebrow}</span>
       <h2 class="t-h2 mt-4 text-ink" data-reveal data-reveal-delay="80">{t.heading}</h2>
     </div>
 
-    <ol class="mt-16 md:mt-20">
+    <ol class="mt-12 md:mt-14">
       {
-        t.items.map((item, i) => (
-          <li
-            class="thesis-item relative py-10 md:py-14"
-            class:list={[item.synthesis ? 'is-synthesis' : '']}
-            data-reveal
-            data-reveal-delay={i * 60}
-          >
-            <div class="grid gap-4 md:grid-cols-[8rem_1fr] md:gap-10">
-              {item.synthesis ? (
-                <span class="synthesis-mark" aria-hidden="true" />
-              ) : (
-                <span class="numeral-ghost t-numeral select-none" aria-hidden="true">
-                  {item.index}
-                </span>
-              )}
-              <div class="min-w-0">
-                <h3
-                  class:list={[
-                    't-statement',
-                    item.synthesis ? 'text-primary' : 'text-ink',
-                  ]}
-                >
-                  {item.title}
-                </h3>
-                <p class="t-body mt-4 max-w-[33rem] text-ink/85 md:mt-5">{item.body}</p>
-              </div>
+        pillars.map((item, i) => (
+          <li class="thesis-item" data-reveal data-reveal-delay={i * 60}>
+            <div class="thesis-grid">
+              <span class="thesis-index" aria-hidden="true">
+                {item.index}
+              </span>
+              <h3 class="t-statement thesis-title text-ink">{item.title}</h3>
+              <p class="t-body thesis-body text-ink/85">{item.body}</p>
             </div>
           </li>
         ))
       }
     </ol>
   </div>
+
+  {
+    synthesis && (
+      <div class="thesis-synthesis" data-reveal>
+        <div class="container-site">
+          <h3 class="t-statement synthesis-title text-primary">{synthesis.title}</h3>
+          <p class="t-body mt-4 max-w-[36rem] text-ink/85">{synthesis.body}</p>
+        </div>
+      </div>
+    )
+  }
 </section>
 
 <style>
-  /* 横线出血到视口边缘，文字仍在栏内 */
+  /* 横线出血到视口边缘，文字仍在栏内 —— 本页的第一处破格 */
   .thesis-section {
     overflow-x: clip;
+  }
+  .thesis-item {
+    position: relative;
+    padding-block: 2rem;
   }
   .thesis-item::before {
     content: '';
@@ -67,24 +70,65 @@ const t = getDict(Astro.currentLocale).thesis;
     transform: translateX(-50%);
     background: var(--color-rule);
   }
-  /* 收束项的线更重：它是「所以」，不是「第四条之后」 */
-  .thesis-item.is-synthesis::before {
-    height: 2px;
-    background: var(--color-primary);
+
+  .thesis-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 0.625rem;
+    min-width: 0;
   }
-  /* 合成项的「所以」记号：一条短而重的规则线，取代一个会被误读为装饰的 ∴ */
-  .synthesis-mark {
-    display: block;
-    width: 2.5rem;
-    height: 3px;
-    margin-top: 1.15rem;
-    background: var(--color-primary);
+  .thesis-index {
+    font-family: var(--font-display);
+    font-size: 1rem;
+    line-height: 1;
+    letter-spacing: 0.06em;
+    color: var(--color-muted);
   }
 
   @media (min-width: 768px) {
-    /* 幽灵编号与陈述首行基线对齐 */
-    .thesis-item .t-numeral {
-      padding-top: 0.12em;
+    .thesis-item {
+      padding-block: 2.5rem;
+    }
+    /* 序号 3.5rem │ 标题 5fr │ 间隙 1fr │ 正文 5fr
+       四列让标题与正文各占一栏，中间留一道空气槽，而不是让正文贴着标题堆叠 */
+    .thesis-grid {
+      grid-template-columns: 3.5rem minmax(0, 5fr) minmax(0, 1fr) minmax(0, 5fr);
+      align-items: start;
+      gap: 0 1.25rem;
+    }
+    .thesis-index {
+      padding-top: 0.62rem;
+    }
+    /* 正文首行基线对齐标题基线（44px×1.14 与 16px×1.7 的首行差） */
+    .thesis-body {
+      grid-column: 4;
+      padding-top: 1.05rem;
+      max-width: 30rem;
+    }
+    .thesis-title {
+      grid-column: 2;
+    }
+  }
+
+  /* 收束项：满宽薄荷带，是本节的视觉句点。
+     不用 ∴ —— 那会被读成装饰；也不用第五个序号 —— 那会被数成第五根支柱。 */
+  .thesis-synthesis {
+    margin-top: 3.5rem;
+    width: 100vw;
+    margin-left: calc(50% - 50vw);
+    background: var(--color-paper-tint);
+    border-top: 2px solid var(--color-primary);
+    padding-block: 3.5rem 4rem;
+  }
+  /* 收束句要比四条论点更响：它不是第五根支柱，是句号 */
+  .synthesis-title {
+    font-size: clamp(2rem, 3.6vw, 3.25rem);
+    line-height: 1.1;
+  }
+  @media (min-width: 768px) {
+    .thesis-synthesis {
+      margin-top: 4rem;
+      padding-block: 4.5rem 5rem;
     }
   }
 </style>
