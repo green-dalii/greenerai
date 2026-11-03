@@ -1,0 +1,143 @@
+---
+/**
+ * Translation —— 全站唯一「实物」的第一半。
+ *
+ * 为什么是这个而不是产品截图：
+ *  1. 截图会糊、不能 i18n、不能暗色适配，而且一改版就撒谎；
+ *  2. 更重要的是 —— 这里展示的形状**不是设计的，是 README 文档化的事实**：
+ *     `notes/machine-learning.md`（扁平文件）→ `wiki/concepts/supervised-learning.md`，
+ *     带 aliases、[[双向链接]]、出处、以及在 wiki/index.md 里的一条登记。
+ *     在一个主张「一切可查」的站上，编造一个看起来像产品的 UI 是最重的自伤；
+ *     所以我们展示的每一项都能在项目 README 里对上原文。
+ *
+ * 版式：两栏对照（前 / 后），中间一道发丝线。左栏是「你原本有的」，右栏是「多出来的结构」。
+ */
+import { getDict } from '../i18n';
+const e = getDict(Astro.currentLocale).evidence.translation;
+---
+
+<div class="translation">
+  <div class="tr-cols">
+    <div class="tr-cell">
+      <span class="mono-label text-muted">{e.beforeLabel}</span>
+      <p class="tr-path">{e.beforePath}</p>
+      <p class="t-note mt-2 text-muted">{e.beforeNote}</p>
+    </div>
+
+    <div class="tr-cell tr-cell--after">
+      <span class="mono-label text-primary">{e.afterLabel}</span>
+      <p class="tr-path is-strong">{e.afterPath}</p>
+      <dl class="tr-rows">
+        {
+          e.rows.map((r) => (
+            <div class="tr-row">
+              <dt class="tr-key">{r.k}</dt>
+              <dd class="tr-val">{r.v}</dd>
+            </div>
+          ))
+        }
+      </dl>
+    </div>
+  </div>
+  <p class="t-note tr-caption">{e.caption}</p>
+</div>
+
+<style>
+  .tr-cols {
+    container-type: inline-size;
+    display: grid;
+    grid-template-columns: 1fr;
+    border: 1px solid var(--color-rule);
+    border-radius: 12px;
+    background: var(--color-paper);
+    overflow: hidden;
+  }
+  .tr-cell {
+    padding: 1.15rem 1.15rem 1.25rem;
+  }
+  .tr-cell--after {
+    border-top: 1px solid var(--color-rule);
+    background: color-mix(in oklab, var(--color-paper-tint) 70%, var(--color-paper));
+  }
+
+  .tr-path {
+    margin-top: 0.55rem;
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    line-height: 1.45;
+    letter-spacing: 0.01em;
+    color: var(--color-muted);
+    word-break: break-all;
+  }
+  .tr-path.is-strong {
+    color: var(--color-ink);
+  }
+
+  .tr-rows {
+    margin-top: 0.85rem;
+    border-top: 1px solid var(--color-rule);
+  }
+  .tr-row {
+    display: grid;
+    grid-template-columns: 4.5rem minmax(0, 1fr);
+    gap: 0.75rem;
+    padding: 0.4rem 0;
+    border-bottom: 1px solid var(--color-rule);
+  }
+  .tr-row:last-child {
+    border-bottom: 0;
+    padding-bottom: 0;
+  }
+  .tr-key {
+    font-family: var(--font-mono);
+    font-size: 0.62rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--color-muted);
+    padding-top: 0.15rem;
+  }
+  .tr-val {
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    line-height: 1.5;
+    color: var(--color-ink);
+    /* 只在空格处断行：[[wiki-link]] 断在中间比溢出更难读 */
+    overflow-wrap: break-word;
+    word-break: normal;
+  }
+
+  /* 容器窄到放不下一行 wiki-link 时，键名单独占一行，把整宽让给值 */
+  @container (max-width: 560px) {
+    .tr-row {
+      grid-template-columns: 1fr;
+      gap: 0.15rem;
+    }
+    .tr-key {
+      padding-top: 0;
+    }
+  }
+
+  .tr-caption {
+    margin-top: 0.7rem;
+    color: var(--color-muted);
+  }
+
+  @media (min-width: 640px) {
+    .tr-cols {
+      grid-template-columns: 0.85fr 1.15fr;
+    }
+    .tr-cell {
+      padding: 1.25rem 1.35rem 1.35rem;
+    }
+    .tr-cell--after {
+      border-top: 0;
+      border-left: 1px solid var(--color-rule);
+    }
+  }
+
+  /* 中文：mono 无 CJK 字形 → key 回落 sans */
+  html[lang^='zh'] .tr-key {
+    font-family: var(--font-sans);
+    letter-spacing: 0.06em;
+  }
+</style>

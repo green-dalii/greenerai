@@ -52,6 +52,14 @@ const formatCount = (v: number, suffix: string, decimals = 0) =>
     maximumFractionDigits: decimals,
   }) + suffix;
 
+/**
+ * 签名缓动（D3）。
+ * GSAP 不接受 cubic-bezier 字符串，所以这里用 `expo.out` —— 它与 CSS 侧的
+ * `cubic-bezier(.16,.84,.24,1)` 是同一条手感：起步快、收尾长、没有回弹。
+ * 全站只允许这两处定义（这里是 GSAP，global.css 里是 --ease-signature），改一起改。
+ */
+const EASE = 'expo.out';
+
 /** 计数动画 */
 const countUp = (el: HTMLElement) => {
   if (el.dataset.counted === '1') return;
@@ -63,7 +71,7 @@ const countUp = (el: HTMLElement) => {
   gsap.to(state, {
     v: target,
     duration: 1.4,
-    ease: 'power3.out',
+    ease: EASE,
     onUpdate: () => {
       el.textContent = formatCount(state.v, suffix, decimals);
     },
@@ -78,8 +86,9 @@ const fadeUp = (el: HTMLElement) => {
   gsap.to(el, {
     autoAlpha: 1,
     y: 0,
-    duration: 0.8,
-    ease: 'power3.out',
+    // 收尾拉长到 0.9s：字落定之后还要再「沉」一下，读起来才不像弹窗
+    duration: 0.9,
+    ease: EASE,
     delay: Number(el.dataset.revealDelay ?? 0) / 1000,
   });
 };
@@ -118,7 +127,7 @@ if (reduce) {
         gsap.to(el, {
           yPercent: 0,
           duration: 1.05,
-          ease: 'power4.out',
+          ease: EASE,
           delay: (Number(el.dataset.heroLineDelay ?? 0) / 1000) + 0.1,
         });
       });
@@ -175,12 +184,12 @@ if (reduce) {
     const rows = stack.querySelectorAll<HTMLElement>('[data-hs-row]');
 
     const playStack = () => {
-      const tls = gsap.timeline({ defaults: { ease: 'power3.out' } });
+      const tls = gsap.timeline({ defaults: { ease: EASE } });
       tls.fromTo(
         rows,
         { autoAlpha: 0, y: 18 },
-        { autoAlpha: 1, y: 0, duration: 0.6, stagger: 0.12 },
-        0.15,
+        { autoAlpha: 1, y: 0, duration: 0.7, stagger: 0.1 },
+        0.12,
       );
     };
 
@@ -200,86 +209,39 @@ if (reduce) {
       playStack();
     }
 
-    // 3D 物理按压（仅 hover 细指针设备）——克制的悬浮手感，无畸变、无抖动：
-    // · 单一 rAF 循环 + 阻尼插值（lerp）：每帧只写一次 transform，单一数据源，
-    //   避免多个 quickTo 补间争抢同一元素的 transform 造成的逐帧抖动
-    // · transformPerspective 1800（拉远 → 近大远小极轻）
-    // · 轻微向观者抬升（translateZ）+ 阴影抬升（--card-lift）→ 悬浮感
-    // · 移开时阻尼回正。不改光标。
-    const tiltCard = stack.querySelector<HTMLElement>('[data-hs-tilt]');
-    const tiltable = tiltCard && window.matchMedia('(hover: hover) and (pointer: fine)').matches;
-    if (tiltable) {
-      const card = tiltCard!;
-      const MAX_Y = 9;
-      const MAX_X = 7;
-      const PERSPECTIVE = 1100;
-      const DAMP = 0.14; // 每帧跟随比例（越小越粘、越顺滑）
-      let tx = 0;
-      let ty = 0; // 目标（指针位置）
-      let cx = 0;
-      let cy = 0; // 当前（阻尼插值）
-      let lz = 0; // 抬升当前值
-      let lsc = 1; // 缩放当前值
-      let lsh = 12; // 阴影抬升当前值（px）
-      let active = false;
-      let ticking = false;
-
-      const startTick = () => {
-        if (ticking) return;
-        ticking = true;
-        gsap.ticker.add(tick);
-      };
-
-      const tick = () => {
-        // 移开后目标归零：旋转/抬升/缩放/阴影全部统一缓动，无瞬跳
-        cx += ((active ? tx : 0) - cx) * DAMP;
-        cy += ((active ? ty : 0) - cy) * DAMP;
-        lz += ((active ? 8 : 0) - lz) * DAMP;
-        lsc += ((active ? 1.02 : 1) - lsc) * DAMP;
-        lsh += ((active ? 22 : 12) - lsh) * DAMP;
-        const done =
-          !active &&
-          Math.abs(cx) < 0.001 &&
-          Math.abs(cy) < 0.001 &&
-          Math.abs(lz) < 0.001 &&
-          Math.abs(lsc - 1) < 0.001 &&
-          Math.abs(lsh - 12) < 0.001;
-        if (done) {
-          gsap.set(card, {
-            rotationX: 0,
-            rotationY: 0,
-            z: 0,
-            scale: 1,
-            transformPerspective: PERSPECTIVE,
-            '--card-lift': '12px',
-          });
-          gsap.ticker.remove(tick);
-          ticking = false;
-          return;
-        }
-        gsap.set(card, {
-          rotationY: cx * 2 * MAX_Y,
-          rotationX: -cy * 2 * MAX_X,
-          z: lz,
-          scale: lsc,
-          transformPerspective: PERSPECTIVE,
-          '--card-lift': `${lsh}px`,
-        });
-      };
-
-      stack.addEventListener('pointermove', (e) => {
-        const r = stack.getBoundingClientRect();
-        tx = (e.clientX - r.left) / r.width - 0.5;
-        ty = (e.clientY - r.top) / r.height - 0.5;
-        active = true;
-        startTick();
-      });
-      stack.addEventListener('pointerleave', () => {
-        active = false;
-        startTick();
-      });
-    }
   }
+  /* ---- 导航当前节高亮（D1）----
+     复用 IntersectionObserver，不挂滚动监听。
+     rootMargin 把「判定带」压到视口中段：谁占据了屏幕中间，谁就是当前位置。 */
+  const navLinks = all<HTMLAnchorElement>('[data-nav-link]');
+  if (navLinks.length && 'IntersectionObserver' in window) {
+    const byId = new Map<string, HTMLAnchorElement>();
+    navLinks.forEach((a) => byId.set(a.dataset.navLink ?? '', a));
+    const targets = [...byId.keys()]
+      .map((id) => document.querySelector<HTMLElement>(id))
+      .filter((el): el is HTMLElement => !!el);
+
+    const setActive = (id: string) => {
+      navLinks.forEach((a) => {
+        const on = a.dataset.navLink === id;
+        a.toggleAttribute('data-active', on);
+        if (on) a.setAttribute('aria-current', 'true');
+        else a.removeAttribute('aria-current');
+      });
+    };
+
+    const navIo = new IntersectionObserver(
+      (entries) => {
+        for (const e of entries) {
+          if (!e.isIntersecting) continue;
+          setActive('#' + e.target.id);
+        }
+      },
+      { rootMargin: '-45% 0px -50% 0px', threshold: 0 },
+    );
+    targets.forEach((el) => navIo.observe(el));
+  }
+
   // Hero 背景的点阵 canvas 已移除：
   // 粒子场是 AI 站点的陈词，且在窄屏压在正文背后损害可读性。
   // 现在 Hero 的「氛围」由 CSS 版式骨架（12 栏发丝线 + 裁切标记）承担 —— 零 canvas、零 rAF、零 GPU 常驻。

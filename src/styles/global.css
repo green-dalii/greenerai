@@ -5,6 +5,9 @@
    增减任何一个 token 都必须先说明它替掉了谁。
    ============================================================ */
 @theme {
+  /* 签名缓动：GSAP 侧用 expo.out，CSS 侧用这条 —— 同一条手感，改一起改 */
+  --ease-signature: cubic-bezier(0.16, 0.84, 0.24, 1);
+
   --color-ink: #14161a; /* 标题 + 正文 — 17.6:1 */
   --color-muted: #6b7280; /* 次级文字 / 图注 — 4.83:1 (AA) */
   --color-paper: #ffffff;
@@ -393,20 +396,71 @@ section[id] {
 .receipt-trigger:hover {
   text-decoration-color: var(--color-primary);
 }
-/* 触发标记：一个小方角，暗示「可以展开一张单据」 */
-.receipt-trigger::after {
-  content: "";
-  width: 0.32em;
-  height: 0.32em;
-  border: 1px solid currentColor;
-  border-radius: 1px;
-  opacity: 0.5;
-  transform: translateY(-0.1em);
-  transition: opacity 0.2s ease;
+/* 触发提示：原来是一个 12×12 的空心小方角 —— 读作复选框或乱码，没人会点。
+   现在直接写字。可被发现的交互才是交互，藏起来的想法等于没做。 */
+.receipt-trigger {
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.4em 0.55em;
 }
-.receipt-trigger[aria-expanded="true"]::after {
-  opacity: 1;
-  background: currentColor;
+.receipt-claim {
+  display: block;
+}
+.receipt-meta {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 0.55em;
+}
+.receipt-cue {
+  font-family: var(--font-mono);
+  font-size: 0.625rem;
+  letter-spacing: 0.13em;
+  text-transform: uppercase;
+  color: color-mix(in oklab, var(--color-primary) 78%, var(--color-muted));
+  white-space: nowrap;
+  transition: color 0.2s ease;
+}
+.receipt-cue::before {
+  content: "·";
+  margin-right: 0.45em;
+  opacity: 0.5;
+}
+.receipt-trigger:hover .receipt-cue,
+.receipt-trigger[aria-expanded="true"] .receipt-cue {
+  color: var(--color-primary);
+}
+.receipt-trigger[aria-expanded="true"] .receipt-cue::before {
+  content: "−";
+}
+
+/* block 布局：统计数字把提示另起一行，不挤在数字右边 */
+.receipt[data-layout="block"] .receipt-trigger {
+  flex-direction: column;
+  align-items: flex-start;
+}
+.receipt[data-layout="block"] .receipt-meta {
+  flex-direction: row;
+  margin-top: 0.45rem;
+}
+/* 内联声称：只留一个 +/−，不要整句 */
+.receipt[data-layout="inline"] .receipt-cue {
+  font-family: var(--font-sans);
+  font-size: 0.85em;
+  letter-spacing: 0;
+  line-height: 1;
+  color: color-mix(in oklab, var(--color-primary) 70%, var(--color-muted));
+}
+.receipt[data-layout="inline"] .receipt-cue::before {
+  content: none;
+}
+.receipt[data-layout="inline"] .receipt-trigger[aria-expanded="true"] .receipt-cue::before {
+  content: none;
+}
+html[lang^="zh"] .receipt-cue {
+  font-family: var(--font-sans);
+  letter-spacing: 0.06em;
+  text-transform: none;
+  font-size: 0.6875rem;
 }
 
 .receipt-panel {

@@ -49,7 +49,7 @@ const s = getDict(Astro.currentLocale).stack;
     display: grid;
     /* 注释列必须定宽：auto 会在空间紧张时塌到 min-content，
        把 gloss 挤成一词一行。定宽 + 右对齐 = 三行共享同一条右边界。 */
-    grid-template-columns: 24px minmax(0, 1fr) 9.5rem;
+    grid-template-columns: 24px minmax(0, 1fr) 10.25rem;
     align-items: baseline;
     column-gap: 10px;
     padding: 17px 18px;
@@ -71,9 +71,11 @@ const s = getDict(Astro.currentLocale).stack;
   }
   .stack-gloss {
     font-family: var(--font-mono);
-    font-size: 11px;
+    /* 10px + 0 字距：24 个字符（"what you've lived through"）刚好落在一行内。
+       再宽一点或再大一点，注释就会折成两行、且右对齐的折行非常难看。 */
+    font-size: 10px;
     line-height: 1.45;
-    letter-spacing: 0.02em;
+    letter-spacing: 0;
     color: var(--color-muted);
     text-align: right;
   }
@@ -93,6 +95,7 @@ const s = getDict(Astro.currentLocale).stack;
   /* 中文：mono 无 CJK 字形 → 回落 sans，避免混排两种质感 */
   html[lang^='zh'] .stack-gloss {
     font-family: var(--font-sans);
+    font-size: 11px;
     letter-spacing: 0.08em;
     text-transform: none;
   }

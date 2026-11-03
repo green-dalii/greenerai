@@ -1,6 +1,8 @@
 ---
 import type { ProofCardData } from '../i18n/locales/types';
 import Receipt from './Receipt.astro';
+import Translation from './Translation.astro';
+import SessionLog from './SessionLog.astro';
 
 interface Props {
   card: ProofCardData;
@@ -16,9 +18,11 @@ interface Props {
     verify: string;
   };
   revealDelay?: number;
+  /** 实物：这一张卡对应的、可溯源的产品实物 */
+  artifact?: 'translation' | 'session';
 }
 
-const { card, ordinal, evidenceLabel, ui, revealDelay = 0 } = Astro.props;
+const { card, ordinal, evidenceLabel, ui, revealDelay = 0, artifact } = Astro.props;
 ---
 
 <!--
@@ -51,26 +55,22 @@ const { card, ordinal, evidenceLabel, ui, revealDelay = 0 } = Astro.props;
       }
 
       <p class="t-body mt-5 max-w-[33rem] text-ink/85">{card.body}</p>
+
+      {
+        artifact && (
+          <div class="mt-7 max-w-[33rem]">
+            {artifact === 'translation' ? <Translation /> : <SessionLog />}
+          </div>
+        )
+      }
     </div>
 
     <div class="mt-10 md:mt-auto md:pt-14">
-      {
-        card.claims && card.claims.length > 0 && (
-          <ul class="space-y-2.5">
-            {card.claims.map((c) => (
-              <li class="t-note text-muted">
-                <Receipt claim={c.text} receipt={c.receipt} ui={ui} />
-              </li>
-            ))}
-          </ul>
-        )
-      }
-
       <a
         href={card.href}
         target="_blank"
         rel="noreferrer"
-        class="link-underline t-note mt-6 inline-block font-medium text-primary"
+        class="link-underline t-note mt-8 inline-block font-medium text-primary"
       >
         {card.cta} ↗
       </a>
@@ -92,16 +92,29 @@ const { card, ordinal, evidenceLabel, ui, revealDelay = 0 } = Astro.props;
                 ui={ui}
                 triggerClass="t-figure text-ink"
                 sublabel={s.label}
-                sublabelClass="mono-label mt-2 text-muted"
+                sublabelClass="mono-label text-muted"
+                layout="block"
               />
             ) : (
               <div>
                 <div class="t-figure text-ink">{s.value}</div>
-                <div class="mono-label mt-2 text-muted">{s.label}</div>
+                <div class="mono-label mt-1.5 text-muted">{s.label}</div>
               </div>
             ),
           )}
         </div>
+      )
+    }
+
+    {
+      card.claims && card.claims.length > 0 && (
+        <ul class="mt-8 space-y-3.5 border-t border-rule pt-6">
+          {card.claims.map((c) => (
+            <li class="t-note text-muted">
+              <Receipt claim={c.text} receipt={c.receipt} ui={ui} />
+            </li>
+          ))}
+        </ul>
       )
     }
   </div>

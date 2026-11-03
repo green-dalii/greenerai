@@ -46,6 +46,43 @@ export const zh: Dict = {
     footnote: '全部开源。每个数字都附回执。',
   },
 
+  evidence: {
+    translation: {
+      label: '它实际做的事',
+      beforeLabel: '一条扁平的笔记',
+      beforePath: 'notes/machine-learning.md',
+      beforeNote: '一个文件，没有结构。',
+      afterLabel: '你拿回来的',
+      afterPath: 'wiki/concepts/supervised-learning.md',
+      rows: [
+        { k: '别名', v: 'supervised learning · SL' },
+        { k: '链接', v: '[[unsupervised-learning]] [[training-data]]' },
+        { k: '出处', v: '引用就挂在正文里' },
+        { k: '索引', v: 'wiki/index.md → Concepts' },
+      ],
+      caption: '项目 README 里记着的原样对比。',
+    },
+    session: {
+      label: '一次会话',
+      lines: [
+        { text: 'deepseek-v4.1-flash → fix the failing test', tag: '日常' },
+        { text: 'claude-fable-5 ←「design the auth flow」', tag: '升级' },
+        { text: 'deepseek-v4.1-flash 429 → glm-5.3-flash', tag: '换道' },
+      ],
+      caption: '摘自项目 README，去掉了图标。',
+    },
+    ledger: {
+      claim: '三个数字，不靠我们一张嘴。',
+      items: [
+        { value: '67,153', label: '下载' },
+        { value: '2,293', label: '月安装' },
+        { value: '0', label: '运行时依赖' },
+      ],
+      note: '每个都能点开成一张回执',
+      href: '#proof',
+    },
+  },
+
   stack: {
     rows: [
       { idx: '01', name: '知', gloss: '真正经历过的' },

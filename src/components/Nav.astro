@@ -22,12 +22,13 @@ const links = [
     <div class="container-site nav-inner">
       <Brand />
 
-      <nav class="hidden items-center gap-7 lg:flex" aria-label="Primary">
+      <nav class="hidden items-center gap-6 lg:flex" aria-label="Primary">
         {
           links.map((l) => (
             <a
               href={l.href}
-              class="link-underline text-sm text-muted transition-colors duration-200 hover:text-ink"
+              data-nav-link={l.href}
+              class="nav-link"
             >
               {l.label}
             </a>
@@ -198,9 +199,41 @@ const links = [
     opacity: 1;
   }
 
+  /* 导航项：默认 muted；当前节转 ink 并落一条 2px 底线。
+     与语言切换的当前态用同一种记号 —— 整个 header 只有一种「你在这里」的信号。 */
+  .nav-link {
+    position: relative;
+    padding: 0.35rem 0;
+    font-size: 0.875rem;
+    color: var(--color-muted);
+    transition: color 0.2s var(--ease-signature, ease);
+  }
+  .nav-link:hover {
+    color: var(--color-ink);
+  }
+  .nav-link[data-active] {
+    color: var(--color-ink);
+  }
+  .nav-link::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: -0.05rem;
+    height: 2px;
+    background: var(--color-primary);
+    transform: scaleX(0);
+    transform-origin: left center;
+    transition: transform 0.32s var(--ease-signature, ease);
+  }
+  .nav-link[data-active]::after {
+    transform: scaleX(1);
+  }
+
   @media (prefers-reduced-motion: reduce) {
     .nav-surface,
-    .nav-progress {
+    .nav-progress,
+    .nav-link::after {
       transition: none;
     }
   }

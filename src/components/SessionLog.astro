@@ -1,0 +1,115 @@
+---
+/**
+ * SessionLog —— 全站唯一「实物」的第二半。
+ *
+ * 素材：pi-shift-router README 的 How it works 代码块（真实会话摘录）：
+ *   🦾 [deepseek-v4.1-flash] → fix the failing test
+ *   🧭 judging…
+ *   🧠 [claude-fable-5]              ← "design the auth flow" → upgraded instantly
+ *   ⚠️ deepseek-v4.1-flash 429 → switching to glm-5.3-flash — retry in 1m
+ *
+ * 去掉了 emoji 与括号（跨平台字形不一致，且与本站字体语言冲突），
+ * 文字本身一字未改；每条右侧的 tag 是我们加的、准确的归类。
+ *
+ * 为什么用日志而不是功能列表：一段真实日志能在一秒内说清「什么时候用便宜的、什么时候换强的、
+ * 断了怎么办」，而这些话说成散文就像在读规格书。
+ */
+import { getDict } from '../i18n';
+const s = getDict(Astro.currentLocale).evidence.session;
+---
+
+<div class="session">
+  <span class="mono-label text-muted">{s.label}</span>
+
+  <ul class="sess-rows">
+    {
+      s.lines.map((l, i) => (
+        <li class="sess-row" data-state={i === 0 ? 'base' : i === 1 ? 'up' : 'switch'}>
+          <span class="sess-dot" aria-hidden="true" />
+          <code class="sess-line">{l.text}</code>
+          <span class="sess-tag">{l.tag}</span>
+        </li>
+      ))
+    }
+  </ul>
+
+  <p class="t-note sess-caption">{s.caption}</p>
+</div>
+
+<style>
+  .session {
+    border: 1px solid var(--color-rule);
+    border-radius: 12px;
+    background: var(--color-paper);
+    padding: 1rem 1.15rem 0.85rem;
+  }
+
+  .sess-rows {
+    margin-top: 0.75rem;
+    border-top: 1px solid var(--color-rule);
+  }
+  .sess-row {
+    display: grid;
+    grid-template-columns: 7px minmax(0, 1fr);
+    align-items: center;
+    column-gap: 0.65rem;
+    row-gap: 0.15rem;
+    padding: 0.55rem 0;
+    border-bottom: 1px solid var(--color-rule);
+  }
+  .sess-row:last-child {
+    border-bottom: 0;
+  }
+
+  /* 状态用一个小小的实心点，不用 emoji、不用彩色徽章 —— 一像素的东西就够了 */
+  .sess-dot {
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: var(--color-rule-strong);
+  }
+  .sess-row[data-state='up'] .sess-dot {
+    background: var(--color-primary);
+  }
+  .sess-row[data-state='switch'] .sess-dot {
+    background: var(--color-accent);
+  }
+
+  .sess-line {
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    line-height: 1.5;
+    color: var(--color-ink);
+    word-break: break-word;
+  }
+  .sess-tag {
+    grid-column: 2;
+    font-family: var(--font-mono);
+    font-size: 0.58rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--color-muted);
+  }
+
+  .sess-caption {
+    margin-top: 0.7rem;
+    color: var(--color-muted);
+  }
+
+  @media (min-width: 480px) {
+    .sess-row {
+      grid-template-columns: 7px minmax(0, 1fr) auto;
+    }
+    .sess-tag {
+      grid-column: 3;
+      text-align: right;
+    }
+  }
+
+  html[lang^='zh'] .sess-tag {
+    font-family: var(--font-sans);
+    letter-spacing: 0.06em;
+    text-transform: none;
+    font-size: 0.65rem;
+  }
+</style>

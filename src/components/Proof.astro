@@ -1,12 +1,13 @@
 ---
 import { getDict } from '../i18n';
 import ProofCard from './ProofCard.astro';
+import Ledger from './Ledger.astro';
 const p = getDict(Astro.currentLocale).practice;
 const cards = p.cards;
 const ordinals = ['01', '02', '03', '04'];
 ---
 
-<section id="proof" class="bg-paper pt-14 pb-6 md:pt-16 md:pb-8">
+<section id="proof" class="bg-paper pt-14 pb-0 md:pt-16">
   <div class="container-site">
     <div class="max-w-[34rem]">
       <span class="eyebrow block" data-reveal>{p.eyebrow}</span>
@@ -23,9 +24,15 @@ const ordinals = ['01', '02', '03', '04'];
             evidenceLabel={p.evidenceLabel}
             ui={p.receiptUi}
             revealDelay={i * 100}
+            artifact={i === 0 ? 'translation' : i === 1 ? 'session' : undefined}
           />
         ))
       }
     </div>
+  </div>
+
+  <!-- 全页唯一的满宽数字带：三个带凭据的真实数字，每个都能点回上面的回执 -->
+  <div class="mt-16 md:mt-20">
+    <Ledger />
   </div>
 </section>
