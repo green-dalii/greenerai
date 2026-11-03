@@ -11,53 +11,52 @@ const dict = getDict(Astro.currentLocale);
 
   <div class="bg-paper">
     <div class="container-site py-16 md:py-20">
-      <div class="flex flex-col justify-between gap-12 md:flex-row md:items-start">
-        <div class="max-w-[16rem]" data-reveal>
+      {/* 落到 12 栏网格上：Hero 把栏线画了出来，footer 就不能自己另起一套列宽 */}
+      <div class="grid grid-cols-1 gap-10 sm:grid-cols-3 md:grid-cols-12 md:gap-x-12 md:items-start">
+        <div class="sm:col-span-3 md:col-span-4" data-reveal>
           <Brand />
-          <p class="t-note mt-4 text-muted">{dict.footer.tagline}</p>
+          <p class="t-note mt-4 max-w-[16rem] text-muted">{dict.footer.tagline}</p>
         </div>
 
-        <div class="flex flex-col gap-10 sm:flex-row sm:gap-16">
-          <div class="flex flex-col gap-3" data-reveal data-reveal-delay="80">
-            <span class="mono-label text-muted">{dict.footer.connectLabel}</span>
-            <a
-              class="link-underline t-note text-muted transition-colors duration-200 hover:text-primary"
-              href="https://github.com/green-dalii"
-              target="_blank"
-              rel="noreferrer">{dict.footer.github}</a
-            >
-            <a
-              class="link-underline t-note text-muted transition-colors duration-200 hover:text-primary"
-              href="https://greenerdalii.top"
-              target="_blank"
-              rel="noreferrer">{dict.footer.studio}</a
-            >
-            <a
-              class="link-underline t-note text-muted transition-colors duration-200 hover:text-primary"
-              href={`mailto:${dict.footer.email}`}>{dict.footer.email}</a
-            >
-          </div>
+        <div class="flex flex-col gap-3 md:col-span-2 md:col-start-7" data-reveal data-reveal-delay="80">
+          <span class="mono-label text-muted">{dict.footer.connectLabel}</span>
+          <a
+            class="link-underline t-note text-muted transition-colors duration-200 hover:text-primary"
+            href="https://github.com/green-dalii"
+            target="_blank"
+            rel="noreferrer">{dict.footer.github}</a
+          >
+          <a
+            class="link-underline t-note text-muted transition-colors duration-200 hover:text-primary"
+            href="https://greenerdalii.top"
+            target="_blank"
+            rel="noreferrer">{dict.footer.studio}</a
+          >
+          <a
+            class="link-underline t-note text-muted transition-colors duration-200 hover:text-primary"
+            href={`mailto:${dict.footer.email}`}>{dict.footer.email}</a
+          >
+        </div>
 
-          <div class="flex flex-col gap-3" data-reveal data-reveal-delay="120">
-            <span class="mono-label text-muted">{dict.footer.projects.label}</span>
-            {
-              dict.footer.projects.items.map((p) => (
-                <a
-                  class="link-underline t-note text-muted transition-colors duration-200 hover:text-primary"
-                  href={p.href}
-                  target="_blank"
-                  rel="noreferrer"
-                >
-                  {p.name}
-                </a>
-              ))
-            }
-          </div>
+        <div class="flex flex-col gap-3 md:col-span-2 md:col-start-9" data-reveal data-reveal-delay="120">
+          <span class="mono-label text-muted">{dict.footer.projects.label}</span>
+          {
+            dict.footer.projects.items.map((p) => (
+              <a
+                class="link-underline t-note text-muted transition-colors duration-200 hover:text-primary"
+                href={p.href}
+                target="_blank"
+                rel="noreferrer"
+              >
+                {p.name}
+              </a>
+            ))
+          }
+        </div>
 
-          <div class="flex flex-col gap-3" data-reveal data-reveal-delay="160">
-            <span class="mono-label text-muted">{dict.footer.langsLabel}</span>
-            <LanguageSwitch />
-          </div>
+        <div class="flex flex-col gap-3 md:col-span-2 md:col-start-11" data-reveal data-reveal-delay="160">
+          <span class="mono-label text-muted">{dict.footer.langsLabel}</span>
+          <LanguageSwitch />
         </div>
       </div>
 
@@ -66,7 +65,7 @@ const dict = getDict(Astro.currentLocale);
         class="mt-16 flex flex-col gap-2 border-t border-rule pt-6 sm:flex-row sm:items-center sm:justify-between"
       >
         <p class="t-note text-muted">{dict.footer.rights}</p>
-        <p class="mono-label text-muted">{dict.footer.builtOpen}</p>
+        <p class="mono-label text-muted">{dict.footer.verifiedOn}</p>
       </div>
     </div>
   </div>

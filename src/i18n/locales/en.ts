@@ -320,6 +320,6 @@ export const en: Dict = {
       ],
     },
     rights: '© 2026 Greener-Dalii',
-    builtOpen: 'Built in the open',
+    verifiedOn: `Numbers verified ${VERIFIED}`,
   },
 };

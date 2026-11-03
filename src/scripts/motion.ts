@@ -209,6 +209,39 @@ if (reduce) {
       playStack();
     }
 
+    /* ---- 指针物理按压 ----
+       曾经删过一次，理由是「悬停倾斜是 2021 年的把戏」—— 那是拿时装判断冒充设计判断。
+       它没有伤害任何东西，而且是整页唯一有触感的地方；「有人味」不该只是一句文案。
+       重做版比原来克制且更省：gsap.quickTo 直接给三个属性各自的跟随缓动（25 行 vs 原来 90 行），
+       幅度 7°/5°、抬升 4px，只用位移与旋转，不投影、不改光标、不改缩放。
+       仅在 hover + 细指针设备启用；prefers-reduced-motion 时整段不执行。 */
+    const tiltCard = stack.querySelector<HTMLElement>('[data-hs-tilt]');
+    const canHover = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+    if (tiltCard && canHover) {
+      const card = tiltCard;
+      const FOLLOW = { duration: 0.55, ease: 'power3.out' } as const;
+      gsap.set(card, { transformPerspective: 1100, transformOrigin: 'center center' });
+      const rotY = gsap.quickTo(card, 'rotationY', FOLLOW);
+      const rotX = gsap.quickTo(card, 'rotationX', FOLLOW);
+      const lift = gsap.quickTo(card, 'y', FOLLOW);
+
+      const MAX_Y = 7;
+      const MAX_X = 5;
+
+      stack.addEventListener('pointermove', (e) => {
+        const r = card.getBoundingClientRect();
+        const px = (e.clientX - r.left) / r.width - 0.5;
+        const py = (e.clientY - r.top) / r.height - 0.5;
+        rotY(px * 2 * MAX_Y);
+        rotX(-py * 2 * MAX_X);
+        lift(-4);
+      });
+      stack.addEventListener('pointerleave', () => {
+        rotY(0);
+        rotX(0);
+        lift(0);
+      });
+    }
   }
   /* ---- 导航当前节高亮（D1）----
      复用 IntersectionObserver，不挂滚动监听。

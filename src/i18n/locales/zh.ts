@@ -309,6 +309,6 @@ export const zh: Dict = {
       ],
     },
     rights: '© 2026 格润达理',
-    builtOpen: '在开放中构建',
+    verifiedOn: `数字核对于 ${VERIFIED}`,
   },
 };
