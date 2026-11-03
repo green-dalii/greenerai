@@ -79,17 +79,15 @@ export interface Dict {
     /** Hero 底部 mono 脚注 */
     footnote: string;
   };
-  /** Hero 右侧面板：知/品/行 三行 + 一句话注解（无状态徽章，无产品名） */
+  /** Hero 右侧面板：知/品/行 三行（无徽章、无图例、无杠杆仪表、无产品名） */
   stack: {
-    headLabel: string;
     rows: { idx: string; name: string; gloss: string }[];
-    lever: { you: string; companyScale: string };
   };
   thesis: {
     eyebrow: string;
     heading: string;
     items: {
-      /** 罗马数字 I–IV；收束项用 ∴ */
+      /** 罗马数字 I–IV；收束项为空串（它不参与编号） */
       index: string;
       title: string;
       body: string;

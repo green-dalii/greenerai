@@ -90,13 +90,13 @@ const { card, ordinal, evidenceLabel, ui, revealDelay = 0 } = Astro.props;
                 claim={s.value}
                 receipt={s.receipt}
                 ui={ui}
-                triggerClass="t-stat text-ink"
+                triggerClass="t-figure text-ink"
                 sublabel={s.label}
                 sublabelClass="mono-label mt-2 text-muted"
               />
             ) : (
               <div>
-                <div class="t-stat text-ink">{s.value}</div>
+                <div class="t-figure text-ink">{s.value}</div>
                 <div class="mono-label mt-2 text-muted">{s.label}</div>
               </div>
             ),

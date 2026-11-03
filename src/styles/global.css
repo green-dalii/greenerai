@@ -138,7 +138,20 @@
     letter-spacing: -0.02em;
     font-variant-numeric: lining-nums;
   }
-  /* 统计数字 */
+  /* 统计数字 —— 数字走 UI 字体，不走装饰衬线。
+     原因：Instrument Serif 的 1 是一根纯竖线，`11`（语言数）会被读成 `II`（罗马数字二），
+     与 Thesis 的序号同形。字体跟随功能：可核的数字必须能被精确阅读。
+     tabular-nums 让 67,153 / 768 / 11 共享同一右边界。 */
+  .t-figure {
+    font-family: var(--font-sans);
+    font-size: clamp(1.625rem, 2.3vw, 2rem);
+    font-weight: 500;
+    line-height: 1;
+    letter-spacing: -0.02em;
+    font-variant-numeric: tabular-nums lining-nums;
+    font-feature-settings: 'tnum' 1;
+  }
+  /* 叙述性数字（Ledger 里作为句子的一部分）仍用衬线 —— 那里数字是语言，不是凭据 */
   .t-stat {
     font-family: var(--font-display);
     font-size: clamp(1.75rem, 2.6vw, 2.25rem);

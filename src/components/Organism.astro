@@ -1,45 +1,75 @@
 ---
 import { getDict } from '../i18n';
 const o = getDict(Astro.currentLocale).organism;
+
+/**
+ * 去掉了居中。
+ *
+ * 原来这一节是六个区块里唯一的居中排版，没有任何系统理由 —— 只是「关于我们」的默认手感。
+ * 居中的正文会形成参差的左右边缘，读起来比左对齐更慢，也让这一节看起来像另一个模板。
+ *
+ * 现在：左对齐，与全站同一根起始线；两条轨道做成真正的**对照**（名称 / 一句话 / 一个链接），
+ * 而不是两个居中的词。桥句（同一批人）作为两栏的引子，不再是一条夹在中间线的装饰标签。
+ */
+/** 只有工作室是外链 —— 本站自己不需要再链回自己。 */
+const trackHrefs: Array<string | undefined> = [undefined, 'https://greenerdalii.top'];
 ---
 
 <section id="organism" class="bg-paper-tint pt-24 pb-24 md:pt-28 md:pb-32">
   <div class="container-site">
-    <div class="mx-auto max-w-[33rem] text-center">
+    <div class="max-w-[34rem]">
       <span class="eyebrow block" data-reveal>{o.eyebrow}</span>
       <h2 class="t-h2 mt-5 text-ink" data-reveal data-reveal-delay="80">{o.heading}</h2>
-      <div class="mt-8 space-y-5">
-        {o.body.map((b, i) => <p class="t-body text-ink/80" data-reveal data-reveal-delay={160 + i * 80}>{b}</p>)}
+      <div class="mt-7 space-y-4">
+        {
+          o.body.map((b, i) => (
+            <p class="t-body text-ink/80" data-reveal data-reveal-delay={140 + i * 70}>
+              {b}
+            </p>
+          ))
+        }
       </div>
     </div>
 
-    <!-- 双轨：一条贯穿线上的父级注释（同一批人），线下分出两条平行轨道 -->
-    <div
-      class="mx-auto mt-16 max-w-2xl"
-      data-reveal
-      data-reveal-delay={160 + o.body.length * 80 + 40}
-    >
-      <div class="flex items-center gap-4" aria-hidden="true">
-        <span class="h-px flex-1 bg-rule"></span>
-        <span class="mono-label whitespace-nowrap text-primary">{o.bridge}</span>
-        <span class="h-px flex-1 bg-rule"></span>
-      </div>
-      <!-- 桥线文字对读屏可见，装饰线才 aria-hidden -->
-      <p class="sr-only">{o.bridge}</p>
+    <!-- 双轨：同一批人，两个牌子，两条平行的线 -->
+    <div class="mt-16 md:mt-20" data-reveal data-reveal-delay="300">
+      <p class="mono-label text-muted">{o.bridge}</p>
 
-      <div class="grid grid-cols-1 sm:grid-cols-2">
+      <div class="mt-5 grid grid-cols-1 gap-px border-t border-rule-strong md:grid-cols-2">
         {
-          o.tracks.map((t, i) => (
+          o.tracks.map((t, i) => {
+            const href = trackHrefs[i];
+            return (
             <div
               class:list={[
-                'px-4 py-9 text-center sm:px-8',
-                i > 0 && 'border-t border-rule sm:border-t-0 sm:border-l',
+                'py-7 md:py-8',
+                i > 0 ? 'border-t border-rule md:border-t-0 md:border-l md:pl-10' : 'md:pr-10',
               ]}
             >
-              <p class="t-entry text-ink">{t.name}</p>
-              <p class="t-note mt-2.5 text-muted">{t.role}</p>
+              {href ? (
+                <a
+                  href={href}
+                  target="_blank"
+                  rel="noreferrer"
+                  class="group inline-flex items-baseline gap-2"
+                >
+                  <span class="t-entry text-ink transition-colors group-hover:text-primary">
+                    {t.name}
+                  </span>
+                  <span
+                    class="text-xs text-muted transition-all duration-200 group-hover:translate-x-0.5 group-hover:text-primary"
+                    aria-hidden="true"
+                  >
+                    ↗
+                  </span>
+                </a>
+              ) : (
+                <span class="t-entry text-ink">{t.name}</span>
+              )}
+              <p class="t-note mt-2 text-muted">{t.role}</p>
             </div>
-          ))
+            );
+          })
         }
       </div>
     </div>

@@ -169,12 +169,10 @@ if (reduce) {
     if (e.matches) revealAll();
   });
 
-  // Hero 稀缺面板（data-hero-stack）：行交错入场 + 杠杆线绘制/脉冲
+  // Hero 稀缺面板（data-hero-stack）：行交错入场
   const stack = document.querySelector<HTMLElement>('[data-hero-stack]');
   if (stack) {
     const rows = stack.querySelectorAll<HTMLElement>('[data-hs-row]');
-    const line = stack.querySelector<HTMLElement>('[data-hs-line]');
-    const pulse = stack.querySelector<HTMLElement>('[data-hs-pulse]');
 
     const playStack = () => {
       const tls = gsap.timeline({ defaults: { ease: 'power3.out' } });
@@ -183,23 +181,7 @@ if (reduce) {
         { autoAlpha: 0, y: 18 },
         { autoAlpha: 1, y: 0, duration: 0.6, stagger: 0.12 },
         0.15,
-      ).fromTo(
-        line,
-        { scaleX: 0 },
-        { scaleX: 1, duration: 0.8, ease: 'power2.inOut', transformOrigin: 'left center' },
-        '-=0.2',
       );
-
-      // 杠杆脉冲：持续从左扫过（一个人 → 公司级产出）
-      gsap.to(pulse, {
-        scaleX: 1,
-        duration: 1.9,
-        ease: 'sine.in',
-        repeat: -1,
-        repeatDelay: 1.2,
-        transformOrigin: 'left center',
-        delay: 1.7,
-      });
     };
 
     if ('IntersectionObserver' in window) {
