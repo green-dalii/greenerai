@@ -61,8 +61,8 @@
     letter-spacing: 0.01em;
   }
   html[lang^="zh"] :is(h1, h2, h3) {
-    line-height: 1.32;
-    letter-spacing: 0.005em;
+    line-height: 1.34;
+    letter-spacing: -0.004em;
     line-break: strict;
     word-break: normal;
     text-autospace: normal;
@@ -167,10 +167,29 @@
   .t-hero {
     font-size: 60px;
   }
-  /* 中文 12 字一行，60px 会溢出栏宽 → 降到 52px */
+  /* 中文 12 字一行，60px 会溢出栏宽 → 降到 54px */
   html[lang^="zh"] .t-hero {
-    font-size: 52px;
+    font-size: 54px;
   }
+}
+
+/* ---------- 中文显示字体：逐字形对位，零字体下载 ----------
+   拉丁走 Instrument Serif（编辑感衬线），中文走当代黑体。
+   为什么不是 CJK 衬线子集：npm 上 Noto Serif SC 只有 unicode-range 分片（每字重 ~200 片），
+   要拿到完整字体文件并自建子集需要联网取字体源，成本与风险不成比例。
+   为什么不是系统 Songti：Songti SC 只在 Apple 平台存在，Windows 会掉到 SimSun，字面失控。
+   为什么是黑体：PingFang SC / 微软雅黑 / Noto Sans CJK 是三大平台各自的 CJK 无衬线基准，
+   字面接近、跨端一致，且「拉丁衬线 × 中文黑体」是当代中文编辑设计里成立的双语对位 ——
+   它让中文版拥有自己的声线，而不是英文版式的译文。 */
+html[lang^="zh"] :is(.t-hero, .t-statement, .t-h2, .t-entry, .t-stat, .t-numeral) {
+  font-family:
+    "Instrument Serif",
+    "PingFang SC",
+    "Hiragino Sans GB",
+    "Microsoft YaHei",
+    "Noto Sans CJK SC",
+    "Source Han Sans SC",
+    sans-serif;
 }
 
 @layer components {

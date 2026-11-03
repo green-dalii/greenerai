@@ -140,8 +140,8 @@
 - [x] **P0 · 工艺修复（8 项）** — 全部完成，探针验证：reveal 隐藏 0/37、对比度 0 失败、横向溢出 0
 - [x] **P1 · 系统重构** — 排版阶梯（层级倒置：论点陈述 > 节标题）、8 token 色彩、删五段彩虹带、非均匀节距、2 次出血破格
 - [x] **P2 · 签名时刻** — 回执组件（8 处，键盘可达）、Hero 骨架替代点阵 canvas（-215 行 JS）、Practice 改凭据条目
-- [ ] P3 · 中文排版专项
-- [ ] P4 · 打磨 + 复评
+- [x] **P3 · 中文排版专项** — CJK 显示改「逐字形对位」（拉丁 Instrument Serif × 中文 PingFang/雅黑，零字体下载，理由见 SPEC §4）；行高 1.85 / 标点挤压 / eyebrow 与 mono-label 回落；`html[lang^="zh"]` 前缀修正
+- [x] **P4 · 打磨 + 复评** — og:image 重做（旧图仍带已退役 "Trust is the new currency."）→ 由设计系统渲染 `/og-card`、按语言分流；robots/sitemap 排除；SPEC 全面重写
 
 ### 执行中发现的事实性错误（已修）
 
@@ -155,4 +155,6 @@
 | Shift-Router 月下载 | 1,235 | **2,293**（pi 685 + dsh 1,608） | npm downloads API |
 | 安装体积 | ~409 kB（packagephobia 口径，无法核验） | **636 kB unpacked** | npm registry `dist.unpackedSize` |
 
-另修：`<html lang>` 实为 `zh-CN`，所有 `html[lang='zh']` 的 CJK 规则此前**全部失效**（已改前缀匹配 `[lang^="zh"]`）。
+另修：
+- `<html lang>` 实为 `zh-CN`，所有 `html[lang='zh']` 的 CJK 规则此前**全部失效**（已改前缀匹配 `[lang^="zh"]`）。
+- **og:image 仍写着已退役的 "Trust is the new currency."** —— 分享卡是全站被看到次数最多的图片。现由 `/og-card`、`/zh/og-card` 用同一套 token/字体/口号渲染，按语言分流，且都有出处。

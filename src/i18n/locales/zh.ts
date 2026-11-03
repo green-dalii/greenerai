@@ -8,7 +8,7 @@ const GH_WIKI = 'https://api.github.com/repos/GD4AI/obsidian-llm-wiki';
 
 export const zh: Dict = {
   meta: {
-    title: '格润达理 — 智力不再稀缺，杠杆才是新的公司。',
+    title: '格润达理 — 智力不再稀缺，拼的是杠杆。',
     description:
       '智力不再稀缺，稀缺的换了模样：你积累的、做过的决定、你做完的事。格润达理把它们变成杠杆。旗下 Karpathy LLM Wiki（Obsidian 知识库插件）与 Shift-Router（AI 编程代理路由）——一切开源，数字公开，每件查得到。',
     ogTitle: '智力不再稀缺。拼的不再是人头，是杠杆。',

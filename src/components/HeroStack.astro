@@ -144,6 +144,19 @@ const s = getDict(Astro.currentLocale).stack;
     transform-origin: left center;
   }
 
+  /* 平板区间（768–1023）：右栏只有约 290px，注释右对齐会折成两行、行高参差
+     → 该区间改为上下排、左对齐 */
+  @media (min-width: 768px) and (max-width: 1023.98px) {
+    .stack-main {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 2px;
+    }
+    .stack-gloss {
+      text-align: left;
+    }
+  }
+
   /* 中文：mono 无 CJK 字形 → 回落 sans，避免混排两种质感 */
   html[lang^='zh'] .stack-head-label,
   html[lang^='zh'] .lever-label,

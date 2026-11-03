@@ -8,4 +8,6 @@ export function getDict(locale: string | undefined): Dict {
   return dictionaries[locale ?? 'en'] ?? en;
 }
 
+export type Locale = 'en' | 'zh';
+
 export type { Dict };

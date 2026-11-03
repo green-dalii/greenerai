@@ -21,6 +21,8 @@ const canonical = new URL(Astro.url.pathname, Astro.site);
 const hreflangEn = new URL('/', Astro.site).toString();
 const hreflangZh = new URL('/zh/', Astro.site).toString();
 const ldLang = isZh ? 'zh-CN' : 'en-US';
+// 分享卡按语言各一张 —— 与站点同一套 token / 字体 / 口号渲染（源：/og-card、/zh/og-card）
+const ogImage = siteUrl + (isZh ? '/og-image-zh.jpg' : '/og-image.jpg');
 
 // JSON-LD —— 机器可读实体（LLM 引擎/GEO 关键）
 const organizationLd = {
@@ -107,7 +109,8 @@ const shiftRouterLd = productLd(
     <meta property="og:title" content={dict.meta.ogTitle} />
     <meta property="og:description" content={dict.meta.ogDescription} />
     <meta property="og:url" content={canonical} />
-    <meta property="og:image" content={siteUrl + '/og-image.png'} />
+    <meta property="og:image" content={ogImage} />
+    <meta property="og:image:type" content="image/jpeg" />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
     <meta property="og:image:alt" content={dict.meta.ogTitle} />
@@ -118,7 +121,8 @@ const shiftRouterLd = productLd(
     <meta name="twitter:site" content="@greenerdalii" />
     <meta name="twitter:title" content={dict.meta.ogTitle} />
     <meta name="twitter:description" content={dict.meta.ogDescription} />
-    <meta name="twitter:image" content={siteUrl + '/og-image.png'} />
+    <meta name="twitter:image" content={ogImage} />
+    <meta name="twitter:image:alt" content={dict.meta.ogTitle} />
 
     <script type="application/ld+json" is:inline set:html={JSON.stringify(organizationLd)}></script>
     <script type="application/ld+json" is:inline set:html={JSON.stringify(websiteLd)}></script>

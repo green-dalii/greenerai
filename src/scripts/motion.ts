@@ -140,15 +140,25 @@ if (reduce) {
     );
     observed.forEach((_, el) => io.observe(el));
 
-    // 兜底扫描：任何已在视口内却仍未显现的元素，3s 后强制显现
-    window.setTimeout(() => {
-      observed.forEach((run, el) => {
-        if (!(el as HTMLElement).dataset.revealed) {
-          const r = el.getBoundingClientRect();
-          if (r.top < window.innerHeight) run();
+    // 兜底扫描：IO 之外的保险。每 800ms 扫一遍还没显现的元素，
+    // 只要它在视口内就立刻显现；全部显现后扫描自我取消（零常驻成本）。
+    const pending = new Set<Element>(observed.keys());
+    const sweep = () => {
+      pending.forEach((el) => {
+        if ((el as HTMLElement).dataset.revealed === '1') {
+          pending.delete(el);
+          return;
+        }
+        const r = el.getBoundingClientRect();
+        if (r.top < window.innerHeight && r.bottom > 0) {
+          observed.get(el)?.();
+          pending.delete(el);
         }
       });
-    }, 3000);
+      if (pending.size === 0) window.clearInterval(timer);
+    };
+    const timer = window.setInterval(sweep, 800);
+    window.setTimeout(sweep, 1200);
   } else {
     revealAll();
   }

@@ -112,94 +112,131 @@
 - Open body 三个动作（读源码 / 查数字 / 自己跑）+ 写信必回 → **mailto:hi@greenerai.top 真实链接**；修掉 "Browse the org" 类行话（文案轮）
 - Footer tagline = 品类句；项目链接带保留（wiki / Shift-Router 官网 / Diflowy / d2l-note）
 
-## 4. 设计系统（Mistral 结构 × Studio 绿）
+## 4. 设计系统
 
-### 色彩 tokens
+### 色彩 tokens（8 个，每个都有唯一职能）
+
 ```css
---color-primary:        #0a6c4b;   /* 深绿 CTA */
---color-primary-deep:   #065f40;   /* pressed */
---color-mint:           #34d399;   /* emerald-400 强调/链接 */
---color-mint-bright:    #68fcbf;   /* Studio 薄荷 点缀 */
---color-mint-soft:      #d1fae5;   /* emerald-100 徽章面 */
---color-surface-mint:   #f0faf5;   /* 薄荷面：表单/特性卡/页脚 */
---color-surface-mint-soft: #f6fcf9;/* 更浅薄荷面 */
---color-canvas:         #ffffff;
---color-surface:        #fafafa;
---color-ink:            #18181b;   /* zinc-900 */
---color-ink-tint:       #3f3f46;   /* zinc-700 */
---color-slate:          #52525b;   /* zinc-600 次要文本 */
---color-steel:          #71717a;   /* zinc-500 */
---color-muted:          #a1a1aa;   /* zinc-400 */
---color-hairline:       #e5e7eb;   /* zinc-200 */
---color-hairline-soft:  #eef1ef;
---color-hairline-strong:#c7c9cc;
---color-code-bg:        #1c1c1e;   /* 深色代码面 */
-/* 签名渐变带 */
---gradient-signature: linear-gradient(90deg, #0a6c4b, #059669, #34d399, #68fcbf, #f0faf5);
+--color-ink:         #14161a;  /* 标题 + 正文 — 17.6:1 */
+--color-muted:       #6b7280;  /* 次级文字 / 图注 — 4.83:1 (AA) */
+--color-paper:       #ffffff;
+--color-paper-tint:  #f7faf8;  /* 薄荷面：Hero / Organism / Open */
+--color-rule:        #e6e8e6;  /* 发丝分隔线 */
+--color-rule-strong: #cfd2cf;  /* 需要被看见的规则线（列表顶边） */
+--color-primary:     #0a6c4b;  /* 6.44:1 */
+--color-accent:      #34d399;  /* 纯装饰 — 全站 ≤3 处 */
 ```
 
-### 字体
-- Display：**Instrument Serif**（fallback Georgia/serif）
-- UI：**Inter**（-0.5 字距；正文 1.55 行高）
-- Code：**JetBrains Mono**
+增减任何 token 前必须先说明它替掉了谁。旧的 16 色体系（mint 六个层级、slate/steel/muted 三个灰）已废止。
+`--color-muted` 旧值 `#a1a1aa` 对比度 2.56:1，不合格，不得回退。
 
-### 排版刻度
-| token | size | weight | lh | use |
-|---|---|---|---|---|
-| hero-display | 58→36px 响应式 | 400 | 1.14 | Hero |
-| display-lg | 64px | 500 | 1.10 | 屏标题 |
-| heading-2 | 36px | 500 | 1.20 | 子标题 |
-| heading-3 | 28px | 500 | 1.25 | 卡片标题 |
-| heading-4 | 22px | 500 | 1.30 | 特性标题 |
-| subtitle | 18px | 400 | 1.50 | 副句 |
-| body-md | 16px | 400 | 1.55 | 正文 |
-| body-sm | 14px | 400 | 1.50 | 次要 |
-| micro-uppercase | 11px | 600 | 1.40 | 眉题（1px 字距） |
-| button-md | 14px | 500 | 1.30 | 按钮 |
-| stat-display | 56px | 400 | 1.10 | 数字 |
-| code-md | 14px | 400 | 1.50 | 代码 |
+### 字体
+
+- Display（拉丁）：**Instrument Serif**（400，含真斜体）
+- UI / CJK 显示：**Inter** + CJK 无衬线回落
+- Code：**JetBrains Mono**
+- 全部自托管（`@fontsource`，latin 子集）。
+
+**中文显示字体策略（逐字形对位，零字体下载）**
+
+`html[lang^='zh']` 下的 `.t-hero / .t-statement / .t-h2 / .t-entry / .t-stat / .t-numeral`
+把 CJK 回落链改为 **PingFang SC → Hiragino Sans GB → 微软雅黑 → Noto Sans CJK SC → Source Han Sans SC**。
+于是：拉丁（含罗马数字、统计数字、产品名）仍是 Instrument Serif，中文走当代黑体 —— 浏览器按字形自动分流。
+
+- 为什么不用 CJK 衬线子集：npm 上 Noto Serif SC 只有 unicode-range 分片（每字重约 200 片），拿到完整字体文件并自建子集需要联网取字体源，成本与风险不成比例。
+- 为什么不用系统宋体：`Songti SC` 只在 Apple 平台存在，Windows 会掉到 SimSun，字面失控。
+- 为什么成立：「拉丁衬线 × 中文黑体」是当代中文编辑设计里成立的双语对位，让中文版有自己的声线，而不是英文版式的译文。
+
+字距注意：`html[lang]` 的实际值是 `zh-CN`，所有中文规则必须用前缀选择器 `html[lang^="zh"]`。
+
+### 排版阶梯
+
+| 类 | 字号 | 用途 |
+|---|---|---|
+| `.t-hero` | 30/34/36/48/60（ZH 54） | Hero H1，受栏宽硬约束逐断点标定 |
+| `.t-statement` | 28 → 44 | **论点陈述（本节主角）** |
+| `.t-h2` | 26 → 34 | 节标题 |
+| `.t-entry` | 20 → 28 | 条目名 / 卡题 |
+| `.t-lead` | 19 | 导语 |
+| `.t-body` | 16（ZH lh 1.85） | 正文 |
+| `.t-note` | 13 | 注脚 / 链接 |
+| `.t-numeral` | 48 → 88 | 幽灵编号（I–IV，装饰，`aria-hidden`） |
+| `.t-stat` | 28 → 36 | 统计数字 |
+
+**层级倒置（编辑排版的关键动作）**：论点陈述刻意**大于**节标题。
+五条信念是本节的真正主角，不该和「See for yourself」同字号。
+Thesis 编号为 I–IV + 收束项；收束项不用第五个序号，改用一条 primary 短规则线作「所以」记号。
 
 ### 圆角 / 间距 / 层级
-- 圆角：按钮 8px（md）、卡片 12px（lg）、徽章 full。**禁胶囊按钮**。
-- 字号阶梯（全区块统一）：H1 48–56 / 区块 H2 40（`.display-lg`）/ 卡题 22 / 统计数字 32 / 正文 16（lead 17）/ mono 注释 11。
-- mono 只排拉丁与数字；含中文的小标签一律用 `.mono-label`（`html[lang=zh]` 下自动回落 sans，避免 CJK 回落穿帮）。
-- 间距：4px 基模；section 96px（营销页）、64px（内容页）；卡片内 24/32px。
-- 容器：1280px max-w / 32px gutter。
-- 层级：平为主，卡片 `rgba(0,0,0,0.04) 0 4px 12px`，代码面深底 12px 圆角 + 轻微投影。
+
+- 圆角：按钮 **8px**、卡片 **12px**。**禁胶囊按钮**。
+- 正文对比：正文用 `text-ink/85`；`muted` 只用于图注、标签、次级说明 —— 不要用它排整段正文。
+- 行宽：**用 rem 不用 `ch`**（`ch` 在中文里不等价于字宽，会造成孤字）。正文 `max-w-[33rem]`，节引言 `max-w-[26–34rem]`。
+- 节间距**非均匀**（刻意，不是遗漏）：Thesis `pt-32 pb-16` → Practice `pt-16 pb-8` → Organism `pt-28 pb-32` → Road `pt-28 pb-24` → Open `pt-28 pb-32`。
+- 容器：1280px max-w，gutter 24/32px。
+- 层级：平为主。卡片无投影，靠 `--color-rule` 发丝线与面块分色。
+
+### 编辑装置（结构可见，不是装饰堆叠）
+
+- **版式骨架** `.scaffold-cols`：12 栏发丝线（primary 7% 透明），仅 Hero，`md` 以下隐藏（窄屏会退化成密梳）。
+- **裁切标记** `.crop-marks`：四角 L 形印前套准记号，仅 Hero。
+- **签名线** `.signature-rule`：primary 2px 实线 + 12% 长 accent 短划，用于 Footer 顶边。
+  ⚠️ 旧的 `.gradient-signature` 五段绿渐变**已删除** —— 那是移植自 Mistral 的 sunset stripe，借用别家签名在创意维度是负分。
+- **回执** `.receipt-*`：见 §5。
+- 出血破格：Thesis 每条论点的分隔线出血到视口边缘（`100vw` + `overflow-x: clip`），正文留在栏内。
 
 ### 签名组件
-- gradient-stripe（页脚上方全宽渐变带）
-- stat-display（衬线大字数字，Practice 统计；分级规则见 §3 Practice）
-- code-mockup（保留 token 与样式，当前无场景使用）
-- pill-badge（薄荷面标签；v3 起 HeroStack 不再使用状态徽章）
+
+- **Receipt（回执）** —— 全站 8 处：4 个统计数字 + 4 条硬声称。
+  `SOURCE / ENDPOINT / FIELD / VERIFIED` + 可复制的核验命令。
+- **HeroStack** —— 知/品/行 三行 + 一句话注解 + 杠杆线；无徽章、无 legend、无产品名。
+- gradient-stripe / pill-badge / code-mockup：**已废止**。
 
 ## 5. 技术架构
 
-- Astro static + Tailwind v4（@tailwindcss/vite）+ sitemap（i18n）
-- 动效：GSAP + ScrollTrigger（`src/scripts/motion.ts`）：data-reveal / data-count / data-hero-line / data-hero-stack 等；尊重 prefers-reduced-motion；Hero 背景 canvas 触屏设备禁用
-- Hero 右侧：轻量状态面板（HeroStack.astro）：**知/品/行 三行 + 注解 + 杠杆线**，无状态徽章；全浅色
+- Astro static + Tailwind v4（`@tailwindcss/vite`）+ sitemap（i18n，filter 排除 `/og-card`）
+- **动效**：GSAP（不再使用 ScrollTrigger）+ IntersectionObserver，见 `src/scripts/motion.ts`
+  - 契约：`data-reveal` / `data-reveal-delay` / `data-count` / `data-count-to` / `data-count-suffix` / `data-hero-line` / `data-hero-line-delay` / `data-hero-stack` / `data-receipt-trigger`
+  - **隐藏态门控是 `html.motion-ready`（脚本成功初始化后才加），不是 `.js`** —— 脚本失败时内容保持可见，不会整页空白
+  - 3s 兜底扫描 + `beforeprint`/`@media print` 强制全可见
+  - 尊重 `prefers-reduced-motion`
+- **Hero 背景**：CSS 版式骨架（12 栏 + 裁切标记）。点阵 canvas 已删除（-215 行 JS，零 rAF、零 GPU 常驻）。
+- **Receipt 交互**：`<button aria-expanded aria-controls>` + `grid-template-rows: 0fr → 1fr` 过渡，单一事件委托，键盘可达，无需测量高度。
+- Hero 右侧：HeroStack.astro（知/品/行 三行 + 注解 + 杠杆线）
 - i18n：`defaultLocale:'en'` 无前缀；`zh` → `/zh/`；字典 `src/i18n/locales/{en,zh}.ts`（typed）
-- 路由：`/`（EN）、`/zh/`（ZH）
-- 组件：Nav、Brand、Hero、HeroStack、Thesis、Proof(Practice)、ProofCard、Organism、Road、Open、Footer、LanguageSwitch
-- LOGO：沿用官方 logomark（`public/logomark.svg` 同源，fill="currentColor"；Header/Footer 黑色）——禁止自行生成品牌标
-- Open 区新增 mailto CTA（`hi@greenerai.top`）
+- 路由：`/`、`/zh/`，另有 `/og-card/` 与 `/zh/og-card/`（分享卡渲染源，noindex + robots 拒绝 + 不进 sitemap）
+- 组件：Nav、Brand、Hero、HeroStack、Thesis、Proof、ProofCard、Receipt、OgCard、Organism、Road、Open、Footer、LanguageSwitch
+- LOGO：沿用官方 logomark（`public/logomark.svg` 同源，`fill="currentColor"`）——禁止自行生成品牌标
 
-## 6. 数据来源（构建时常量）
+## 6. 数据来源（构建时常量 + 回执）
 
-见 AGENTS.md「数据源」。数字改动必须核对官方源。
-- **Karpathy LLM Wiki**（产品名；仓库名 obsidian-llm-wiki 仅内部用）：34,055 下载 / 451★ / 11 语言（stat-display 位）；官方站 llmwiki.greenerai.top
-- Shift-Router（统一品牌单卡）：1,235 月下载（npm·pi 实现，stat-display 位）；环境数不设统计位（双环境信息进 note：兼容 Pi 与 DeepSeek Harness）；脚注行 = 零依赖 · 安装体积约 409 kB（README 徽章墙 packagephobia 口径）
+每个数字都带一张回执（源地址 + 字段 + 核对日期 + 核验命令）。**改数字必须同时改回执**。
 
-## 7. 验收清单（文案轮完成后逐项打勾）
+| 数字 | 值（核对 2026-11-03） | 源 |
+|---|---|---|
+| Karpathy LLM Wiki 下载 | **67,153** | `obsidianmd/obsidian-releases` 的 `community-plugin-stats.json`（`karpathywiki.downloads`） |
+| Karpathy LLM Wiki ★ | **768** | GitHub API `GD4AI/obsidian-llm-wiki` |
+| Karpathy LLM Wiki 语言数 | **11** | 仓库 `src/texts/*.ts` |
+| Shift-Router 月下载 | **2,293**（pi 685 + dsh 1,608） | npm `downloads/point/last-month/{pi,dsh}-shift-router` |
+| Shift-Router 依赖 / 体积 / 许可 | 零依赖 / 636 kB unpacked / MIT | npm registry `dependencies` / `dist.unpackedSize` / `license` |
 
-- [ ] `pnpm build` 通过
-- [ ] **展示词汇法全检（§0）**：无 Trust/Judge 展示词；口号作为独立口号仅 H1 + ogTitle 两处（Thesis 01 标题即口号第一行，为论点主场，不计入；og:image:alt 描述图片内文字）；品类句在 meta/footer 一致；无一人公司暗示
+- **Karpathy LLM Wiki 仓库已从 `green-dalii` 迁至 `GD4AI`**（旧链 301，勿再用旧地址）；官方站 llmwiki.greenerai.top
+- `~409 kB`（packagephobia 口径）**无法核验，已废弃**；改用在 npm registry 可直接查的 636 kB unpacked
+- 组织链接 `https://github.com/green-dalii` 仍有效（user 账号，52 repos）
+
+## 7. 验收清单
+
+- [ ] `pnpm build` 通过；`pnpm astro check` = 0 errors / 0 warnings / 0 hints
+- [ ] **展示词汇法全检（§0）**：无 Trust/Judge 展示词；口号作为独立口号仅 H1 + ogTitle 两处（Thesis I 标题即口号第一行，为论点主场，不计入）；品类句在 meta/footer 一致；无一人公司暗示
 - [ ] **重复定律抽查**：任一论点全文完整展开仅一次；无比喻复用
-- [ ] 中英双字典术语一致（知/品/行 ↔ Know/Taste/Do 映射统一）；zh 逐句朗读无翻译腔
-- [ ] Thesis 五条结构 = 锁定表；05 无新概念
+- [ ] 中英双字典术语一致（知/品/行 ↔ Know/Taste/Do）；zh 逐句朗读无翻译腔
+- [ ] Thesis 结构 = I–IV + 收束项（收束项用规则线记号，不用序号）
 - [ ] HeroStack：三行 + 注解 + 杠杆线，无徽章无 legend；产品名不进 Hero
-- [ ] Road 无状态卡；正文无 Trust/Judge；coda 非口号复读
-- [ ] Open 含 mailto:hi@greenerai.top 且可达；无行话 CTA
-- [ ] stats 分级落地：工程琐数为脚注非大数字位
-- [ ] meta.title/description/OG 已按品类句更新（旧 "AI-Native Infrastructure" 清除）
-- [ ] 签名渐变带、stat-display、绿色系 tokens 落地；响应式；无写死色值、无胶囊按钮
+- [ ] Hero 无 canvas；版式骨架在 `md` 以下隐藏
+- [ ] 回执 8 处齐全，`SOURCE/ENDPOINT/FIELD/VERIFIED` 非空，核验命令可复制
+- [ ] **reveal 完整性探针**：滚动全页后 `[data-reveal]` 不可见数 = 0
+- [ ] **对比度探针**：无低于 AA 的正文/标签文本
+- [ ] **横向溢出探针**：390 / 768 / 1024 / 1440 均无横向滚动
+- [ ] 无写死色值（一律走 `@theme` token）；无胶囊按钮
+- [ ] 中文规则全部用 `html[lang^="zh"]`
+- [ ] og:image 按语言分流且 `/og-card` 不进 sitemap、robots 拒绝

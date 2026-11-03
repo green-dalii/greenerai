@@ -1,16 +1,27 @@
 User-agent: *
 Allow: /
+# 分享卡渲染源（截图中转页，不是内容页）
+Disallow: /*og-card
 
 # AI 引擎（GEO）：显式允许引用
 User-agent: GPTBot
 Allow: /
+Disallow: /*og-card
+
 User-agent: ClaudeBot
 Allow: /
+Disallow: /*og-card
+
 User-agent: PerplexityBot
 Allow: /
+Disallow: /*og-card
+
 User-agent: CCBot
 Allow: /
+Disallow: /*og-card
+
 User-agent: Google-Extended
 Allow: /
+Disallow: /*og-card
 
 Sitemap: https://greenerai.top/sitemap-index.xml

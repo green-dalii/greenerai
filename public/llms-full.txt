@@ -46,11 +46,11 @@ Karpathy's LLM Wiki, rebuilt as an Obsidian plugin. Your notes become a connecte
 - **Why it matters**: most AI knowledge tools send your private notes to a remote server. Karpathy LLM Wiki is local-first — your notes never leave your machine.
 - **Distribution**: published through the official Obsidian community plugins directory under the id `karpathywiki`.
 - **Numbers (public, sourced)**:
-  - 34,055 downloads — from the Obsidian community-plugin-stats feed.
-  - 451 stars — from the GitHub repository.
+  - 67,153 downloads — from the Obsidian community-plugin-stats feed.
+  - 768 stars — from the GitHub repository.
 - **License**: Apache-2.0
 - **Official site**: https://llmwiki.greenerai.top/
-- **Repository**: https://github.com/green-dalii/obsidian-llm-wiki
+- **Repository**: https://github.com/GD4AI/obsidian-llm-wiki
 - **Marketplace listing**: https://community.obsidian.md/plugins/karpathywiki
 
 ### Shift-Router
@@ -63,8 +63,8 @@ A task-level router for coding agents. It runs inside the agent harness, watches
   3. **Task-level orchestration** — for complex tasks, the strong tier plans like a CTO and dispatches fast workers for sub-steps; the strong tier then verifies the result.
 - **Why it matters**: lets you mix a cheap fast model for everyday turns with a stronger model for hard steps, without paying the strong-model price on every turn or losing context when the strong model is needed.
 - **Numbers (public, sourced)**:
-  - 1,235 monthly downloads on npm for the Pi implementation.
-  - Zero runtime dependencies; ~409 kB install (per packagephobia).
+  - 2,293 monthly downloads across both npm distributions (Pi 685 + DeepSeek Harness 1,608, last 30 days).
+  - Zero runtime dependencies; 636 kB unpacked (npm registry `dist.unpackedSize`).
 - **License**: MIT
 - **Official site**: https://shiftrouter.greenerai.top/
 - **One brand, two hosts**:
@@ -75,6 +75,16 @@ A task-level router for coding agents. It runs inside the agent harness, watches
 
 - **Diflowy** — workflow notes tool. https://diflowy.greenerai.top/ · repository https://github.com/green-dalii/diflowy
 - **d2l-note** — open-source note utilities. https://github.com/green-dalii/d2l-note
+
+## Data provenance
+
+Every number on the site carries a receipt: source name, endpoint URL, the exact JSON field, the date it was verified (2026-11-03), and a copy-paste command that reproduces it. If you restate a figure, please cite the endpoint rather than the brand:
+
+- Downloads (Obsidian): `https://cdn.jsdelivr.net/gh/obsidianmd/obsidian-releases@master/community-plugin-stats.json` → `karpathywiki.downloads`
+- Stars / license: `https://api.github.com/repos/GD4AI/obsidian-llm-wiki`
+- i18n coverage: `https://api.github.com/repos/GD4AI/obsidian-llm-wiki/contents/src/texts` → array length
+- npm downloads: `https://api.npmjs.org/downloads/point/last-month/pi-shift-router` and `.../dsh-shift-router`
+- Dependencies / size / license: `https://registry.npmjs.org/pi-shift-router` → `dependencies`, `dist.unpackedSize`, `license`
 
 ## Where to find us
 

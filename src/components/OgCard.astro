@@ -1,0 +1,223 @@
+---
+/**
+ * OG 分享卡（1200×630）—— 由设计系统本身渲染，而不是一张没人知道怎么改的 PNG。
+ *
+ * 用途：`/og-card/`（EN）与 `/zh/og-card/`（ZH）截图后产出 public/og-image(-zh).jpg
+ * 该页不进 sitemap、不被索引（见 astro.config.mjs 的 filter 与 robots meta）。
+ *
+ * 为什么这么做：旧 og-image.png 里还写着已退役的 "Trust is the new currency."，
+ * 而分享卡是全站被看到次数最多的图片。让它由同一套 token / 字体 / 口号渲染，
+ * 就再也不会和正文脱节 —— 这张图也有它的出处。
+ */
+import '../styles/global.css';
+import '@fontsource/inter/latin-400.css';
+import '@fontsource/inter/latin-500.css';
+import '@fontsource/instrument-serif/latin-400.css';
+import '@fontsource/instrument-serif/latin-400-italic.css';
+import '@fontsource/jetbrains-mono/latin-500.css';
+import { getDict } from '../i18n';
+import type { Locale } from '../i18n';
+
+interface Props {
+  locale: Locale;
+}
+const { locale } = Astro.props;
+const d = getDict(locale);
+const isZh = locale === 'zh';
+---
+
+<!doctype html>
+<html lang={isZh ? 'zh-CN' : 'en'} class="og-root">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="robots" content="noindex, nofollow" />
+    <title>OG card</title>
+  </head>
+  <body class="og-body">
+    <div class="og-card">
+      <!-- 与 Hero 同源的版式骨架：结构，可见 -->
+      <div class="og-scaffold" aria-hidden="true"></div>
+      <div class="og-crop" aria-hidden="true"><i></i><i></i><i></i><i></i></div>
+
+      <header class="og-head">
+        <div class="og-brand">
+          <svg viewBox="-40 -20 820 820" fill="none" class="og-mark" aria-hidden="true">
+            <polygon
+              points="325.5,129.7 325.5,303.2 424.7,322 424.7,129.7 643.8,129.7 643.8,340.9 743,359.8 743,30.4 7.2,30.4 7.2,340.9 106.4,359.8 106.4,129.7"
+              fill="currentColor"></polygon>
+            <polygon
+              points="424.7,621.2 424.7,447.5 325.5,428.6 325.5,621.2 106.4,621.2 106.4,409.7 7.2,390.9 7.2,720.4 743,720.4 743,409.7 643.8,390.9 643.8,621.2"
+              fill="currentColor"></polygon>
+          </svg>
+          <span class="og-wordmark">GREENER-DALII</span>
+        </div>
+        <span class="og-meta">{isZh ? '格润达理 · GREENERAI.TOP' : 'EST. 2026'}</span>
+      </header>
+
+      <div class="og-main">
+        <h1 class="og-h1">
+          {d.hero.h1a}<br />
+          <em class:list={[isZh ? 'not-italic' : '', 'og-em']}>{d.hero.h1b}</em>
+        </h1>
+        <p class="og-sub">{d.footer.tagline}</p>
+      </div>
+
+      <footer class="og-foot">
+        <span class="og-meta">GREENERAI.TOP</span>
+        <span class="og-meta">{d.footer.builtOpen}</span>
+      </footer>
+
+      <div class="og-signature" aria-hidden="true"></div>
+    </div>
+  </body>
+</html>
+
+<style>
+  .og-body {
+    margin: 0;
+    background: #f7faf8;
+  }
+  .og-card {
+    position: relative;
+    width: 1200px;
+    height: 630px;
+    padding: 64px 72px 56px;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    background: var(--color-paper-tint);
+    overflow: hidden;
+    font-family: var(--font-sans);
+    color: var(--color-ink);
+  }
+
+  .og-scaffold {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background-image: repeating-linear-gradient(
+      to right,
+      color-mix(in oklab, var(--color-primary) 7%, transparent) 0 1px,
+      transparent 1px 8.3333%
+    );
+  }
+  .og-crop {
+    position: absolute;
+    inset: 24px;
+    pointer-events: none;
+  }
+  .og-crop i {
+    position: absolute;
+    width: 12px;
+    height: 12px;
+    border: 0 solid var(--color-rule-strong);
+  }
+  .og-crop i:nth-child(1) {
+    top: 0;
+    left: 0;
+    border-top-width: 1px;
+    border-left-width: 1px;
+  }
+  .og-crop i:nth-child(2) {
+    top: 0;
+    right: 0;
+    border-top-width: 1px;
+    border-right-width: 1px;
+  }
+  .og-crop i:nth-child(3) {
+    bottom: 0;
+    left: 0;
+    border-bottom-width: 1px;
+    border-left-width: 1px;
+  }
+  .og-crop i:nth-child(4) {
+    bottom: 0;
+    right: 0;
+    border-bottom-width: 1px;
+    border-right-width: 1px;
+  }
+
+  .og-head,
+  .og-foot {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .og-brand {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .og-mark {
+    width: 26px;
+    height: 26px;
+    color: var(--color-ink);
+  }
+  .og-wordmark,
+  .og-meta {
+    font-family: var(--font-mono);
+    font-weight: 500;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--color-muted);
+  }
+  .og-wordmark {
+    font-size: 13px;
+    color: var(--color-ink);
+  }
+  .og-meta {
+    font-size: 12px;
+  }
+
+  .og-main {
+    position: relative;
+    max-width: 940px;
+  }
+  .og-h1 {
+    margin: 0;
+    font-family: var(--font-display);
+    font-weight: 400;
+    font-size: 54px;
+    line-height: 1.22;
+    letter-spacing: -0.012em;
+    color: var(--color-ink);
+    text-wrap: balance;
+  }
+  .og-em {
+    color: var(--color-primary);
+    font-style: italic;
+  }
+  html[lang^='zh'] .og-h1 {
+    font-family:
+      'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', 'Noto Sans CJK SC',
+      'Source Han Sans SC', sans-serif;
+    font-size: 50px;
+    line-height: 1.34;
+    letter-spacing: -0.004em;
+  }
+  .og-sub {
+    margin: 26px 0 0;
+    font-size: 19px;
+    line-height: 1.5;
+    color: var(--color-muted);
+  }
+
+  .og-signature {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 3px;
+    background: var(--color-primary);
+  }
+  .og-signature::after {
+    content: '';
+    position: absolute;
+    inset-block: 0;
+    left: 0;
+    width: 12%;
+    background: var(--color-accent);
+  }
+</style>

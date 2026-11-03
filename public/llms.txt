@@ -14,10 +14,10 @@
 ## Products
 
 - [Karpathy LLM Wiki](https://llmwiki.greenerai.top/): Karpathy's LLM Wiki, rebuilt as an Obsidian plugin. Your notes become a knowledge base that answers — every answer cites its source, nothing leaves your machine.
-- [Karpathy LLM Wiki · GitHub](https://github.com/green-dalii/obsidian-llm-wiki): Open-source repository for the Karpathy LLM Wiki plugin (Apache-2.0).
+- [Karpathy LLM Wiki · GitHub](https://github.com/GD4AI/obsidian-llm-wiki): Open-source repository for the Karpathy LLM Wiki plugin (Apache-2.0).
 - [Karpathy LLM Wiki · Marketplace](https://community.obsidian.md/plugins/karpathywiki): Official listing on the Obsidian community plugins directory.
 - [Shift-Router](https://shiftrouter.greenerai.top/): Task-level router for coding agents. Every turn is triaged, instant upgrades when it counts, same-turn failover on rate limits. One brand, two hosts.
-- [Shift-Router for Pi](https://www.npmjs.com/package/pi-shift-router): Pi extension. Zero runtime dependencies, ~409 kB install, 1,235 monthly downloads.
+- [Shift-Router for Pi](https://www.npmjs.com/package/pi-shift-router): Pi extension. Zero runtime dependencies, 636 kB unpacked, 2,293 monthly downloads.
 - [Shift-Router · GitHub](https://github.com/green-dalii/pi-shift-router): Source for the Pi implementation (MIT).
 - [Shift-Router for DeepSeek Harness](https://github.com/green-dalii/dsh-shift-router): Source for the DeepSeek Harness implementation.
 

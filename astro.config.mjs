@@ -13,6 +13,8 @@ export default defineConfig({
         defaultLocale: 'en',
         locales: { en: 'en', zh: 'zh-CN' },
       },
+      // /og-card 是分享卡的渲染源（供截图用），不是页面 —— 不进 sitemap
+      filter: (page) => !page.includes('/og-card'),
     }),
   ],
   vite: {
