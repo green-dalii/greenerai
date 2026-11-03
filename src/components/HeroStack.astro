@@ -40,6 +40,17 @@ const s = getDict(Astro.currentLocale).stack;
     border-radius: 12px;
     /* 微微透明：让背后的版式骨架透出来 —— 「结构，可见」 */
     background: color-mix(in oklab, var(--color-paper) 92%, transparent);
+    /* 悬停的视觉回报：投影已删（全站唯一的卡不该有阴影），
+       改用边框加深承担 —— 与指针按压配合，让「可触碰」这件事有落点。 */
+    transition: border-color 0.35s var(--ease-signature, ease);
+  }
+  .stack:hover {
+    border-color: var(--color-rule-strong);
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .stack {
+      transition: none;
+    }
   }
 
   /* 三列定宽：序号 │ 名称 │ 注释。

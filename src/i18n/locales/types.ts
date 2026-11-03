@@ -186,6 +186,7 @@ export interface Dict {
     /** 项目链接带（diflowy / d2l-note 在此，不占主叙事） */
     projects: { label: string; items: { name: string; href: string }[] };
     rights: string;
-    builtOpen: string;
+    /** 底行右侧：数字核对日期（必须与 VERIFIED 同步，它是回执的索引，不是口号） */
+    verifiedOn: string;
   };
 }

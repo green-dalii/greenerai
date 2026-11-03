@@ -26,10 +26,12 @@ const { card, ordinal, evidenceLabel, ui, revealDelay = 0, artifact } = Astro.pr
 ---
 
 <!--
-  条目而非并排卡片：
-  并排会带来底边参差、统计基线错位，以及「两张卡用两套视觉语法」的矛盾。
-  左栏是身份、叙述与出口；右栏只有凭据 —— 与站点唯一的真实声称（一切可查）同构。
-  左栏将出口推到底部（mt-auto），与右栏凭据列表的底边对齐，空白因此成为对齐而非缺口。
+  条目而非并排卡片：并排会带来底边参差、统计基线错位，以及「两张卡用两套视觉语法」的矛盾。
+
+  右栏的构成是关键：它是**一整条贯通的凭据边栏**——上端是数字，下端是声称与出口，
+  中间那段空白是刻意的栏内留白，而不是「写到一半没东西了」。
+  实测过一版把出口留在左栏的做法：右栏内容只用到 365/253px，剩下 334/359px 是空房，
+  一条贯穿全高的发丝线右边挂着四行字——读起来就是没做完。
 -->
 <article
   class="grid gap-y-10 border-t border-rule py-14 md:grid-cols-12 md:gap-x-12 md:py-20"
@@ -65,20 +67,10 @@ const { card, ordinal, evidenceLabel, ui, revealDelay = 0, artifact } = Astro.pr
       }
     </div>
 
-    <div class="mt-10 md:mt-auto md:pt-14">
-      <a
-        href={card.href}
-        target="_blank"
-        rel="noreferrer"
-        class="link-underline t-note mt-8 inline-block font-medium text-primary"
-      >
-        {card.cta} ↗
-      </a>
-    </div>
   </div>
 
-  <!-- 右：凭据 -->
-  <div class="md:col-span-5 md:border-l md:border-rule md:pl-12">
+  <!-- 右：凭据边栏（数字在上，声称与出口在下，中段留白） -->
+  <div class="flex flex-col md:col-span-5 md:border-l md:border-rule md:pl-12">
     <p class="mono-label text-muted">{evidenceLabel}</p>
 
     {
@@ -106,16 +98,27 @@ const { card, ordinal, evidenceLabel, ui, revealDelay = 0, artifact } = Astro.pr
       )
     }
 
-    {
-      card.claims && card.claims.length > 0 && (
-        <ul class="mt-8 space-y-3.5 border-t border-rule pt-6">
-          {card.claims.map((c) => (
-            <li class="t-note text-muted">
-              <Receipt claim={c.text} receipt={c.receipt} ui={ui} />
-            </li>
-          ))}
-        </ul>
-      )
-    }
+    <div class="mt-10 md:mt-auto md:pt-10">
+      {
+        card.claims && card.claims.length > 0 && (
+          <ul class="space-y-3.5 border-t border-rule pt-6">
+            {card.claims.map((c) => (
+              <li class="t-note text-muted">
+                <Receipt claim={c.text} receipt={c.receipt} ui={ui} />
+              </li>
+            ))}
+          </ul>
+        )
+      }
+
+      <a
+        href={card.href}
+        target="_blank"
+        rel="noreferrer"
+        class="link-underline t-note mt-8 inline-block font-medium text-primary"
+      >
+        {card.cta} ↗
+      </a>
+    </div>
   </div>
 </article>

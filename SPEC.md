@@ -186,8 +186,14 @@ Thesis 编号为 I–IV + 收束项；收束项不用第五个序号，改用一
 
 - **版式骨架** `.scaffold-cols`：12 栏发丝线（primary 7% 透明），仅 Hero，`md` 以下隐藏（窄屏会退化成密梳）。
 - **裁切标记** `.crop-marks`：四角 L 形印前套准记号，仅 Hero。
-- **签名线** `.signature-rule`：primary 2px 实线 + 12% 长 accent 短划，用于 Footer 顶边。
-  ⚠️ 旧的 `.gradient-signature` 五段绿渐变**已删除** —— 那是移植自 Mistral 的 sunset stripe，借用别家签名在创意维度是负分。
+- **签名线** `.signature-rule`：Footer 顶边一条 **2px 主色横贯线**，无前导高亮段。
+  签名由「粗细」承担：全站只有这一条 2px 横贯线，其余都是 1px 发丝。
+  ⚠️ 已删除的两个版本：① 移植自 Mistral 的五段绿渐变（借用别家签名，创意维度负分）；
+  ② primary 2px + 12% mint 前导段 —— **一道主色轨加一段高亮前导 = 进度条的形状**，
+  而 header 里真的有一条进度条，同一母题用两次读者只会读到更熟的那个。
+- **Footer 落在 12 栏上**：品牌 col 1–4，Connect col 7、Projects col 9、Language col 11。
+  Hero 把栏线画出来了，footer 就不许自己另起一套列宽。
+- **Open 的写信入口就是地址本身**（`.mail-cta`，衬线 32px + 虚线下划）。不再用实心按钮 + 底下再印一遍 mono 地址 —— 同一个动作说两遍。
 - **回执** `.receipt-*`：见 §5。触发提示必须**写字**（`· SHOW RECEIPT` / `· 查看回执`），
   内联声称用 `＋`/`−` 记号，`aria-label` 承载可读名称。静默的小方角已被证否。
 - **Ledger**：全页唯一一道满宽数字带（第三处破格），三个带凭据的数字，每个点回自己那张回执。
@@ -210,7 +216,9 @@ Thesis 编号为 I–IV + 收束项；收束项不用第五个序号，改用一
   - 3s 兜底扫描 + `beforeprint`/`@media print` 强制全可见
   - 尊重 `prefers-reduced-motion`
 - **Hero 背景**：CSS 版式骨架（12 栏 + 裁切标记）。点阵 canvas 已删除（-215 行 JS，零 rAF、零 GPU 常驻）。
-  HeroStack 的 3D 指针按压也已删除 —— 悬停倾斜是 2021 年的把戏，与编辑克制相抵。
+  **HeroStack 的指针按压保留**（曾以「悬停倾斜是 2021 年的把戏」为由删过一次，那是拿时装判断冒充设计判断）：
+  幅度 7°/5°、抬升 4px，`gsap.quickTo` 三属性跟随，仅 hover + 细指针启用，reduced-motion 下不执行。
+  悬停的视觉回报由边框加深承担（卡片无投影，全站唯一的卡不该有阴影）。
 - **签名缓动**：GSAP 侧 `expo.out`（`motion.ts` 的 `EASE` 常量），CSS 侧 `--ease-signature:
   cubic-bezier(.16,.84,.24,1)`。两处同一条手感，改一起改。
 - **导航当前节高亮**：复用 IntersectionObserver（`rootMargin: -45% 0 -50%`），零滚动监听；

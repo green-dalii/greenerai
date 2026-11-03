@@ -92,12 +92,15 @@ const synthesis = t.items.find((i) => i.synthesis);
     /* 序号 3.5rem │ 标题 5fr │ 间隙 1fr │ 正文 5fr
        四列让标题与正文各占一栏，中间留一道空气槽，而不是让正文贴着标题堆叠 */
     .thesis-grid {
-      grid-template-columns: 3.5rem minmax(0, 5fr) minmax(0, 1fr) minmax(0, 5fr);
+      grid-template-columns: 2.25rem minmax(0, 5.5fr) minmax(0, 1fr) minmax(0, 4.5fr);
       align-items: start;
       gap: 0 1.25rem;
     }
+    /* 序号放大到 20px：16px 时它既不像版面元素也不像文字，只是一粒灰点；
+       同时把序号列从 3.5rem 收到 2.25rem，标题左移 20px，两者关系才成立。 */
     .thesis-index {
-      padding-top: 0.62rem;
+      font-size: 1.25rem;
+      padding-top: 0.5rem;
     }
     /* 正文首行基线对齐标题基线（44px×1.14 与 16px×1.7 的首行差） */
     .thesis-body {
