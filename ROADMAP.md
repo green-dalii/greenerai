@@ -158,3 +158,61 @@
 另修：
 - `<html lang>` 实为 `zh-CN`，所有 `html[lang='zh']` 的 CJK 规则此前**全部失效**（已改前缀匹配 `[lang^="zh"]`）。
 - **og:image 仍写着已退役的 "Trust is the new currency."** —— 分享卡是全站被看到次数最多的图片。现由 `/og-card`、`/zh/og-card` 用同一套 token/字体/口号渲染，按语言分流，且都有出处。
+
+---
+
+# 第二轮：P5「让证据可见」（分量审计）
+
+## 7. 为什么要有第二轮
+
+P0–P4 全部完成，探针全绿。但那是**工艺**验收。按 Awwwards 四维 + Apple / Anthropic / Linear 官网标准重审，页面仍是 **6.4 / 10**。
+
+差的地方不在技巧，在**分量**。四条根因：
+
+1. **没有证据的视觉** —— `grep -rn "<img\|<canvas" src/components/` 只命中 logo。一个说「我们造工具」的站，全站 6159px 没出现过任何一件工具。而整站主张就是可查验——视觉的空，直接拆掉了文案的主张。
+2. **文案在自我解释** —— 每段都在解释自己为什么对，而不是让事实自己站住。
+3. **用留白替代设计** —— Thesis 1556px 装 ~950px 内容；Practice 左栏 218px 空转；Organism 底部 150px 纯空。
+4. **最好的想法被藏起来** —— 回执没有发现路径，12×12px 无标签小方块，等于没做。
+
+**最严重的单条**：`road.sub` 承诺「下一层要做回执」，而同一页上方 400px，8 张回执正开着。
+
+## 8. 复评基线（P4 结束时）
+
+| 维度 | 分 | 判据 |
+|---|---|---|
+| Design | 6.5 | 字体真功夫；全站 1 个视觉元素 |
+| Usability | 6.5 | 回执无发现路径 |
+| Creativity | 7.5 | 回执原创但被藏起 |
+| Content | 5.5 | 英文文案：反问、成语、自相矛盾、零温度 |
+
+## 9. 阶段计划（正交拆分，Issue #1 总纲）
+
+| Issue | 阶段 | 拥有的符号 | 目标 |
+|---|---|---|---|
+| [#2](https://github.com/green-dalii/greenerai/issues/2) | **A · 视觉证据层** | 新增 `Translation/OgCard/SessionLog/Ledger`；`evidence.*` 新命名空间 | 全站唯一实物 + 数字带 + 回执可发现 |
+| [#3](https://github.com/green-dalii/greenerai/issues/3) | **B · 版式节奏** | `Thesis/Organism/Open/HeroStack` markup+CSS、`.t-figure` | Thesis 1556→≤1000px、收束项句点、数字字体规则 |
+| [#4](https://github.com/green-dalii/greenerai/issues/4) | **C · 文案重写** | `en.ts`/`zh.ts` 既有 key 的值 | 除四类病，中英同步 |
+| [#5](https://github.com/green-dalii/greenerai/issues/5) | **D · 交互动效** | `Nav/LanguageSwitch/motion.ts` | 节高亮、语言降权、签名曲线、两拍进场 |
+
+依赖顺序 **B → C → A → D**：C 依赖 B 定下的信息量，A 依赖 C 定下的语气。
+
+## 10. 正交性原则
+
+同一文件可出现于多个 issue，但**触碰的符号不相交**：key 名、类名、组件边界三者维度上互不重叠。
+唯一例外（须显式声明）：`global.css` 由 B（排版类）与 D（动画类）共同修改，按类名前缀分区——B 只写 `.t-*` / 版式，D 只写动画与曲线。
+
+## 11. 不可违反的执行原则
+
+- **零编造。** 所有产品实物必须溯源到项目自己的 README / 仓库，并在 PR 里给原文链接。在一个主张「可查验」的站上编造一个看起来像产品的 UI，是最重的自伤。
+- **不加第二个装饰。** 超一流 = 克制 + 一件真东西，不是动效堆叠。
+- 沿用全部既有硬约束（口号两处、禁 Trust/Judge、公司 ≤2、产品不进 Hero、无胶囊按钮、`html[lang^="zh"]`）。
+
+## 12. 进度
+
+- [x] 审计与方案（Issue #1）
+- [x] 正交拆分落 Issue #2–#5
+- [ ] **B** 版式节奏
+- [ ] **C** 文案重写
+- [ ] **A** 视觉证据层
+- [ ] **D** 交互动效
+- [ ] 复评 + PR
