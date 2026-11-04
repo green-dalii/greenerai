@@ -87,7 +87,6 @@ export interface Dict {
   evidence: {
     /** 笔记 → wiki 页的转化（源自 obsidian-llm-wiki README 文档化的原例） */
     translation: {
-      label: string;
       beforeLabel: string;
       beforePath: string;
       beforeNote: string;

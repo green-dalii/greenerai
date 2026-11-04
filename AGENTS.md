@@ -43,12 +43,13 @@
 
 | 数字 | 权威源 |
 |---|---|
-| Karpathy LLM Wiki 下载 34,055（产品名；仓库 obsidian-llm-wiki） | `obsidianmd/obsidian-releases` community-plugin-stats.json（`karpathywiki.downloads`） |
-| Karpathy LLM Wiki 451★ | GitHub API |
-| pi-shift-router 月下载 1,235 | npm `api.npmjs.org/downloads/point/last-month/pi-shift-router` |
-| pi-shift-router 0 依赖 / ~409kB install | README 徽章墙（packagephobia 口径，2026-08 核对） |
+| Karpathy LLM Wiki 下载 67,153（产品名；仓库 obsidian-llm-wiki） | `obsidianmd/obsidian-releases` community-plugin-stats.json（`karpathywiki.downloads`） |
+| Karpathy LLM Wiki 768★ | GitHub API（仓库已迁至 `GD4AI/obsidian-llm-wiki`） |
+| Shift-Router 月下载 2,293（pi 685 + dsh 1,608） | npm `api.npmjs.org/downloads/point/last-month/{pi,dsh}-shift-router` |
+| pi-shift-router 0 依赖 / 636 kB unpacked | npm registry `dependencies` / `dist.unpackedSize` |
 
-数字为构建时常量（写入字典），改动需核对上表源。
+数字为构建时常量（写入字典），改动需核对上表源，并同步 `src/i18n/locales/*.ts` 的 `VERIFIED`。
+核对日期：2026-11-03。
 
 ## 目录约定
 
