@@ -377,3 +377,58 @@ P0–P4 全部完成，探针全绿。但那是**工艺**验收。按 Awwwards �
 
 「具体」不等于「降级」。补具体性时先问：**这个名词是公司那一层，还是展品那一层？**
 在展品层补具体，会把主张层架空。
+
+---
+
+## 18. Hero 视觉重构：「先划格子，再放字」
+
+### 诊断（实测，不是感觉）
+
+| 指标 | 改前 | 问题 |
+|---|---|---|
+| H1 字号 | 60px，宽 693px | 宣言只占 12 栏容器（1194px）的 **58%**，两行共 139px 高——**它不是画面主体** |
+| Hero 总高 | 677px / 视口 900 | 内容到 565 就结束，下方 112px 空转 |
+| H1 底 314 / 面板顶 233 | 无任何基线关系 | 左右两块是「并排」，不是「构图」 |
+| 骨架线 | 7% 绿 | 几乎看不见——既要立规矩就要么承诺要么删掉 |
+| 右栏面板 | 440×189 静态卡 | 只有 3D 倾斜这一种反馈，且倾斜本身不表达任何东西 |
+
+根因：**宣言的尺度配不上宣言的重量。**
+
+### 方案：一张排版样张（specimen sheet）
+
+**1. 尺度由实测字宽反推，不是拍脑袋**
+测出 EN 每 1px 字号宽 10.17×、ZH 第二行 11.85×；容器 1216px → 理论上限 EN 119px / ZH 102px。
+取 EN `clamp(2rem, 7vw, 6.75rem)`（108px）、ZH `clamp(1.75rem, 6.2vw, 5.75rem)`（92px）。
+实测：EN 两行 980/996px（占 81%），ZH 619/1021px（占 84%）。**两行结构在任何断点都不折行。**
+
+**2. 构图从「两栏并排」改为「宣言独占 + 注脚行」**
+H1 横贯整个版心；其下一条发丝「版心线」，线下再分 12 栏：左 7 栏散文与动作，右 4 栏（col-start-9）面板作对角配重。
+
+**3. 一个动作，不是四个**
+入场只讲一件事：**这张样张先被划好格，字才落上去。**
+11 根栏线逐根 `scaleY 0→1`（stagger 20ms，580ms）→ 版心线 `scaleX 0→1` → 裁切标记落版 → 面板三行线 `scaleX 0→1`（stagger 80ms）；H1 同时在遮罩内 `translateY 125%→0` 上滑。
+全部 CSS `@keyframes` + 一个 GSAP 补间，零 canvas、零 rAF 常驻。
+
+**4. 交互只给线加回应**
+指针落在面板某行：该行底色 3% 主色、注释色 muted→ink。保留原有指针按压（`gsap.quickTo`，7°/5°），因为它已被用户明确要求保留。
+
+### 过程中修掉的四个真 bug
+
+1. **`.motion-ready` 被 Astro 作用域污染** → 组件 `<style>` 里写 `.motion-ready .foo` 编译成
+   `.motion-ready[data-astro-cid-x] .foo[data-astro-cid-x]`，而 `.motion-ready` 在 `<html>` 上、没有 cid，
+   **整条规则静默失效**。三处入场动画里有两处是死的。修：`:global(.motion-ready)`。
+2. **西文降部被遮罩切掉 13px**（line-height 1.04 但 Instrument Serif 字身 1.17em）。
+   修：遮罩 `padding-bottom:.14em` + 等量负 margin（行距不变），并把 GSAP 起始位移从 110% 提到 **125%** 防止残影。
+3. **中文逗号在 89px 下留 45px 的洞**。修：标点挤压（行内标点 `margin-right:-.44em`）。
+   期间踩到两个坑：JSX 缩进会渲染成 inline-block 内的实宽空格（改用 `set:html` 拼接）；
+   `set:html` 节点没有 cid，选择器必须整条 `:global`。
+4. **dev server 的 gsap 依赖 504（Outdated Optimize Dep）**，导致整页动效失效。
+   生产构建不受影响，但**需要宿主重启 dev server**（沙箱无 kill 权限）。
+
+### 验证（生产构建 + preview，非 dev）
+
+- 三组动画全部实测运行：`rule-draw-y`、`hero-meta-rule`、`stack-rule`
+- H1 `translateY 131px → 0`，栅格 `scaleY 0 → 0.87 → 0.95 → 0.98 → 1`
+- `prefers-reduced-motion: reduce`：`motion-ready` 不加，动画 none，内容全部 opacity 1 —— 兜底正确
+- 指针按压 `matrix3d` 生效；行悬停 gloss `#6b7280 → #14161a`
+- reveal 真隐藏 **0/42** × 390/768/1440 × EN/ZH；无横向溢出；回执 8

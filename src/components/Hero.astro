@@ -4,74 +4,121 @@ import HeroStack from './HeroStack.astro';
 
 const d = getDict(Astro.currentLocale).hero;
 const isZh = Astro.currentLocale === 'zh';
+
+/* 中文标点挤压（punctuation compression）。
+   全角逗号/句号的字身是 1em，墨迹压在左侧，行内右侧因此空出约半个字宽。
+   正文字号下看不出来；89px 的 display 字号下这个洞接近 45px，像排版事故。
+   按中文排版惯例：行内标点挤掉右侧字身，行末标点保留（悬挂）。 */
+const CJK_PUNCT = /[，。、；：！？]/;
+/* 只压缩行内标点；行末标点保持原字身（悬挂在栏外，不参与对齐）。
+   产出 HTML 串而不是 JSX 元素：JSX 的缩进会被渲染成 inline-block 内部的实宽空格，
+   反而把洞撑大（实测多出 ~90px）。 */
+const compressPunct = (t: string) =>
+  t
+    .split(/([，。、；：！？])/)
+    .filter(Boolean)
+    .map((seg, i, arr) =>
+      CJK_PUNCT.test(seg) && i < arr.length - 1
+        ? `<span class="cjk-punct">${seg}</span>`
+        : seg
+    )
+    .join('');
+const zhH1a = compressPunct(d.h1a);
+const zhH1b = compressPunct(d.h1b);
 ---
 
 <!--
-  Hero = 版式骨架可见。
-  删掉了点阵 canvas：粒子场是 AI 站点的陈词，且在窄屏压在正文背后损害可读性。
-  取而代之的是 12 栏发丝线 + 四角裁切标记 —— 宣告「结构，可见」，与「声称，可查」同源。
-  纯 CSS，零 canvas，零 rAF，零 GPU 常驻。
+  Hero = 一张排版样张（specimen sheet）。
+
+  构图三层，只有一个主体物：
+  1. 栅格——11 根内心线 + 四角套准标记，入场时从上往下逐根画下来，然后退到背景；
+  2. 宣言——独占整幅宽度，尺度由实测字宽反推（不是拍脑袋的断点表）；
+  3. 注脚行——发丝线之下：左侧散文与动作，右下方知/品/行面板作对角配重。
+
+  删掉了点阵 canvas（粒子场是 AI 站点陈词）；删掉了左右并列的两栏
+  （两栏并排是模板，宣言独占才有版面）。纯 CSS 动画，零 canvas，零 rAF。
 -->
 <section class="relative overflow-hidden bg-paper-tint">
   <!-- 骨架层（装饰，不进可访问树） -->
   <div class="pointer-events-none absolute inset-0" aria-hidden="true">
     <div class="container-site relative h-full">
-      <div class="scaffold-cols"></div>
+      <div class="scaffold-cols">
+        {
+          Array.from({ length: 11 }, (_, i) => (
+            <i style={`--i:${i + 1}`} />
+          ))
+        }
+      </div>
       <div class="crop-marks"><i></i><i></i><i></i><i></i></div>
     </div>
   </div>
 
-  <div
-    class="container-site relative z-10 grid grid-cols-1 items-center gap-12 pt-24 pb-16 md:grid-cols-12 md:gap-10 md:pt-28 md:pb-24 lg:pt-32 lg:pb-28"
-  >
-    <!-- 左：编辑式宣言 -->
-    <div class="md:col-span-7">
-      <span class="eyebrow block" data-reveal>{d.eyebrow}</span>
+  <div class="container-site relative z-10 pt-24 pb-16 md:pt-28 md:pb-20 lg:pt-32">
+    <!-- 眉标 + 宣言：独占画幅 -->
+    <span class="eyebrow block" data-reveal>{d.eyebrow}</span>
 
-      <h1 class="t-hero mt-6 text-ink md:mt-7">
-        <span class="hero-line-mask block">
-          <span class="hero-line-inner block" data-hero-line>{d.h1a}</span>
-        </span>
-        <span class="hero-line-mask block">
-          <span
-            class="hero-line-inner block"
-            data-hero-line
-            data-hero-line-delay="140"
-          >
-            <!-- 中文斜体是合成伪斜（Instrument Serif 无 CJK 字形），中文只用颜色强调 -->
-            <em
-              class:list={['text-primary', isZh ? 'not-italic' : 'italic']}
-              >{d.h1b}</em
-            >
-          </span>
-        </span>
-      </h1>
-
-      <p class="t-lead mt-7 max-w-xl text-ink/85 md:mt-8" data-reveal data-reveal-delay="240">
-        {d.sub}
-      </p>
-
-      <div class="mt-9 flex flex-col gap-3 sm:flex-row" data-reveal data-reveal-delay="320">
-        <a class="btn-primary" href={d.ctaPrimaryHref}>{d.ctaPrimary}</a>
-        <a
-          class="btn-secondary"
-          href={d.ctaSecondaryHref}
-          target="_blank"
-          rel="noreferrer">{d.ctaSecondary}</a
+    <h1 class="t-hero mt-6 text-ink md:mt-7">
+      <span class="hero-line-mask block">
+        <span
+          class="hero-line-inner block"
+          data-hero-line
+          data-hero-line-delay="190"
+          set:html={isZh ? zhH1a : d.h1a}
+        />
+      </span>
+      <span class="hero-line-mask block">
+        <span
+          class="hero-line-inner block"
+          data-hero-line
+          data-hero-line-delay="330"
         >
+          <!-- 中文斜体是合成伪斜（Instrument Serif 无 CJK 字形），中文只用颜色强调 -->
+          {
+            isZh ? (
+              <em class="text-primary not-italic" set:html={zhH1b} />
+            ) : (
+              <em class="text-primary italic">{d.h1b}</em>
+            )
+          }
+        </span>
+      </span>
+    </h1>
+
+    <!-- 注脚行：一条横贯版心的发丝线，把宣言与它的支撑材料分开 -->
+    <div
+      class="hero-meta mt-10 grid grid-cols-1 gap-10 border-t border-rule pt-8 md:mt-12 md:grid-cols-12 md:gap-8 md:pt-9"
+    >
+      <div class="md:col-span-7 lg:col-span-6">
+        <p class="t-lead max-w-xl text-ink/85" data-reveal data-reveal-delay="470">
+          {d.sub}
+        </p>
+
+        <div class="mt-8 flex flex-col gap-3 sm:flex-row" data-reveal data-reveal-delay="550">
+          <a class="btn-primary" href={d.ctaPrimaryHref}>{d.ctaPrimary}</a>
+          <a
+            class="btn-secondary"
+            href={d.ctaSecondaryHref}
+            target="_blank"
+            rel="noreferrer">{d.ctaSecondary}</a
+          >
+        </div>
+
+        <p class="mono-label hero-footnote mt-7 text-muted" data-reveal data-reveal-delay="640">
+          {d.footnote}
+        </p>
       </div>
 
-      <p class="mono-label hero-footnote mt-7 text-muted" data-reveal data-reveal-delay="380">
-        {d.footnote}
-      </p>
-    </div>
-
-    <!-- 右：稀缺面板（知/品/行 + 杠杆线） -->
-    <div class="md:col-span-5">
-      <HeroStack />
-      <p class="mono-label mt-5 text-center text-muted" data-reveal data-reveal-delay="300">
-        {d.stackCaption}
-      </p>
+      <!-- 右下方对角配重：知 / 品 / 行 -->
+      <div class="md:col-span-4 md:col-start-9">
+        <HeroStack />
+        <p
+          class="mono-label mt-4 text-muted md:text-right"
+          data-reveal
+          data-reveal-delay="660"
+        >
+          {d.stackCaption}
+        </p>
+      </div>
     </div>
   </div>
 </section>
@@ -88,4 +135,45 @@ const isZh = Astro.currentLocale === 'zh';
       letter-spacing: 0.12em;
     }
   }
+
+  /* 横贯发丝线也随之画开——它是样张的「版心线」，不是边框 */
+  @media (prefers-reduced-motion: no-preference) {
+    :global(.motion-ready) .hero-meta {
+      border-top-color: transparent;
+      position: relative;
+    }
+    :global(.motion-ready) .hero-meta::before {
+      content: '';
+      position: absolute;
+      top: -1px;
+      left: 0;
+      right: 0;
+      height: 1px;
+      background: var(--color-rule-strong);
+      transform-origin: left center;
+      animation: hero-meta-rule 0.62s var(--ease-signature) both;
+      animation-delay: 0.34s;
+    }
+  }
+  @keyframes hero-meta-rule {
+    from {
+      transform: scaleX(0);
+    }
+    to {
+      transform: scaleX(1);
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    :global(.motion-ready) .hero-meta::before {
+      animation: none !important;
+    }
+  }
+
+  /* 行内标点挤出右侧字身（标点挤压）。行末标点不挤 —— 它悬挂在栏外。 */
+  /* set:html 生成的节点不带 Astro 作用域属性，整条选择器必须 :global */
+  :global(html[lang^='zh'] .cjk-punct) {
+    display: inline-block;
+    margin-right: -0.44em;
+  }
+
 </style>
