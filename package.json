@@ -8,7 +8,8 @@
     "build": "astro build",
     "preview": "astro preview",
     "astro": "astro",
-    "typecheck": "astro check"
+    "typecheck": "astro check",
+    "check:scope": "sh scripts/check-scope.sh"
   },
   "dependencies": {
     "@astrojs/sitemap": "^3.7.2",
