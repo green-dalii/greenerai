@@ -8,12 +8,12 @@ const GH_WIKI = 'https://api.github.com/repos/GD4AI/obsidian-llm-wiki';
 
 export const en: Dict = {
   meta: {
-    title: 'Greener-Dalii — We turn what you know into leverage.',
+    title: 'Greener-Dalii: We turn what you know into leverage',
     description:
-      'Thinking got cheap; what you have lived through, what you refuse to ship, and what you finish did not. We build tools for those three — and every number on the site carries a receipt.',
+      'Two open-source tools: one turns your own notes into answers with sources attached, one sends each message to the model that deserves it. Every figure on the site traces to its source.',
     ogTitle: 'Intelligence is no longer scarce. Leverage is the new company.',
     ogDescription:
-      'A small team with company-scale reach. Every number open, every one checkable.',
+      'A few people, two open-source tools, and every figure on this site traced to its source.',
   },
 
   brand: {
@@ -35,21 +35,20 @@ export const en: Dict = {
   },
 
   hero: {
-    eyebrow: "Tools for the part AI can't do",
+    eyebrow: 'Two tools, both open source',
     h1a: 'Intelligence is no longer scarce.',
     h1b: 'Leverage is the new company.',
-    sub: "Thinking got cheap. Three things didn't: what you've lived through, what you refuse to ship, what you finish. We build tools for those three, and we use them every day to run this company.",
-    ctaPrimary: 'See the practice',
+    sub: 'One turns your own notes into answers with sources attached; the other keeps the expensive model for the work that needs it. Both are open source, and both run this company.',
+    ctaPrimary: 'See both tools',
     ctaPrimaryHref: '#proof',
-    ctaSecondary: 'Star on GitHub',
+    ctaSecondary: 'Our code on GitHub',
     ctaSecondaryHref: 'https://github.com/green-dalii',
-    stackCaption: "What compounds when headcount doesn't.",
-    footnote: 'All open source. Every number here can be checked.',
+    stackCaption: 'Three things a model cannot have.',
+    footnote: 'Made by the same people who use them.',
   },
 
   evidence: {
     translation: {
-      label: 'What it actually does',
       beforeLabel: 'A flat note',
       beforePath: 'notes/machine-learning.md',
       beforeNote: 'One file, no structure.',
@@ -75,8 +74,8 @@ export const en: Dict = {
     ledger: {
       claim: 'Three numbers you can check without taking our word for it.',
       items: [
-        { value: '67,153', label: 'downloads' },
-        { value: '2,293', label: 'installs a month' },
+        { value: '67,153', label: 'installs' },
+        { value: '2,293', label: 'npm downloads a month' },
         { value: '0', label: 'runtime dependencies' },
       ],
       note: 'each one opens into a receipt',
@@ -94,37 +93,37 @@ export const en: Dict = {
 
   thesis: {
     eyebrow: 'The belief',
-    heading: 'Why we build.',
+    heading: 'What changed, and what did not.',
     items: [
       {
         index: 'I',
         title: 'Intelligence is no longer scarce.',
         body:
-          'AI is doing to thinking what engines did to muscle. Supply went up, price went down, and every advantage built on top of it had to be rebuilt somewhere else.',
+          'AI is doing to thinking what steam did to muscle power: supply went up, the price fell, and any advantage that rested on thinking stopped being an advantage.',
       },
       {
         index: 'II',
         title: 'What you know is the moat.',
         body:
-          'The decisions you got wrong and paid for. The instincts that took years. None of it can be bought, scraped, or copied — and none of it gets cheaper.',
+          'The decisions you got wrong and paid for. The instincts that took years. Nobody can buy it, scrape it or copy it, and it does not get cheaper as the models get better.',
       },
       {
         index: 'III',
         title: 'What you choose is the edge.',
         body:
-          'When anyone can generate anything, the only question left is what deserves to exist. That one is never answered in the abstract — it gets answered by hand, at small scale, over and over. We answer it in a design studio: one page, one rejected draft, one millimetre at a time.',
+          'When anyone can generate anything, the question that decides the work becomes what deserves to exist. Nobody answers that in the abstract — you answer it by hand. We answer it in a design studio: one page, one rejected draft, one millimetre at a time.',
       },
       {
         index: 'IV',
         title: 'What you finish is the proof.',
         body:
-          'Anyone can start; almost nobody finishes. The tools do the grinding, the people make the calls. Finishing is the only part other people can see.',
+          'Anyone can start; almost nobody finishes. Tools do the repetition, people decide. Finishing is the only part a stranger can verify.',
       },
       {
         index: '',
         title: 'Leverage turns all three into a company.',
         body:
-          'Know, taste, do — each one goes further when a tool does the lifting. That is the whole trick: a few people doing what used to take a department.',
+          'Know, taste and do all scale with the same thing: a tool that takes the repetition. That is what leverage means here — not a bigger team, just a shorter path from what you know to what you ship.',
         synthesis: true,
       },
     ],
@@ -134,7 +133,7 @@ export const en: Dict = {
     eyebrow: 'Practice',
     heading: 'The beliefs, in practice.',
     sub:
-      'Two tools so far, both open. Every number below carries a receipt: the endpoint it came from, the exact field, and a command you can run yourself.',
+      'Two products, both open source. Each figure below traces to an endpoint, a field, and a command you can run.',
     evidenceLabel: 'Evidence',
     receiptUi: {
       open: 'Show receipt',
@@ -151,7 +150,7 @@ export const en: Dict = {
         title: 'Karpathy LLM Wiki',
         flow: 'Your notes → connected pages → answers with sources attached',
         body:
-          'A plugin for Obsidian. Once it is in, you can question your own notes directly — every answer links back to the one it came from, and nothing leaves your machine.',
+          'A plugin for Obsidian. Once it is installed, you can question your own notes directly — every answer links back to the note it came from, and the whole thing runs inside your vault.',
         stats: [
           {
             value: '67,153',
@@ -179,7 +178,7 @@ export const en: Dict = {
           },
           {
             value: '11',
-            label: 'languages',
+            label: 'languages supported',
             countTo: 11,
             receipt: {
               source: 'Repository i18n directory',
@@ -202,20 +201,20 @@ export const en: Dict = {
             },
           },
         ],
-        cta: 'GitHub',
+        cta: 'Source on GitHub',
         href: 'https://github.com/GD4AI/obsidian-llm-wiki',
       },
       {
         tag: 'Do',
         title: 'Shift-Router',
-        subtag: 'for Pi & DeepSeek Harness',
+        subtag: 'Runs on Pi and DeepSeek Harness',
         flow: 'Cheap model by default → strong model when it counts',
         body:
-          'You pay for the expensive model and the cheap one, but each message can only use one. This chooses, message by message: routine work stays cheap, and the expensive one only sees what needs it. If a provider cuts you off mid-task, it switches and carries on.',
+          'One message, one model — and the default is usually the wrong one. Shift-Router reads each turn before it is sent: routine work stays on the cheap model, and the strong one only sees the turns that need it. If a provider stops answering mid-task, the next attempt goes to another model and the task keeps running.',
         stats: [
           {
             value: '2,293',
-            label: 'downloads / mo',
+            label: 'npm downloads / month',
             countTo: 2293,
             receipt: {
               source: 'npm downloads API — both implementations',
@@ -267,40 +266,40 @@ export const en: Dict = {
 
   organism: {
     eyebrow: 'Who we are',
-    heading: 'A handful of people. Company-scale reach.',
+    heading: 'A few people. One stack we built ourselves.',
     body: [
-      'No layers, no ceremony. A few people, each carrying more than their job title — and tools that pick up the rest.',
-      'We are not predicting how companies will be organised in five years. We are one answer, and ours is already running.',
+      'No layers, no ceremony. A few people doing jobs bigger than their titles, and tools picking up the rest.',
+      'We are not forecasting how companies will be organised in five years. We are running one version of the answer now.',
     ],
     tracks: [
-      { name: 'Greener-Dalii', role: 'What we build' },
-      { name: 'Greener-Dalii Studio', role: 'Where we practise' },
+      { name: 'Greener-Dalii', role: 'The AI-native track' },
+      { name: 'Greener-Dalii Studio', role: 'The design track' },
     ],
-    bridge: 'Same people. Two brands. Two parallel lines.',
+    bridge: 'Same people. Two brands. One way of working.',
   },
 
   road: {
     eyebrow: "What's next",
-    heading: 'Proof over promises.',
+    heading: 'What we have to prove next.',
     sub:
-      'Every number here carries its own receipt: the API, the field, the day we looked, the command to re-run it. Next we are doing the same for work — a document that says which sentence came from which source and who changed it since; a design that names the version it was built on. The work answers for itself. This is not built yet. When it is, you will check it the way you checked these.',
-    practices: ['Open by default', "Sourced or it doesn't ship", 'We go first'],
-    coda: 'Nothing here is finished. Everything here is checkable.',
+      'You send someone a proposal. They click a sentence and see which document it came from, and who changed it since. That is what we are building next — the same thing this page does for its own numbers, applied to the work itself. It does not exist yet. When it does, you will be able to test it in exactly the same way.',
+    practices: ['Open by default', "Sourced, or it doesn't ship", 'We use it on our own work first'],
+    coda: 'We are early. You can see exactly how early.',
   },
 
   open: {
     eyebrow: 'Open',
-    heading: 'See for yourself.',
+    heading: 'Take it apart.',
     body:
-      'The code is open — run it. The numbers have receipts — check them. And if you would rather talk to a person, write: one of us reads it.',
+      'The code is open source, so run it. Every figure has a receipt, so check it. If you are building something adjacent, or you want to use these tools somewhere we have not thought of, write to us — one of us answers.',
     cta1: 'Karpathy LLM Wiki',
     cta1Href: 'https://github.com/GD4AI/obsidian-llm-wiki',
     cta2: 'Shift-Router',
     cta2Href: 'https://shiftrouter.greenerai.top',
-    cta3: 'GitHub org',
+    cta3: 'Our GitHub',
     cta3Href: 'https://github.com/green-dalii',
     email: { label: 'Write to us', href: 'mailto:hi@greenerai.top' },
-    note: 'Apache-2.0 · MIT · check anything on this page',
+    note: 'Apache-2.0 · MIT',
   },
 
   footer: {
@@ -320,6 +319,6 @@ export const en: Dict = {
       ],
     },
     rights: '© 2026 Greener-Dalii',
-    verifiedOn: `Numbers verified ${VERIFIED}`,
+    verifiedOn: `Figures checked ${VERIFIED}`,
   },
 };

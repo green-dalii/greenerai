@@ -120,7 +120,10 @@ const cueClose = layout === 'inline' ? '−' : ui.close;
           <span class="receipt-key">{ui.fetched}</span>
           <span class="receipt-val">{receipt.fetched}</span>
         </div>
-        <div class="receipt-verify">{receipt.verify}</div>
+        <div class="receipt-verify-wrap">
+          <span class="receipt-key">{ui.verify}</span>
+          <code class="receipt-verify">{receipt.verify}</code>
+        </div>
       </div>
     </div>
   </div>

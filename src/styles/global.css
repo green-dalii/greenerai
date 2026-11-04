@@ -505,6 +505,14 @@ html[lang^="zh"] .receipt-body {
   text-decoration-style: dotted;
   text-underline-offset: 0.25em;
 }
+.receipt-verify-wrap {
+  margin-top: 0.75rem;
+  padding-top: 0.7rem;
+  border-top: 1px dashed var(--color-rule);
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
 .receipt-verify {
   margin-top: 0.4rem;
   padding: 0.5rem 0.65rem;
