@@ -99,9 +99,12 @@
 
   .t-hero {
     font-family: var(--font-display);
-    font-size: 30px;
-    line-height: 1.16;
-    letter-spacing: -0.012em;
+    /* 宣言是首屏唯一的主体物，尺度必须配得上它的重量。
+       下限/上限由实测字宽反推：EN 每 1px 字号宽 10.17×，容器 1216px → 上限 119px。
+       取 108px 是留 10% 余量，保证两行结构不被折行破坏。 */
+    font-size: clamp(2rem, 7vw, 6.75rem);
+    line-height: 1.04;
+    letter-spacing: -0.022em;
   }
   .t-statement {
     font-family: var(--font-display);
@@ -164,30 +167,6 @@
   }
 }
 
-@media (min-width: 640px) {
-  .t-hero {
-    font-size: 34px;
-  }
-}
-@media (min-width: 768px) {
-  .t-hero {
-    font-size: 36px;
-  }
-}
-@media (min-width: 1024px) {
-  .t-hero {
-    font-size: 48px;
-  }
-}
-@media (min-width: 1280px) {
-  .t-hero {
-    font-size: 60px;
-  }
-  /* 中文 12 字一行，60px 会溢出栏宽 → 降到 54px */
-  html[lang^="zh"] .t-hero {
-    font-size: 54px;
-  }
-}
 
 /* ---------- 中文显示字体：逐字形对位，零字体下载 ----------
    拉丁走 Instrument Serif（编辑感衬线），中文走当代黑体。
@@ -197,6 +176,13 @@
    为什么是黑体：PingFang SC / 微软雅黑 / Noto Sans CJK 是三大平台各自的 CJK 无衬线基准，
    字面接近、跨端一致，且「拉丁衬线 × 中文黑体」是当代中文编辑设计里成立的双语对位 ——
    它让中文版拥有自己的声线，而不是英文版式的译文。 */
+html[lang^="zh"] .t-hero {
+  /* 「拼的不再是人头，是杠杆。」12 字 × 11.85 = 142× 字号；容器 1216 → 上限 102px。
+     取 92px。中文需要更大的行距，否则两行会粘在一起。 */
+  font-size: clamp(1.75rem, 6.2vw, 5.75rem);
+  line-height: 1.18;
+  letter-spacing: -0.01em;
+}
 html[lang^="zh"] :is(.t-hero, .t-statement, .t-h2, .t-entry, .t-stat, .t-numeral) {
   font-family:
     "Instrument Serif",
@@ -268,13 +254,30 @@ html[lang^="zh"] :is(.t-hero, .t-statement, .t-h2, .t-entry, .t-stat, .t-numeral
   position: absolute;
   inset: 0;
   pointer-events: none;
-  background-image: repeating-linear-gradient(
-    to right,
-    color-mix(in oklab, var(--color-primary) 7%, transparent) 0 1px,
-    transparent 1px 8.3333%
-  );
-  /* 左右两侧不留线：裁到容器内 */
-  mask-image: linear-gradient(to right, transparent 0, black 2px, black calc(100% - 2px), transparent 100%);
+}
+/* 11 根内心线（容器左右边缘由四角裁切标记承担，不重复画）
+   入场时从上往下逐根画下来 —— 样张先被划好格，字才落上去。
+   无 JS 时默认就是画好的（transform: none），动画只由 .motion-ready 触发。 */
+.scaffold-cols i {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: calc(var(--i) * 8.333333%);
+  width: 1px;
+  background: color-mix(in oklab, var(--color-primary) 11%, transparent);
+}
+.motion-ready .scaffold-cols i {
+  transform-origin: top center;
+  animation: rule-draw-y 0.58s var(--ease-signature) both;
+  animation-delay: calc(var(--i) * 20ms);
+}
+@keyframes rule-draw-y {
+  from {
+    transform: scaleY(0);
+  }
+  to {
+    transform: scaleY(1);
+  }
 }
 
 /* 窄屏隐藏骨架：12 栏在 390px 下退化成密梳，既噪声又违背「不用密集图形」 */
@@ -290,6 +293,21 @@ html[lang^="zh"] :is(.t-hero, .t-statement, .t-h2, .t-entry, .t-stat, .t-numeral
   position: absolute;
   inset: 0;
   pointer-events: none;
+}
+/* 套准记号最后落版：格子画完、字落定之后。 */
+.motion-ready .crop-marks {
+  animation: crop-in 0.46s var(--ease-signature) both;
+  animation-delay: 0.18s;
+}
+@keyframes crop-in {
+  from {
+    opacity: 0;
+    transform: scale(0.94);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
 }
 .crop-marks i {
   position: absolute;
@@ -538,9 +556,16 @@ html[lang^="zh"] .receipt-body {
   opacity: 1;
 }
 
-/* Hero 大标题：遮罩内上滑（mask = 行盒） */
+/* Hero 大标题：遮罩内上滑（mask = 行盒）
+   line-height 1.04 是为紧凑行距，但 Instrument Serif 的字身是 1.17em，
+   超出部分（降部 g/y/p）会被 overflow:hidden 切掉 —— 实测切掉 13px。
+   用 padding-bottom 把遮罩加高、再用等量负 margin 抵消行距，
+   行距保持 1.04，降部不丢。motion.ts 的起始位移因此提到 125%。
+   中文同理（PingFang 字身 1.06em，切掉 6px）。 */
 .hero-line-mask {
   overflow: hidden;
+  padding-bottom: 0.14em;
+  margin-bottom: -0.14em;
 }
 .hero-line-inner {
   will-change: transform;
@@ -555,6 +580,11 @@ html[lang^="zh"] .receipt-body {
   }
   .receipt-panel {
     transition: none;
+  }
+  .motion-ready .scaffold-cols i,
+  .motion-ready .crop-marks,
+  .motion-ready .stack-row::before {
+    animation: none !important;
   }
 }
 

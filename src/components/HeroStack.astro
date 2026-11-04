@@ -65,8 +65,66 @@ const s = getDict(Astro.currentLocale).stack;
     column-gap: 10px;
     padding: 17px 18px;
   }
+  /* 行分隔线不再是描边，而是逐条画开 —— 与栅格线、版心线同一套语言：
+     这张样张上的每一条线都是「划出来的」，没有一条是贴上去的。 */
+  .stack-row {
+    position: relative;
+  }
   .stack-row + .stack-row {
-    border-top: 1px solid var(--color-rule);
+    border-top: 0;
+  }
+  .stack-row + .stack-row::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: var(--color-rule);
+    transform-origin: left center;
+  }
+  :global(.motion-ready) .stack-row + .stack-row::before {
+    animation: stack-rule 0.5s var(--ease-signature, ease) both;
+  }
+  :global(.motion-ready) .stack-row:nth-child(2)::before {
+    animation-delay: 0.52s;
+  }
+  :global(.motion-ready) .stack-row:nth-child(3)::before {
+    animation-delay: 0.6s;
+  }
+  @keyframes stack-rule {
+    from {
+      transform: scaleX(0);
+    }
+    to {
+      transform: scaleX(1);
+    }
+  }
+
+  /* 指针落在某一行时：该行的分隔线提亮，注释从 muted 升到 ink。
+     不用位移、不用缩放、不用阴影 —— 只动线的轻重与字的明度。 */
+  .stack-row {
+    transition: background-color 0.3s var(--ease-signature, ease);
+  }
+  @media (hover: hover) {
+    .stack-row:hover {
+      background: color-mix(in oklab, var(--color-primary) 3%, transparent);
+    }
+    .stack-row:hover .stack-gloss {
+      color: var(--color-ink);
+    }
+  }
+  .stack-gloss {
+    transition: color 0.3s var(--ease-signature, ease);
+  }
+  @media (prefers-reduced-motion: reduce) {
+    :global(.motion-ready) .stack-row + .stack-row::before {
+      animation: none !important;
+    }
+    .stack-row,
+    .stack-gloss {
+      transition: none;
+    }
   }
   .stack-idx {
     font-family: var(--font-mono);

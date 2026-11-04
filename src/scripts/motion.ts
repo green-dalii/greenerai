@@ -103,7 +103,8 @@ if (reduce) {
   gsap.set(revealEls, { autoAlpha: 0, y: 22 });
 
   const heroLines = all<HTMLElement>('[data-hero-line]');
-  gsap.set(heroLines, { yPercent: 110 });
+  /* 125% 而非 110%：遮罩底部有 0.14em 的降部余量，位移不足会露出字头残影 */
+  gsap.set(heroLines, { yPercent: 125 });
 
   root.classList.add('motion-ready');
 
