@@ -10,10 +10,10 @@ export const en: Dict = {
   meta: {
     title: 'Greener-Dalii: We turn what you know into leverage',
     description:
-      'Two open-source tools: one turns your own notes into answers with sources attached, one sends each message to the model that deserves it. Every figure on the site traces to its source.',
+      'An AI-native company that builds the instruments a few people need to carry a department\'s work — and runs on them. Two are open source, and every figure on the site traces to its source.',
     ogTitle: 'Intelligence is no longer scarce. Leverage is the new company.',
     ogDescription:
-      'A few people, two open-source tools, and every figure on this site traced to its source.',
+      'A few people, instruments they built themselves, and every figure on this site traced to its source.',
   },
 
   brand: {
@@ -35,11 +35,11 @@ export const en: Dict = {
   },
 
   hero: {
-    eyebrow: 'Two tools, both open source',
+    eyebrow: 'An AI-native company',
     h1a: 'Intelligence is no longer scarce.',
     h1b: 'Leverage is the new company.',
-    sub: 'One turns your own notes into answers with sources attached; the other keeps the expensive model for the work that needs it. Both are open source, and both run this company.',
-    ctaPrimary: 'See both tools',
+    sub: 'We build the instruments that let a few people carry a company\'s work, then run this company on them. The first two are open source — one for your notes, one for your models.',
+    ctaPrimary: "See what we've built",
     ctaPrimaryHref: '#proof',
     ctaSecondary: 'Our code on GitHub',
     ctaSecondaryHref: 'https://github.com/green-dalii',
@@ -133,7 +133,7 @@ export const en: Dict = {
     eyebrow: 'Practice',
     heading: 'The beliefs, in practice.',
     sub:
-      'Two products, both open source. Each figure below traces to an endpoint, a field, and a command you can run.',
+      'This is where the thesis gets tested: the first two things we shipped, both open source. Each figure traces to an endpoint, a field, and a command you can run.',
     evidenceLabel: 'Evidence',
     receiptUi: {
       open: 'Show receipt',
@@ -291,7 +291,7 @@ export const en: Dict = {
     eyebrow: 'Open',
     heading: 'Take it apart.',
     body:
-      'The code is open source, so run it. Every figure has a receipt, so check it. If you are building something adjacent, or you want to use these tools somewhere we have not thought of, write to us — one of us answers.',
+      'The code is open source, so run it. Every figure has a receipt, so check it. And if you are building something adjacent — or you want to build in the same direction — write to us. One of us answers.',
     cta1: 'Karpathy LLM Wiki',
     cta1Href: 'https://github.com/GD4AI/obsidian-llm-wiki',
     cta2: 'Shift-Router',

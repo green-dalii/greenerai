@@ -10,9 +10,9 @@ export const zh: Dict = {
   meta: {
     title: '格润达理 — 我们把所知，变成杠杆',
     description:
-      '两个开源工具：一个把你的笔记变成带出处的答案，一个把贵的模型只留给真正要紧的活。这一页的每个数字都写着出处。',
+      '我们把所知，变成杠杆：造让几个人干得动一个部门的活的工具，自己先用。已有两个开源产品，每个数字都写着出处。',
     ogTitle: '智力不再稀缺。拼的不再是人头，是杠杆。',
-    ogDescription: '几个人，两个开源工具，网站上每个数字都写着出处。',
+    ogDescription: '几个人，自己的工具，网站上每个数字都写着出处。',
   },
 
   brand: {
@@ -34,11 +34,11 @@ export const zh: Dict = {
   },
 
   hero: {
-    eyebrow: '两个工具，都开源',
+    eyebrow: '一家 AI 原生的公司',
     h1a: '智力不再稀缺。',
     h1b: '拼的不再是人头，是杠杆。',
-    sub: '一个把你的笔记变成带出处的答案，另一个把贵的模型只留给真正要紧的活。两个都开源——我们自己每天在用。',
-    ctaPrimary: '看看这两个工具',
+    sub: '我们造杠杆：让几个人干得动一个部门的活，造完自己先用。头两个已经开源——一个读你的笔记，一个管你的模型。',
+    ctaPrimary: '看看我们造了什么',
     ctaPrimaryHref: '#proof',
     ctaSecondary: '去 GitHub 看源码',
     ctaSecondaryHref: 'https://github.com/green-dalii',
@@ -126,7 +126,7 @@ export const zh: Dict = {
   practice: {
     eyebrow: '实践',
     heading: '想法，变成能装的东西。',
-    sub: '两个工具，都开源。每个数字下面都写着出处：哪个接口、哪个字段，还有一条你自己能跑的命令。',
+    sub: '这一节是检验：我们先造出来的两个东西，都开源。每个数字都连着接口、字段，和一条你自己能跑的命令。',
     evidenceLabel: '凭据',
     receiptUi: {
       open: '查看回执',
@@ -280,7 +280,7 @@ export const zh: Dict = {
   open: {
     eyebrow: '开放',
     heading: '拆开看。',
-    body: '代码开源，拿去跑。数字都带回执，拿去核。如果你在做相邻的事，或者想把这两个工具用到我们没想到的地方——写信给我们，会有人回。',
+    body: '代码开源，拿去跑。数字都带回执，拿去核。如果你在做相邻的事，或者想朝同一个方向做点东西——写信给我们，会有人回。',
     cta1: 'Karpathy LLM Wiki',
     cta1Href: 'https://github.com/GD4AI/obsidian-llm-wiki',
     cta2: 'Shift-Router',
