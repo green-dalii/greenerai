@@ -10,7 +10,7 @@ export const en: Dict = {
   meta: {
     title: 'Greener-Dalii — We turn what you know into leverage.',
     description:
-      'We build tools for the three things AI made more valuable by making everything else cheap: what you have lived through, what you refuse to ship, and what you actually finish. Everything open, every number carrying a receipt.',
+      'Thinking got cheap; what you have lived through, what you refuse to ship, and what you finish did not. We build tools for those three — and every number on the site carries a receipt.',
     ogTitle: 'Intelligence is no longer scarce. Leverage is the new company.',
     ogDescription:
       'A small team with company-scale reach. Every number open, every one checkable.',
@@ -35,16 +35,16 @@ export const en: Dict = {
   },
 
   hero: {
-    eyebrow: "Tools for what AI can't generate",
+    eyebrow: "Tools for the part AI can't do",
     h1a: 'Intelligence is no longer scarce.',
     h1b: 'Leverage is the new company.',
-    sub: "AI didn't make us smarter. It made thinking cheap — which makes everything else worth more: what you've actually lived through, what you refuse to ship, what you finish. We build tools for those three, then run this company on them.",
+    sub: "Thinking got cheap. Three things didn't: what you've lived through, what you refuse to ship, what you finish. We build tools for those three, and we use them every day to run this company.",
     ctaPrimary: 'See the practice',
     ctaPrimaryHref: '#proof',
     ctaSecondary: 'Star on GitHub',
     ctaSecondaryHref: 'https://github.com/green-dalii',
     stackCaption: "What compounds when headcount doesn't.",
-    footnote: 'All open source. Every number carries a receipt.',
+    footnote: 'All open source. Every number here can be checked.',
   },
 
   evidence: {
@@ -106,13 +106,13 @@ export const en: Dict = {
         index: 'II',
         title: 'What you know is the moat.',
         body:
-          "The decisions you got wrong and paid for. The instincts that took years. None of it can be bought, scraped, or copied — which is why it is worth more now than it was two years ago.",
+          'The decisions you got wrong and paid for. The instincts that took years. None of it can be bought, scraped, or copied — and none of it gets cheaper.',
       },
       {
         index: 'III',
         title: 'What you choose is the edge.',
         body:
-          'When anyone can generate anything, the only question left is what deserves to exist. That one is never answered in the abstract — it gets answered by hand, at small scale, over and over. Ours gets answered in a design studio: one page, one rejected draft, one millimetre at a time.',
+          'When anyone can generate anything, the only question left is what deserves to exist. That one is never answered in the abstract — it gets answered by hand, at small scale, over and over. We answer it in a design studio: one page, one rejected draft, one millimetre at a time.',
       },
       {
         index: 'IV',
@@ -124,7 +124,7 @@ export const en: Dict = {
         index: '',
         title: 'Leverage turns all three into a company.',
         body:
-          "Know, taste, do — each one gets bigger when a tool carries it. That is the whole trick: a few people can now carry what used to take a department.",
+          'Know, taste, do — each one goes further when a tool does the lifting. That is the whole trick: a few people doing what used to take a department.',
         synthesis: true,
       },
     ],
@@ -134,7 +134,7 @@ export const en: Dict = {
     eyebrow: 'Practice',
     heading: 'The beliefs, in practice.',
     sub:
-      'Two tools so far. Both open. Every number below carries a receipt — open one and you get the endpoint, the field, and the command to check it yourself.',
+      'Two tools so far, both open. Every number below carries a receipt: the endpoint it came from, the exact field, and a command you can run yourself.',
     evidenceLabel: 'Evidence',
     receiptUi: {
       open: 'Show receipt',
@@ -151,7 +151,7 @@ export const en: Dict = {
         title: 'Karpathy LLM Wiki',
         flow: 'Your notes → connected pages → answers with sources attached',
         body:
-          'Built for Obsidian. Your notes become a knowledge base you can ask questions — every answer links back to the note it came from, and nothing leaves your machine.',
+          'A plugin for Obsidian. Once it is in, you can question your own notes directly — every answer links back to the one it came from, and nothing leaves your machine.',
         stats: [
           {
             value: '67,153',
@@ -211,7 +211,7 @@ export const en: Dict = {
         subtag: 'for Pi & DeepSeek Harness',
         flow: 'Cheap model by default → strong model when it counts',
         body:
-          "You are paying for the expensive model and the cheap one, and each message can only use one of them. This decides per message, so the expensive one only sees work that needs it — and if a provider cuts you off mid-task, it switches and keeps going.", 
+          'You pay for the expensive model and the cheap one, but each message can only use one. This chooses, message by message: routine work stays cheap, and the expensive one only sees what needs it. If a provider cuts you off mid-task, it switches and carries on.',
         stats: [
           {
             value: '2,293',
@@ -270,11 +270,11 @@ export const en: Dict = {
     heading: 'A handful of people. Company-scale reach.',
     body: [
       'No layers, no ceremony. A few people, each carrying more than their job title — and tools that pick up the rest.',
-      "We are not predicting how companies get organised in five years. We are one version of the answer, and it is already running — that is the only version of this claim we can make honestly.",
+      'We are not predicting how companies will be organised in five years. We are one answer, and ours is already running.',
     ],
     tracks: [
-      { name: 'Greener-Dalii', role: 'Products, tools, and the company that runs on them' },
-      { name: 'Greener-Dalii Studio', role: 'Client work — the daily practice of choosing' },
+      { name: 'Greener-Dalii', role: 'What we build' },
+      { name: 'Greener-Dalii Studio', role: 'Where we practise' },
     ],
     bridge: 'Same people. Two brands. Two parallel lines.',
   },
@@ -283,7 +283,7 @@ export const en: Dict = {
     eyebrow: "What's next",
     heading: 'Proof over promises.',
     sub:
-      "You have opened the receipts on this page. They cost us nothing to publish, and they tell you more than any testimonial could. The next thing we are building applies the same move to the work itself — a piece that shows where it came from: the source, the version, the hand that changed it, It is not finished. When it is, you will check it the way you checked these.",
+      'Every number here carries its own receipt: the API, the field, the day we looked, the command to re-run it. Next we are doing the same for work — a document that says which sentence came from which source and who changed it since; a design that names the version it was built on. The work answers for itself. This is not built yet. When it is, you will check it the way you checked these.',
     practices: ['Open by default', "Sourced or it doesn't ship", 'We go first'],
     coda: 'Nothing here is finished. Everything here is checkable.',
   },
@@ -292,7 +292,7 @@ export const en: Dict = {
     eyebrow: 'Open',
     heading: 'See for yourself.',
     body:
-      'The code is open. The numbers have receipts. You can run either one. If you would rather talk to a person, write — one of us reads it.',
+      'The code is open — run it. The numbers have receipts — check them. And if you would rather talk to a person, write: one of us reads it.',
     cta1: 'Karpathy LLM Wiki',
     cta1Href: 'https://github.com/GD4AI/obsidian-llm-wiki',
     cta2: 'Shift-Router',
