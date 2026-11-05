@@ -4,11 +4,12 @@ const dict = getDict(Astro.currentLocale);
 ---
 
 <!-- 沿用 Greener-Dalii Studio 官方品牌资产：logomark（黑色）+ wordmark.svg -->
-<a
-  href={dict.brand.homeHref}
-  class="flex items-center gap-2.5"
-  aria-label="Greener-Dalii — home"
->
+<!--
+  链接的可访问名由 wordmark 的 alt 承担，不再用 aria-label。
+  两者同时存在会重复播报；而 alt="" 会让品牌名对搜索引擎完全不可见
+  —— 这是全站唯一一处品牌名出现却拿不到文本权重的地方。
+-->
+<a href={dict.brand.homeHref} class="flex items-center gap-2.5">
   <svg viewBox="-40 -20 820 820" fill="none" class="h-7 w-7 text-ink" aria-hidden="true">
     <polygon
       points="325.5,129.7 325.5,303.2 424.7,322 424.7,129.7 643.8,129.7 643.8,340.9 743,359.8 743,30.4 7.2,30.4 7.2,340.9
@@ -21,5 +22,5 @@ const dict = getDict(Astro.currentLocale);
       fill="currentColor"
     />
   </svg>
-  <img src="/wordmark.svg" alt="" class="h-6 w-auto" />
+  <img src="/wordmark.svg" alt="Greener-Dalii" class="h-6 w-auto" />
 </a>

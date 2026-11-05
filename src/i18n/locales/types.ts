@@ -54,6 +54,15 @@ export interface Dict {
     ogTitle: string;
     ogDescription: string;
   };
+  /** 404 是唯一的双语同页：两份字典各取一半，同屏呈现。 */
+  notFound: {
+    title: string;
+    eyebrow: string;
+    heading: string;
+    body: string;
+    home: string;
+    note: string;
+  };
   brand: { homeHref: string };
   langSwitch: { label: string };
   nav: {

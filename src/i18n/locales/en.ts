@@ -16,6 +16,15 @@ export const en: Dict = {
       'A few people, instruments they built themselves, and every figure on this site traced to its source.',
   },
 
+  notFound: {
+    title: '404 — Page not found · Greener-Dalii',
+    eyebrow: '404 · not found',
+    heading: 'This page does not exist.',
+    body: 'The link is broken or the page moved. Everything that does exist is one of these:',
+    home: 'Home',
+    note: 'IF YOU THINK THIS IS A MISTAKE — hi@greenerai.top',
+  },
+
   brand: {
     homeHref: '/',
   },

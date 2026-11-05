@@ -38,5 +38,8 @@ export default defineConfig({
   },
   build: {
     assets: 'assets',
+    /* 全站只有 2 个页面、CSS 共 48KB（brotli 后 ~9KB）。
+       两个 render-blocking 样式表各要一个 RTT，比内联进 HTML 更贵。 */
+    inlineStylesheets: 'always',
   },
 });

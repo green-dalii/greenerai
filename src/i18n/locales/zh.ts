@@ -15,6 +15,15 @@ export const zh: Dict = {
     ogDescription: '几个人，自己的工具，网站上每个数字都写着出处。',
   },
 
+  notFound: {
+    title: '404 — 页面不存在 · 格润达理',
+    eyebrow: '404 · 页面不存在',
+    heading: '这个页面不存在。',
+    body: '链接失效了，或者页面挪走了。真正存在的只有下面几个：',
+    home: '中文首页',
+    note: '如果你觉得这是误伤 — hi@greenerai.top',
+  },
+
   brand: {
     homeHref: '/zh/',
   },
