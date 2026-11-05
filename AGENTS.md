@@ -76,10 +76,17 @@ src/
 
 - **启动前先探测**：`lsof -iTCP:4322 -sTCP:LISTEN` 或 `curl -s -o /dev/null -w "%{http_code}" http://localhost:4322/`；已有实例则直接复用，**禁止重复启动**多个 dev server。
 - 统一端口：**4322**（4321 通常被 greenerdalii.studio 占用）。
-- **沙箱无 kill 权限**：bash 工具运行在 pi-landstrip OS 沙箱（macOS Seatbelt）内，policy 只有 filesystem/network/windows 三段，没有 process/signal 权限，`kill`/`pkill` 会报 Operation not permitted。因此：
-  - 需要清理进程时，请用户在宿主终端执行 `pkill -f "astro dev"`；
-  - 或用一次性短生命周期验证：`timeout 30 pnpm dev --port 4322`（结束后台进程请宿主清理）；
-  - 不要用 nohup/& 堆叠常驻服务器，避免产生孤儿进程。
+- **kill 权限**：当前沙箱允许 `kill`（早期版本不允许，已放开）。但**先探测再动手**：
+  `lsof -tiTCP:4322 -sTCP:LISTEN` 拿到 pid 再 `kill`，不要 `pkill -f`，避免误伤别的 astro 项目。
+- **`timeout` 在 macOS 上不存在**（也没有 `gtimeout`）。需要限时进程时用
+  `perl -e 'alarm N; exec @ARGV' cmd`，**但注意**：`exec` 会替换掉 perl 进程、闹钟随之消失，
+  等于没有限时。限时只对「不 exec」的写法有效，所以一次性验证进程结束后要**手动复查并清理**：
+  `for p in 4400 4401; do lsof -tiTCP:$p -sTCP:LISTEN | xargs -r kill; done`
+- **Vite 依赖预构建缓存会损坏**：改动 `package.json` / vite 配置后，旧 dev server 会对
+  `gsap.js` 之类的依赖返回 `504 (Outdated Optimize Dep)`，**整页 JS 静默失效**（页面不报错，
+  只是动效全部退化成静态兜底）。症状：浏览器里 `document.documentElement.classList` 不含 `motion-ready`。
+  处置：kill 掉 dev server 重启，日志里出现 `[vite] Re-optimizing dependencies` 即恢复。
+- 不要用 nohup/& 堆叠常驻服务器，避免产生孤儿进程。
 
 ## 协作约定
 
