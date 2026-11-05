@@ -13,8 +13,17 @@ export default defineConfig({
         defaultLocale: 'en',
         locales: { en: 'en', zh: 'zh-CN' },
       },
-      // /og-card 是分享卡的渲染源（供截图用），不是页面 —— 不进 sitemap
-      filter: (page) => !page.includes('/og-card'),
+      // /og-card 是分享卡的渲染源（供截图用）、/404 本身是 noindex —— 都不进 sitemap
+      filter: (page) => !page.includes('/og-card') && !page.includes('/404'),
+      // @astrojs/sitemap 的 i18n 只按 locales 生成 alternate，不含 x-default。
+      // 页面 head 里已经声明了 x-default，sitemap 不补就与页面不一致。
+      serialize(item) {
+        const links = Array.isArray(item.links) ? item.links : [];
+        if (!links.some((l) => l.lang === 'x-default')) {
+          item.links = [...links, { lang: 'x-default', url: 'https://greenerai.top/' }];
+        }
+        return item;
+      },
     }),
   ],
   vite: {

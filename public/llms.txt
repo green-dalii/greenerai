@@ -7,13 +7,13 @@
 
 ## About
 
-- [Greener-Dalii · 格润达理](https://greenerai.top/): A handful of people with company-scale reach. We turn what you know into leverage — everything open source, every number public, running on our own stack.
+- [Greener-Dalii · 格润达理](https://greenerai.top/): A few people building the instruments that let them carry a department's work — and running on them. We turn what you know into leverage.
 - [Why we build](https://greenerai.top/#thesis): The full belief — intelligence is no longer scarce, so the moat moved to what you know, how you choose, and what you finish.
-- [Our story](https://greenerai.top/#organism): Two parallel tracks, one team — Greener-Dalii (AI-native leverage) and Greener-Dalii Studio (daily practice of taste).
+- [Our story](https://greenerai.top/#organism): Same people, two brands, one way of working — Greener-Dalii (the AI-native track) and Greener-Dalii Studio (the design track).
 
 ## Products
 
-- [Karpathy LLM Wiki](https://llmwiki.greenerai.top/): Karpathy's LLM Wiki, rebuilt as an Obsidian plugin. Your notes become a knowledge base that answers — every answer cites its source, nothing leaves your machine.
+- [Karpathy LLM Wiki](https://llmwiki.greenerai.top/): Karpathy's LLM Wiki, rebuilt as an Obsidian plugin. Your notes become a knowledge base that answers — every answer links back to the note it came from, and the whole thing runs inside your vault.
 - [Karpathy LLM Wiki · GitHub](https://github.com/GD4AI/obsidian-llm-wiki): Open-source repository for the Karpathy LLM Wiki plugin (Apache-2.0).
 - [Karpathy LLM Wiki · Marketplace](https://community.obsidian.md/plugins/karpathywiki): Official listing on the Obsidian community plugins directory.
 - [Shift-Router](https://shiftrouter.greenerai.top/): Task-level router for coding agents. Every turn is triaged, instant upgrades when it counts, same-turn failover on rate limits. One brand, two hosts.

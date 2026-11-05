@@ -10,7 +10,7 @@ export const en: Dict = {
   meta: {
     title: 'Greener-Dalii: We turn what you know into leverage',
     description:
-      'An AI-native company that builds the instruments a few people need to carry a department\'s work — and runs on them. Two are open source, and every figure on the site traces to its source.',
+      'An AI-native company building the instruments a few people need to carry a department\'s work — and running on them. Two are open source; every figure is sourced.',
     ogTitle: 'Intelligence is no longer scarce. Leverage is the new company.',
     ogDescription:
       'A few people, instruments they built themselves, and every figure on this site traced to its source.',

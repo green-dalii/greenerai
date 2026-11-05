@@ -7,7 +7,7 @@ This is the long-form companion to `/llms.txt`. Use it when you want richer cont
 
 ## About the company
 
-Greener-Dalii (格润达理) is a small team with company-scale reach. We believe that as AI makes raw intelligence cheap, what becomes scarce — and therefore valuable — is the human part: **what you know**, **how you choose**, and **what you finish**.
+Greener-Dalii (格润达理) is a few people building the instruments that let them carry a department's work, and running on them. We believe that as AI makes raw intelligence cheap, what becomes scarce — and therefore valuable — is the human part: **what you know**, **how you choose**, and **what you finish**.
 
 We are not predicting how organizations will change. We are one of the answers: a handful of people, tools we built ourselves, already running on our own stack. Everything we ship is open source. Every number on this site is public and traceable to a source.
 

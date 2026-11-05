@@ -1,0 +1,42 @@
+---
+import Base from '../layouts/Base.astro';
+import { getDict } from '../i18n';
+
+const dict = getDict('en');
+const zh = getDict('zh');
+---
+
+<!--
+  真实的 404。之前没有这个文件，Cloudflare Pages 把所有未知路径回落到 index.html
+  并返回 200 —— 即「软 404」：任何拼错的 URL 都变成首页的一份重复副本，无限爬。
+  这里必须同时给出状态码与去向。
+-->
+<Base title="404 — Page not found · Greener-Dalii" description="This page does not exist." noindex>
+  <section class="relative overflow-hidden bg-paper-tint">
+    <div class="container-site relative z-10 pt-24 pb-20 md:pt-32 md:pb-28">
+      <span class="eyebrow block">404 · not found</span>
+
+      <h1 class="t-hero mt-6 text-ink">This page does not exist.</h1>
+
+      <p class="t-lead mt-8 max-w-xl text-ink/85">
+        The link is broken or the page moved. Everything that does exist is one of these:
+      </p>
+
+      <p lang="zh-CN" class="t-lead mt-4 max-w-xl text-ink/85">
+        链接失效了，或者页面挪走了。真正存在的只有下面几个：
+      </p>
+
+      <div class="mt-10 flex flex-col gap-3 sm:flex-row">
+        <a class="btn-primary" href="/">Home</a>
+        <a class="btn-secondary" href="/zh/">中文首页</a>
+        <a class="btn-secondary" href="https://github.com/green-dalii" rel="noreferrer">
+          Our GitHub
+        </a>
+      </div>
+
+      <p class="mono-label mt-9 text-muted">
+        IF YOU THINK THIS IS A MISTAKE — hi@greenerai.top
+      </p>
+    </div>
+  </section>
+</Base>

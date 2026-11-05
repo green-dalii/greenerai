@@ -8,11 +8,26 @@ import '@fontsource/instrument-serif/latin-400-italic.css';
 import '@fontsource/jetbrains-mono/latin-400.css';
 import '@fontsource/jetbrains-mono/latin-500.css';
 import '@fontsource/jetbrains-mono/latin-600.css';
+/* 预加载首屏 LCP 字体。Instrument Serif 只用于 display 字号（H1 100px），
+   它晚到 300ms 就是一次肉眼可见的字体重排；preload 让它与 CSS 并行下载。 */
+import serifRoman from '@fontsource/instrument-serif/files/instrument-serif-latin-400-normal.woff2?url';
+import serifItalic from '@fontsource/instrument-serif/files/instrument-serif-latin-400-italic.woff2?url';
 import Nav from '../components/Nav.astro';
 import Footer from '../components/Footer.astro';
 import { getDict } from '../i18n';
 
+/* 允许页面覆写 head —— 404 需要自己的 title / description / noindex。
+   不传时行为与以前完全一致（全站文案仍以字典为唯一来源）。 */
+interface Props {
+  title?: string;
+  description?: string;
+  noindex?: boolean;
+}
+const { title, description, noindex = false } = Astro.props;
+
 const dict = getDict(Astro.currentLocale);
+const pageTitle = title ?? dict.meta.title;
+const pageDescription = description ?? dict.meta.description;
 const lang = Astro.currentLocale === 'zh' ? 'zh-CN' : 'en';
 const isZh = Astro.currentLocale === 'zh';
 
@@ -44,8 +59,13 @@ const organizationLd = {
   sameAs: [
     'https://github.com/green-dalii',
     'https://greenerdalii.top',
-    'https://github.com/green-dalii/obsidian-llm-wiki',
+    // 仓库已迁至 GD4AI（旧路径 301 指过去，但实体声明要用规范地址）
+    'https://github.com/GD4AI/obsidian-llm-wiki',
     'https://github.com/green-dalii/pi-shift-router',
+    'https://github.com/green-dalii/dsh-shift-router',
+    'https://llmwiki.greenerai.top',
+    'https://shiftrouter.greenerai.top',
+    'https://x.com/greenerdalii',
   ],
 };
 const websiteLd = {
@@ -91,18 +111,34 @@ const shiftRouterLd = productLd(
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>{dict.meta.title}</title>
-    <meta name="description" content={dict.meta.description} />
-    <meta name="robots" content="index,follow,max-image-preview:large" />
+    <title>{pageTitle}</title>
+    <meta name="description" content={pageDescription} />
+    {
+      noindex ? (
+        <meta name="robots" content="noindex,follow" />
+      ) : (
+        <meta name="robots" content="index,follow,max-image-preview:large" />
+      )
+    }
     <meta name="theme-color" content="#0a6c4b" media="(prefers-color-scheme: light)" />
 
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
-    <link rel="canonical" href={canonical} />
+    <link rel="manifest" href="/manifest.webmanifest" />
 
-    <link rel="alternate" hreflang="en" href={hreflangEn} />
-    <link rel="alternate" hreflang="zh-CN" href={hreflangZh} />
-    <link rel="alternate" hreflang="x-default" href={hreflangEn} />
+    <link rel="preload" as="font" type="font/woff2" href={serifRoman} crossorigin />
+    <link rel="preload" as="font" type="font/woff2" href={serifItalic} crossorigin />
+
+    {!noindex && <link rel="canonical" href={canonical} />}
+    {
+      !noindex && (
+        <>
+          <link rel="alternate" hreflang="en" href={hreflangEn} />
+          <link rel="alternate" hreflang="zh-CN" href={hreflangZh} />
+          <link rel="alternate" hreflang="x-default" href={hreflangEn} />
+        </>
+      )
+    }
 
     <meta property="og:type" content="website" />
     <meta property="og:site_name" content="Greener-Dalii" />

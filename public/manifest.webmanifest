@@ -1,0 +1,15 @@
+{
+  "name": "Greener-Dalii · 格润达理",
+  "short_name": "Greener-Dalii",
+  "description": "We turn what you know into leverage.",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#f7faf8",
+  "theme_color": "#0a6c4b",
+  "lang": "en",
+  "icons": [
+    { "src": "/logomark.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any" },
+    { "src": "/apple-touch-icon.png", "sizes": "180x180", "type": "image/png" }
+  ]
+}
